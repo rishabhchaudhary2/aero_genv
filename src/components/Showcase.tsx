@@ -224,7 +224,7 @@ const Showcase: React.FC = () => {
                     <div className="relative w-full aspect-video rounded-3xl overflow-hidden bg-[#b9b9b3]">
                         <div className="absolute inset-0 rounded-3xl overflow-hidden">
                             <ReactPlayer
-                                url="https://res.cloudinary.com/djczgyd7j/video/upload/v1753444187/supermanintro_ysigxv.mp4"
+                                url="/videos/intro.mp4"
                                 width="100%"
                                 height="100%"
                                 playing
