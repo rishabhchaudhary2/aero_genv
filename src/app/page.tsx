@@ -20,16 +20,16 @@ const Home = () => {
                     <Header />
                     {/* <ImageTrail
                         items={[
-                            "https://res.cloudinary.com/djczgyd7j/image/upload/v1753443887/3_gg4bgj.jpg",
-                            "https://res.cloudinary.com/djczgyd7j/image/upload/v1753443892/6_r4ldh0.jpg",
-                            "https://res.cloudinary.com/djczgyd7j/image/upload/v1753443892/5_pagbhu.jpg",
-                            "https://res.cloudinary.com/djczgyd7j/image/upload/v1753443886/1_ih9h6m.jpg",
-                            "https://res.cloudinary.com/djczgyd7j/image/upload/v1753443888/2_d1rkl5.jpg",
-                            "https://res.cloudinary.com/djczgyd7j/image/upload/v1753443889/4_aetzc8.jpg",
-                            "https://res.cloudinary.com/djczgyd7j/image/upload/v1753443892/7_nimkdb.jpg",
-                            "https://res.cloudinary.com/djczgyd7j/image/upload/v1753443889/8_qg90su.jpg",
-                            "https://res.cloudinary.com/djczgyd7j/image/upload/v1753443890/9_bkyy1h.webp",
-                            "https://res.cloudinary.com/djczgyd7j/image/upload/v1753443886/1_ih9h6m.jpg",
+                            "/galleryimages/trail1.jpg",
+                            "/galleryimages/trail2.jpg",
+                            "/galleryimages/trail3.jpg",
+                            "/galleryimages/trail4.jpg",
+                            "/galleryimages/trail5.jpg",
+                            "/galleryimages/trail6.jpg",
+                            "/galleryimages/trail7.jpg",
+                            "/galleryimages/trail8.jpg",
+                            "/galleryimages/trail9.jpg",
+                            "/galleryimages/trail1.jpg",
                         ]}
                         variant={1}
                     /> */}
@@ -39,7 +39,7 @@ const Home = () => {
                 <Showcase />
             </div>
             <BestGlasses />
-            <Text />
+            {/* <Text /> */}
             <Collections />
             <ContactMini isHome={true} />
         </>

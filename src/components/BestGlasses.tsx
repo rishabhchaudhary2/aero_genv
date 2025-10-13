@@ -20,23 +20,23 @@ export default function BestGlasses() {
     // Array of objects with image src and paragraph text
     const items: CardType[] = [
         {
-            src: "https://res.cloudinary.com/djczgyd7j/image/upload/v1753444482/img1_nqnb3y.jpg",
+            src: "/galleryimages/1.jpg",
             text: "Classic full-rim frames that blend timeless style with modern durability.",
         },
         {
-            src: "https://res.cloudinary.com/djczgyd7j/image/upload/v1753444484/img2_b6czzy.jpg",
+            src: "/galleryimages/2.jpg",
             text: "Lightweight metal frames offering a sleek and professional look.",
         },
         {
-            src: "https://res.cloudinary.com/djczgyd7j/image/upload/v1753444486/img3_okzr6g.jpg",
+            src: "/galleryimages/3.jpg",
             text: "Bold and trendy acetate frames perfect for making a statement.",
         },
         {
-            src: "https://res.cloudinary.com/djczgyd7j/image/upload/v1753444485/img4_n5o7bx.webp",
+            src: "/galleryimages/4.jpg",
             text: "Minimalist frameless design for a clean, barely-there aesthetic.",
         },
         {
-            src: "https://res.cloudinary.com/djczgyd7j/image/upload/v1753444486/img5_rkncc2.webp",
+            src: "/galleryimages/5.jpg",
             text: "Discover our stylish and affordable eyewear crafted for everyday comfort.",
         }
     ];
@@ -169,7 +169,7 @@ export default function BestGlasses() {
                 <section
                     ref={introRef}
                     className="h-screen w-screen bg-center bg-no-repeat bg-cover cursor-pointer"
-                    style={{ backgroundImage: `url(https://res.cloudinary.com/djczgyd7j/image/upload/v1753444281/6_szkx0i.jpg)` }}
+                    style={{ backgroundImage: `url(/galleryimages/hero.jpg)` }}
                     title="Go to Products"
                 ></section>
             </Link>

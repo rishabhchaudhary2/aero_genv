@@ -6,8 +6,8 @@ const events = [
     {
         name: "CodeSprint",
         images: [
-            "/galleryimages/techspardha/codesprint1.jpg",
-            "/galleryimages/techspardha/codesprint2.jpg",
+            // "/galleryimages/techspardha/codesprint1.jpg",
+            // "/galleryimages/techspardha/codesprint2.jpg",
         ],
         description:
             "A fast-paced coding competition where participants solve challenging problems under time pressure. Test your algorithmic skills and compete with the best minds.",
@@ -15,8 +15,8 @@ const events = [
     {
         name: "RoboWars",
         images: [
-            "/galleryimages/techspardha/robowars1.jpg",
-            "/galleryimages/techspardha/robowars2.jpg",
+            // "/galleryimages/techspardha/robowars1.jpg",
+            // "/galleryimages/techspardha/robowars2.jpg",
         ],
         description:
             "Witness the ultimate battle of bots! Teams design, build, and pit their robots against each other in a thrilling arena showdown.",
@@ -24,8 +24,8 @@ const events = [
     {
         name: "TechQuiz",
         images: [
-            "/galleryimages/techspardha/techquiz1.jpg",
-            "/galleryimages/techspardha/techquiz2.jpg",
+            // "/galleryimages/techspardha/techquiz1.jpg",
+            // "/galleryimages/techspardha/techquiz2.jpg",
         ],
         description:
             "A quiz event to challenge your knowledge of technology, science, and innovation. Form a team and prove your mettle in this brainy battle.",
@@ -33,8 +33,8 @@ const events = [
     {
         name: "InnovateX",
         images: [
-            "/galleryimages/techspardha/innovatex1.jpg",
-            "/galleryimages/techspardha/innovatex2.jpg",
+            // "/galleryimages/techspardha/innovatex1.jpg",
+            // "/galleryimages/techspardha/innovatex2.jpg",
         ],
         description:
             "Showcase your innovative projects and ideas. Present to a panel of judges and get recognized for your creativity and problem-solving skills.",
