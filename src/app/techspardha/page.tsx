@@ -51,7 +51,7 @@ const Techspardha = () => {
                     backgroundImage: "url('/galleryimages/cover/techspardha.png')",
                     backgroundSize: "cover",
                     backgroundPosition: "center",
-                    opacity: 0.18,
+                    opacity: .5,
                 }}
             />
             <Nav />
