@@ -205,11 +205,11 @@ const Showcase: React.FC = () => {
             {/* Hero */}
             <section className="w-screen h-[100svh] p-10 flex flex-col justify-between pt-20">
                 <h1 className="relative uppercase font-bold text-[19vw] tracking-[-0.01em] leading-none md:-left-[0.05em] -left-[0.3em]">
-                    superman
+                    AeroClub
                 </h1>
                 <div className="flex justify-between items-end">
                     <p className="text-[12px] md:text-[20px] uppercase font-medium w-full md:w-1/2">
-                        Inside every ordinary man lives something extraordinary. Lenskart x Superman lets it shine through
+                        Where every crash is a lesson, and every idea is a chance to fly.
                     </p>
                     <p className="text-[12px] md:text-[20px] font-medium">(Scroll)</p>
                 </div>
@@ -223,20 +223,18 @@ const Showcase: React.FC = () => {
                 >
                     <div className="relative w-full aspect-video rounded-3xl overflow-hidden bg-[#b9b9b3]">
                         <div className="absolute inset-0 rounded-3xl overflow-hidden">
-                            <ReactPlayer
-                                url="/videos/intro.mp4"
-                                width="100%"
-                                height="100%"
-                                playing
-                                muted
+                                                        <video
+                                className="w-full h-full object-cover"
+                                autoPlay
                                 loop
-                                controls={false}
-                                playsinline
+                                muted
+                                playsInline
+                                src="/videos/intro.mp4"
                             />
                         </div>
                     </div>
                     <div className="video-title">
-                        {["Lenskart X Superman", "(Frame - 2025)"].map((text, index) => (
+                        {["Aero", "(Frame - 2025)"].map((text, index) => (
                             <p
                                 key={index}
                                 ref={el => (videoTitleRef.current[index] = el)}
@@ -284,7 +282,7 @@ const Showcase: React.FC = () => {
                     {/* Left Title */}
                     <div className="md:w-1/3 w-full" ref={leftTitleRef}>
                         <p className="text-lg md:text-xl font-semibold pl-1 md:pl-2 tracking-wide">
-                            {"Lenskart & superman".split("").map((letter, i) => (
+                            {"WHAT WE DO!".split("").map((letter, i) => (
                                 <span
                                     key={i}
                                     className="inline-block opacity-0 translate-y-5  transition duration-300 hover:text-red-500 hover:scale-125"
@@ -301,24 +299,21 @@ const Showcase: React.FC = () => {
                         className="md:w-2/3 w-full flex flex-col justify-center gap-8 md:pl-10 transition-all"
                     >
                         <p className="uppercase text-[10px] font-semibold mt-10 md:mt-0 tracking-wider">
-                            Our Belief
+                           add some line here 
                         </p>
 
                         <div className="text-[7vw] sm:text-[6vw] md:text-[3.5vw] uppercase font-medium tracking-tight leading-[1.2]">
-                            <p>These frames aren’t just</p>
-                            <p>part of the look — they’re</p>
-                            <p>the real hero of the day.</p>
+                            <p> Our motto is simple:</p>
+                            <p>'If it flies,</p>
+                            <p> we build it.'</p>
                         </div>
 
                         <div className="flex flex-col md:flex-row gap-6 md:gap-10 font-mono text-[10px] sm:text-xs leading-relaxed pt-8">
                             <p className="md:w-1/2">
-                                These aren’t just glasses — they’re precision, power, and personality
-                                in one frame. They sharpen your vision, elevate your presence, and say
-                                more than words ever could.
+                              WE DESIGN AND BUILD MINIATURE AIRCRAFT USING MATERIALS LIKE BALSA WOOD, FOAM, AND CARBON FIBER. WHAT STARTED AS BUILDING SIMPLE RC AIRCRAFT HAS EVOLVED INTO TACKLING REAL ENGINEERING CHALLENGES IN DEFENSE, RENEWABLE ENERGY, AND SURVEILLANCE TECH. WE TRANSFORM IDEAS INTO FLYING MACHINES THROUGH DESIGN, CONSTRUCTION, AND RELENTLESS TESTING
                             </p>
                             <p className="md:w-1/2">
-                                They’re not just built to see — they’re built to be seen. In the right
-                                hands, they become confidence in disguise.
+                               GETTING SOMETHING TO ACTUALLY FLY THE WAY YOU WANT IT TO IS HARDER THAN IT LOOKS. MOST OF US HAVE CRASHED MORE PLANES THAN WE'VE SUCCESSFULLY LANDED, BUT EVERY CRASH TEACHES LESSONS THAT BRING US CLOSER TO PERFECT FLIGHT. IN THE END, HANDS-ON EXPERIENCE PROVES MORE VALUABLE THAN THEORY ALONE
                             </p>
                         </div>
                     </div>
