@@ -3,7 +3,6 @@
 import React, { useEffect, useRef, MutableRefObject } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import ReactPlayer from "react-player";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -250,14 +249,13 @@ const Showcase: React.FC = () => {
                 <div className="video-container-mobile flex md:hidden flex-col gap-4 w-full max-w-[800px] mx-auto">
                     <div className="relative w-full aspect-video rounded-3xl overflow-hidden bg-[#b9b9b3]">
                         <div className="absolute inset-0 rounded-3xl overflow-hidden">
-                            <ReactPlayer
-                                url="./supermanintro.mp4"
-                                width="100%"
-                                height="100%"
-                                playing
-                                muted
+                            <video
+                                className="w-full h-full object-cover"
+                                autoPlay
                                 loop
-                                controls={false}
+                                muted
+                                playsInline
+                                src="/videos/intro.mp4"
                             />
                         </div>
                     </div>
