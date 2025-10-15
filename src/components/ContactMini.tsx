@@ -184,7 +184,7 @@ const ContactMini: React.FC<ContactMiniProps> = ({ isHome }) => {
                         ref={lenskartRef}
                         className="tracking-wide font-three uppercase text-[#111] text-[8rem] md:text-[15rem] xl:text-[20rem]"
                     >
-                        Lenskart
+                        AeroModeling
                     </h1>
 
                     {/* Waving Hand SVG */}
