@@ -115,7 +115,7 @@ const About = () => {
             {/* Hero Copy */}
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 text-center w-[100%] md:w-[60%]">
                 <p className="text-[1.5rem] md:text-[2.2rem] leading-[110%] font-santoshi  tracking-[-0.04em] text-[#fff] font-[sans-serif]">
-                    We are redefining eyewear. From style to{" "}
+                    We are passionate about all things that fly. From cutting-edge{" "}
                     <span
                         className="relative inline-block text-[1.6rem] md:text-[2.3rem] font-semibold cursor-pointer text-[#b0b0b0]"
                         ref={(el) => {
@@ -123,32 +123,32 @@ const About = () => {
                         }}
                     >
                         innovation
-                    </span>, we craft frames,{" "}
+                    </span>, we build aircraft,{" "}
                     <span
                         className="relative inline-block text-[1.6rem] md:text-[2.3rem] font-semibold cursor-pointer text-[#b0b0b0]"
                         ref={(el) => {
                             if (el) spansRef.current[1] = el;
                         }}
                     >
-                        lenses
-                    </span> and experiences that help our diverse{" "}
+                        drones
+                    </span> and foster a community where{" "}
                     <span
                         className="relative inline-block text-[1.6rem] md:text-[2.3rem] font-semibold cursor-pointer text-[#b0b0b0]"
                         ref={(el) => {
                             if (el) spansRef.current[2] = el;
                         }}
                     >
-                        customers
-                    </span> express personality and see with{" "}
+                        students
+                    </span> can experience the thrill of{" "}
                     <span
                         className="relative inline-block text-[1.6rem] md:text-[2.3rem] font-semibold cursor-pointer text-[#b0b0b0]"
                         ref={(el) => {
                             if (el) spansRef.current[3] = el;
                         }}
                     >
-                        clarity
-                    </span> every single day. <br className="hidden md:block" />
-                    Explore our latest collection and find the perfect look for you.
+                        flight
+                    </span> with their own creations. <br className="hidden md:block" />
+                    Join us to design, build, and pilot the future of aerial technology at NIT Kurukshetra.
                 </p>
             </div>
 
@@ -156,8 +156,8 @@ const About = () => {
 
             {/* Footer */}
             <footer className="fixed bottom-0 w-full flex font-final text-[0.6rem] md:text-[1rem] justify-between  text-[#666] uppercase p-4 z-20">
-                <p>Hover On</p>
-                <p>the highlighted words</p>
+                <p>Explore Our</p>
+                <p>aeromodelling journey</p>
             </footer>
 
             {/* Container and Gallery */}
