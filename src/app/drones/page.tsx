@@ -3,8 +3,8 @@
 import { useState, useRef, useEffect } from 'react';
 import Nav from '../../components/Nav';
 import { motion } from 'framer-motion';
-import ContactMini from '../../components/ContactMini';
 import Image from 'next/image';
+import { droneProjects, faqs, SECTION_DURATION, RESUME_TIMEOUT, SECTIONS_COUNT } from './data';
 
 const DronePage = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -13,23 +13,20 @@ const DronePage = () => {
   const [isPaused, setIsPaused] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   
-  // Time in milliseconds to stay on each section
-  const sectionDuration = 6000;
-  
   // Auto-scroll between sections
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
     
-    let interval: NodeJS.Timeout;
-    let progressInterval: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval>;
+    let progressInterval: ReturnType<typeof setInterval>;
     let progressValue = 0;
     
     if (!isPaused) {
       // Main interval for changing sections
       interval = setInterval(() => {
-        const nextSection = (activeSection + 1) % 4;
-        const sectionPosition = (container.scrollWidth / 4) * nextSection;
+        const nextSection = (activeSection + 1) % SECTIONS_COUNT;
+        const sectionPosition = (container.scrollWidth / SECTIONS_COUNT) * nextSection;
         
         container.scrollTo({ 
           left: sectionPosition, 
@@ -38,11 +35,11 @@ const DronePage = () => {
         
         setActiveSection(nextSection);
         progressValue = 0;
-      }, sectionDuration);
+      }, SECTION_DURATION);
       
       // Progress indicator update interval (updates every 50ms)
       progressInterval = setInterval(() => {
-        progressValue += (50 / sectionDuration) * 100;
+        progressValue += (50 / SECTION_DURATION) * 100;
         setProgress(Math.min(progressValue, 100));
       }, 50);
     }
@@ -70,10 +67,10 @@ const DronePage = () => {
       const newActiveSection = Math.floor((scrollPosition + sectionWidth/2) / sectionWidth);
       setActiveSection(newActiveSection);
       
-      // Resume auto-scrolling after 5 seconds of inactivity
+      // Resume auto-scrolling after inactivity
       const resumeTimer = setTimeout(() => {
         setIsPaused(false);
-      }, 5000);
+      }, RESUME_TIMEOUT);
       
       return () => clearTimeout(resumeTimer);
     };
@@ -95,60 +92,16 @@ const DronePage = () => {
       setActiveSection(index);
       setProgress(0);
       
-      // Resume auto-scrolling after 5 seconds
+      // Resume auto-scrolling after timeout
       setTimeout(() => {
         setIsPaused(false);
-      }, 5000);
+      }, RESUME_TIMEOUT);
     }
   };
 
   const toggleFaq = (index: number) => {
     setOpenFaq(openFaq === index ? null : index);
   };
-
-  const droneProjects = [
-    {
-      title: "Object Tracking Drone",
-      description: "Advanced drone with real-time object tracking capabilities using computer vision algorithms.",
-      image: "/droneimages/project1.jpg",
-      rotation: "-rotate-3"
-    },
-    {
-      title: "Arduino Mini Drone",
-      description: "DIY drone kit perfect for beginners, built with Arduino technology for easy customization.",
-      image: "/droneimages/project2.jpg",
-      rotation: "rotate-2"
-    },
-    {
-      title: "FPV Racing Drone",
-      description: "High-speed racing drone with first-person view capabilities for immersive flight experience.",
-      image: "/droneimages/project3.jpg",
-      rotation: "-rotate-1"
-    }
-  ];
-
-  const faqs = [
-    {
-      question: "What types of drones are there?",
-      answer: "There are several types including quadcopters, hexacopters, fixed-wing drones, and hybrid VTOL models. Each has unique advantages depending on your application needs."
-    },
-    {
-      question: "What are the legal requirements for flying drones?",
-      answer: "Requirements typically include registration, maintaining line-of-sight, avoiding no-fly zones, and possibly obtaining a license depending on your location and purpose (recreational vs. commercial)."
-    },
-    {
-      question: "How long can drones fly on a single charge?",
-      answer: "Flight time varies significantly by model, from 5-10 minutes for mini drones to 20-30 minutes for consumer models, and up to 40+ minutes for professional-grade drones."
-    },
-    {
-      question: "What features should I look for when buying a drone?",
-      answer: "Consider camera quality, flight time, range, GPS capabilities, obstacle avoidance, flight modes, size/portability, and whether it has a 'return to home' feature."
-    },
-    {
-      question: "How do I maintain my drone?",
-      answer: "Regular maintenance includes checking propellers for damage, cleaning motors and sensors, battery care, firmware updates, and calibration before flights."
-    }
-  ];
 
   return (
     <div className="min-h-screen bg-[#e5e5dd] text-black overflow-hidden">
@@ -228,8 +181,12 @@ const DronePage = () => {
               autoPlay
               loop
               muted
+              playsInline
+              width={720}
+              height={480}
               className="w-full h-full object-cover"
               src="/droneimages/drone-video.mp4"
+              preload="none"
             />
           </div>
         </section>
@@ -264,7 +221,7 @@ const DronePage = () => {
               transition={{ duration: 0.8, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-xl font-bold mb-6 tracking-wider">Drone Pilot's Checklist</h3>
+              <h3 className="text-xl font-bold mb-6 tracking-wider">Drone Pilot&apos;s Checklist</h3>
               <ul className="space-y-3">
                 {["Double tape, cello tape", "ESCs, battery", "Screw driver, L-keys", 
                   "Motor, motor screw box", "Propellers", 

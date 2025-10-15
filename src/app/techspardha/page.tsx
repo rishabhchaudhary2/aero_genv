@@ -1,6 +1,7 @@
 'use client';
 
 import Nav from '../../components/Nav';
+import Image from 'next/image';
 
 const events = [
     {
@@ -71,7 +72,7 @@ const Techspardha = () => {
                 </p>
                 {/* Events */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10 w-full max-w-5xl">
-                    {events.map((event, idx) => (
+                    {events.map((event) => (
                         <div
                             key={event.name}
                             className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center"
@@ -79,12 +80,15 @@ const Techspardha = () => {
                             <h2 className="text-2xl font-bold mb-4 text-[#222] font-final">{event.name}</h2>
                             <div className="flex gap-4 mb-4">
                                 {event.images.map((img, i) => (
-                                    <img
-                                        key={i}
-                                        src={img}
-                                        alt={event.name + " gallery " + (i + 1)}
-                                        className="w-32 h-24 object-cover rounded-lg border border-[#e5e5dd] shadow"
-                                    />
+                                    <div key={i} className="relative w-32 h-24">
+                                        <Image
+                                            src={img}
+                                            alt={event.name + " gallery " + (i + 1)}
+                                            fill
+                                            sizes="128px"
+                                            className="object-cover rounded-lg border border-[#e5e5dd] shadow"
+                                        />
+                                    </div>
                                 ))}
                             </div>
                             <p className="text-[#444] text-center font-santoshi">{event.description}</p>

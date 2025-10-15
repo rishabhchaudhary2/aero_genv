@@ -17,6 +17,7 @@ const Login = () => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [loginError, setLoginError] = useState<string>('');
   
   // Floating airplane animation
   const [planes, setPlanes] = useState<{id: number, x: number, y: number, delay: number, scale: number, rotate: number}[]>([]);
@@ -50,7 +51,7 @@ const Login = () => {
     return "";
   };
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Validate form
@@ -59,6 +60,7 @@ const Login = () => {
     
     setEmailError(emailValidationError);
     setPasswordError(passwordValidationError);
+    setLoginError('');
     
     if (emailValidationError || passwordValidationError) {
       return;
@@ -67,12 +69,20 @@ const Login = () => {
     setIsLoading(true);
     setFormSubmitted(true);
     
-    // Simulate login process
-    setTimeout(() => {
+    try {
+      // Replace this with your actual login API call
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // On successful login
+      // You can add your authentication logic here
+      // For example: router.push('/dashboard')
+      
+    } catch (error) {
+      console.error('Login error:', error);
+      setLoginError('An error occurred during login. Please try again.');
+    } finally {
       setIsLoading(false);
-      // Handle login logic here
-      // Redirect on success or show error message
-    }, 1500);
+    }
   };
 
   return (
@@ -228,6 +238,11 @@ const Login = () => {
                     {passwordError && <p className="mt-1 text-sm text-red-600">{passwordError}</p>}
                   </div>
                   
+                  {loginError && (
+                    <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-md text-sm">
+                      {loginError}
+                    </div>
+                  )}
                   <motion.button
                     type="submit"
                     className="w-full bg-black text-white py-2 rounded-md transition-colors relative overflow-hidden group"
@@ -269,7 +284,7 @@ const Login = () => {
                 </div>
                 
                 <p className="mt-8 text-center text-sm text-gray-600">
-                  Don't have an account?{' '}
+                  Don&apos;t have an account?{' '}
                   <Link href="/signup" className="font-medium text-black hover:underline transition-colors">
                     Signup
                   </Link>

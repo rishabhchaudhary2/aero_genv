@@ -1,16 +1,16 @@
 'use client';
 
-import React, { useEffect, useRef, MutableRefObject } from "react";
+import React, { useEffect, useRef,  } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Showcase: React.FC = () => {
-    const videoContainerRef = useRef<HTMLDivElement | null>(null);
-    const videoTitleRef = useRef<Array<HTMLParagraphElement | null>>([]);
-    const outroTextRef = useRef<HTMLDivElement | null>(null);
-    const leftTitleRef = useRef<HTMLDivElement | null>(null);
+    const videoContainerRef = useRef<HTMLDivElement>(null);
+    const videoTitleRef = useRef<HTMLParagraphElement[]>([]);
+    const outroTextRef = useRef<HTMLDivElement>(null);
+    const leftTitleRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (window.innerWidth < 900) return;
@@ -76,7 +76,7 @@ const Showcase: React.FC = () => {
 
             if (videoContainer) {
                 videoContainer.style.transform = `translateY(${currentTranslateY}%) translateX(${state.currentMouseX}px) scale(${scale})`;
-                (videoContainer.style as any).gap = `${gap}em`;
+                (videoContainer.style ).gap = `${gap}em`;
             }
 
             videoTitleRef.current.forEach((el) => {
@@ -236,7 +236,9 @@ const Showcase: React.FC = () => {
                         {["Aero", "(Frame - 2025)"].map((text, index) => (
                             <p
                                 key={index}
-                                ref={el => (videoTitleRef.current[index] = el)}
+                                ref={(el) => {
+                                    if (el) videoTitleRef.current[index] = el;
+                                }}
                                 className="font-medium"
                             >
                                 {text}
@@ -301,9 +303,9 @@ const Showcase: React.FC = () => {
                         </p>
 
                         <div className="text-[7vw] sm:text-[6vw] md:text-[3.5vw] uppercase font-medium tracking-tight leading-[1.2]">
-                            <p> Our motto is simple:</p>
-                            <p>'If it flies,</p>
-                            <p> we build it.'</p>
+                            <p>Our motto is simple:</p>
+                            <p>&ldquo;If it flies,</p>
+                            <p>we build it.&rdquo;</p>
                         </div>
 
                         <div className="flex flex-col md:flex-row gap-6 md:gap-10 font-mono text-[10px] sm:text-xs leading-relaxed pt-8">
@@ -311,7 +313,7 @@ const Showcase: React.FC = () => {
                               WE DESIGN AND BUILD MINIATURE AIRCRAFT USING MATERIALS LIKE BALSA WOOD, FOAM, AND CARBON FIBER. WHAT STARTED AS BUILDING SIMPLE RC AIRCRAFT HAS EVOLVED INTO TACKLING REAL ENGINEERING CHALLENGES IN DEFENSE, RENEWABLE ENERGY, AND SURVEILLANCE TECH. WE TRANSFORM IDEAS INTO FLYING MACHINES THROUGH DESIGN, CONSTRUCTION, AND RELENTLESS TESTING
                             </p>
                             <p className="md:w-1/2">
-                               GETTING SOMETHING TO ACTUALLY FLY THE WAY YOU WANT IT TO IS HARDER THAN IT LOOKS. MOST OF US HAVE CRASHED MORE PLANES THAN WE'VE SUCCESSFULLY LANDED, BUT EVERY CRASH TEACHES LESSONS THAT BRING US CLOSER TO PERFECT FLIGHT. IN THE END, HANDS-ON EXPERIENCE PROVES MORE VALUABLE THAN THEORY ALONE
+                               GETTING SOMETHING TO ACTUALLY FLY THE WAY YOU WANT IT TO IS HARDER THAN IT LOOKS. MOST OF US HAVE CRASHED MORE PLANES THAN WE&apos;VE SUCCESSFULLY LANDED, BUT EVERY CRASH TEACHES LESSONS THAT BRING US CLOSER TO PERFECT FLIGHT. IN THE END, HANDS-ON EXPERIENCE PROVES MORE VALUABLE THAN THEORY ALONE
                             </p>
                         </div>
                     </div>

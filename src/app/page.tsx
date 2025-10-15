@@ -5,7 +5,7 @@ import Nav from '../components/Nav';
 import Header from '../components/Header';
 import Showcase from '../components/Showcase';
 import BestGlasses from '../components/BestGlasses';
-import Text from '../components/Text';
+
 // import Transition from '../components/Transition';
 import Collections from '../components/Collections';
 import ContactMini from '../components/ContactMini';

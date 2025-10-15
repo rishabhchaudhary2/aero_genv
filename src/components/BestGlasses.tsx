@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
+import Image from "next/image";
 gsap.registerPlugin(ScrollTrigger);
 
 type CardType = {
@@ -12,10 +13,10 @@ type CardType = {
 };
 
 export default function BestGlasses() {
-    const stickySection = useRef<HTMLDivElement | null>(null);
-    const countContainer = useRef<HTMLDivElement | null>(null);
-    const cards = useRef<(HTMLDivElement | null)[]>([]);
-    const introRef = useRef<HTMLElement | null>(null);
+    const stickySection = useRef<HTMLDivElement>(null);
+    const countContainer = useRef<HTMLDivElement>(null);
+    const cards = useRef<HTMLDivElement[]>([]);
+    const introRef = useRef<HTMLElement>(null);
 
     // Array of objects with image src and paragraph text
     const items: CardType[] = [
@@ -214,7 +215,11 @@ export default function BestGlasses() {
                                 <div
                                     key={"empty" + idx}
                                     className="card empty w-[500px] h-[550px] opacity-0"
-                                    ref={(el) => (cards.current[idx] = el)}
+                                    ref={el => {
+                                        if (el && cards.current) {
+                                            cards.current[idx] = el;
+                                        }
+                                    }}
                                 ></div>
                             );
                         }
@@ -222,14 +227,20 @@ export default function BestGlasses() {
                             <div
                                 key={idx}
                                 className="card w-[500px] h-[550px] flex flex-col gap-4 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-                                ref={(el) => (cards.current[idx] = el)}
+                                ref={el => {
+                                    if (el && cards.current) {
+                                        cards.current[idx] = el;
+                                    }
+                                }}
                             >
                                 <div className="card-img rounded-lg overflow-hidden flex-1">
-                                    <img
+                                    <Image
                                         src={item.src}
                                         alt={`Step ${idx + 1}`}
                                         className="w-[80%] h-[80%] object-cover"
-                                        loading="eager"
+                                        width={400}
+                                        height={440}
+                                        priority
                                     />
                                 </div>
                                 <div className="card-content">

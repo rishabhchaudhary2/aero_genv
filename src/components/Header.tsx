@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import {  useState, useEffect } from 'react';
 import { motion, AnimatePresence } from "framer-motion";
 import DecoderMotion from '../components/DecoderMotion';
 
@@ -30,7 +30,7 @@ const Header: React.FC = () => {
             clearInterval(intervalTop);
             clearInterval(intervalBottom);
         };
-    }, []);
+    } );
 
     return (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
