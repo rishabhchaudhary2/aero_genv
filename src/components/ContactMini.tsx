@@ -116,11 +116,10 @@ const ContactMini: React.FC<ContactMiniProps> = ({ isHome }) => {
                     <div className="grid grid-cols-5 gap-10 text-sm">
                         {/* About */}
                         <div className="hidden md:block">
-                            <h3 className="text-gray-400 mb-2 hover-heading">ABOUT LENSKART</h3>
+                            <h3 className="text-gray-400 mb-2 hover-heading">About Aero Club</h3>
                             <p className="mb-4">
-                                Lenskart is one of the leading eyewear brands in India offering a wide range
-                                of eyeglasses, contact lenses, and sunglasses. With over 1000 stores, we blend
-                                cutting-edge technology with fashion and healthcare.
+                                Aero Club is a premier aviation community dedicated to fostering a passion for flight.
+                                We offer a range of resources, events, and networking opportunities for aviation enthusiasts.
                             </p>
                             <ul className="space-y-1 text-xs  text-white/80 flex flex-col gap-1">
                                 <li className="hover-item"><a className='border-b-1 border-white/60 pb-1' href="https://www.lenskart.com/">support@lenskart.com ↗</a> </li>
@@ -208,7 +207,7 @@ const ContactMini: React.FC<ContactMiniProps> = ({ isHome }) => {
                             className="absolute -bottom-8 md:-bottom-6 text-[0.8rem] md:text-[1.1rem] text-[#ababa1]"
                         >
                             &copy; 2025 Design and Developed by{" "}
-                            <a href="https://www.linkedin.com/in/saurabh-dwivedi-7b301a334/">Saurabh Dwivedi</a>
+                            <a href="hhttps://www.linkedin.com/in/rishabh2115/">Rishabh Chaudhary</a>
                         </h1>
                     )}
                 </div>
