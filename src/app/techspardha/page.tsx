@@ -6,8 +6,8 @@ const events = [
     {
         name: "CodeSprint",
         images: [
-            // "/galleryimages/techspardha/codesprint1.jpg",
-            // "/galleryimages/techspardha/codesprint2.jpg",
+            "/galleryimages/techspardha/codesprint1.jpg",
+            "/galleryimages/techspardha/codesprint2.jpg",
         ],
         description:
             "A fast-paced coding competition where participants solve challenging problems under time pressure. Test your algorithmic skills and compete with the best minds.",
