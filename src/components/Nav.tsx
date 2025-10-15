@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { CustomEase } from "gsap/CustomEase";
 import { LiaLongArrowAltRightSolid } from "react-icons/lia";
@@ -11,8 +11,15 @@ gsap.registerPlugin(CustomEase);
 
 const Nav: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const toggleMenu = () => setIsOpen(!isOpen);
+    const isAnimatingRef = useRef(false);
+    const animationsRef = useRef<gsap.core.Timeline[]>([]);
+    
+    const toggleMenu = () => {
+        if (isAnimatingRef.current) return;
+        setIsOpen(!isOpen);
+    };
 
+    // Initialize header text only once
     useEffect(() => {
         const header = document.querySelector(".header h1");
         if (header) {
@@ -24,16 +31,9 @@ const Nav: React.FC = () => {
                 )
                 .join("");
         }
-
-        const menu = document.querySelector(".menu");
-        const links = document.querySelectorAll(".link");
-        const socialLinks = document.querySelectorAll(".socials p");
-        const headerSpans = document.querySelectorAll(".header h1 span");
+        
+        // Setup arrow animations
         const arrowLinks = document.querySelectorAll(".social-link");
-        let isAnimating = false;
-
-        CustomEase.create("hop", "M0,0 C0.354,0 0.464,0.133 0.498,0.502 0.532,0.872 0.651,1 1,1");
-
         arrowLinks.forEach((link) => {
             const arrow = link.querySelector(".arrow");
             link.addEventListener("mouseenter", () => {
@@ -53,95 +53,113 @@ const Nav: React.FC = () => {
                 });
             });
         });
+        
+        // Cleanup function
+        return () => {
+            // Kill all animations on component unmount
+            animationsRef.current.forEach(tl => tl.kill());
+        };
+    }, []);
 
+    // Handle menu open/close animations
+    useEffect(() => {
+        const menu = document.querySelector(".menu");
+        const links = document.querySelectorAll(".link");
+        const socialLinks = document.querySelectorAll(".socials p");
+        const headerSpans = document.querySelectorAll(".header h1 span");
+        
+        if (!menu) return;
+        
+        CustomEase.create("hop", "M0,0 C0.354,0 0.464,0.133 0.498,0.502 0.532,0.872 0.651,1 1,1");
+        
+        // Kill any existing animations
+        animationsRef.current.forEach(tl => tl.kill());
+        animationsRef.current = [];
+
+        isAnimatingRef.current = true;
+        
         if (isOpen) {
-            if (isAnimating) return;
-            isAnimating = true;
-
-            gsap.to(menu, {
+            const tl = gsap.timeline({
+                onComplete: () => {
+                    isAnimatingRef.current = false;
+                }
+            });
+            
+            animationsRef.current.push(tl);
+            
+            tl.to(menu, {
                 clipPath: "polygon(0% 0%, 100% 0% , 100% 100% , 0% 100%)",
                 ease: "hop",
                 duration: 1.5,
                 pointerEvents: "all",
-                onComplete: () => isAnimating = false,
             });
 
-            gsap.to(links, {
+            tl.to(links, {
                 y: 0,
                 opacity: 1,
                 stagger: 0.1,
-                delay: 0.85,
                 duration: 1,
                 ease: "power3.out",
-            });
+            }, "-=0.65");
 
-            gsap.to(socialLinks, {
+            tl.to(socialLinks, {
                 y: 0,
                 opacity: 1,
                 stagger: 0.05,
-                delay: 0.85,
                 duration: 1,
                 ease: "power3.out",
-            });
+            }, "<");
 
-            gsap.to(".video-wrapper", {
+            tl.to(".video-wrapper", {
                 clipPath: "polygon(0% 0%, 100% 0% , 100% 100% , 0% 100%)",
                 ease: "hop",
                 duration: 1.5,
-                delay: 0.5,
-            });
+            }, "-=1.0");
 
-            gsap.to(headerSpans, {
+            tl.to(headerSpans, {
                 rotateY: 0,
                 stagger: 0.05,
-                delay: 0.75,
                 duration: 1.5,
                 ease: "power4.out",
-            });
+            }, "-=0.75");
 
-            gsap.to(headerSpans, {
+            tl.to(headerSpans, {
                 y: 0,
                 scale: 1,
                 stagger: 0.05,
-                delay: 0.5,
                 duration: 1.5,
                 ease: "power4.out",
-            });
+            }, "-=1.0");
         } else {
-            gsap.to(menu, {
+            const tl = gsap.timeline({
+                onComplete: () => {
+                    if (menu) {
+                        gsap.set(menu, { clipPath: "polygon(0% 100%, 100% 100% , 100% 100% , 0% 100%)" });
+                        gsap.set(links, { y: 30, opacity: 0 });
+                        gsap.set(socialLinks, { y: 30, opacity: 0 });
+                        gsap.set(".video-wrapper", {
+                            clipPath: "polygon(0% 100%, 100% 100% , 100% 100% , 0% 100%)",
+                        });
+                        gsap.set(headerSpans, {
+                            y: 500,
+                            rotateY: 90,
+                            scale: 0.75,
+                        });
+                    }
+                    isAnimatingRef.current = false;
+                }
+            });
+            
+            animationsRef.current.push(tl);
+            
+            tl.to(menu, {
                 clipPath: "polygon(0% 0%, 100% 0% , 100% 0% , 0% 0%)",
                 ease: "hop",
                 duration: 1.5,
                 pointerEvents: "none",
-                onComplete: () => {
-                    gsap.set(menu, { clipPath: "polygon(0% 100%, 100% 100% , 100% 100% , 0% 100%)" });
-                    gsap.set(links, { y: 30, opacity: 0 });
-                    gsap.set(socialLinks, { y: 30, opacity: 0 });
-                    gsap.set(".video-wrapper", {
-                        clipPath: "polygon(0% 100%, 100% 100% , 100% 100% , 0% 100%)",
-                    });
-                    gsap.set(headerSpans, {
-                        y: 500,
-                        rotateY: 90,
-                        scale: 0.75,
-                    });
-                },
             });
         }
     }, [isOpen]);
-
-    useEffect(() => {
-        const header = document.querySelector(".header h1");
-        if (header) {
-            const text = header.textContent || "";
-            header.innerHTML = text
-                .split("")
-                .map((char) =>
-                    char === " " ? "&nbsp;&nbsp;" : `<span>${char}</span>`
-                )
-                .join("");
-        }
-    }, []);
 
     return (
         <>
@@ -149,7 +167,7 @@ const Nav: React.FC = () => {
                 <Link href="/">AeroModelling </Link>
             </div>
 
-            <div className={`menu-toggle ${isOpen ? "opened" : "closed"}`} onClick={toggleMenu}>
+            <div className={`menu-toggle ${isOpen ? "opened" : "closed"}`} onClick={toggleMenu} style={{ zIndex: 999 }}>
                 <div className="menu-toggle-icon">
                     <div className="hamburger">
                         <div className="menu-bar" data-position="top"></div>
@@ -171,10 +189,10 @@ const Nav: React.FC = () => {
                             <Link href="/">Home</Link>
                         </div>
                         <div className="link">
-                            <Link href="/products">Drone Team </Link>
+                            <Link href="/drones">Drone Team </Link>
                         </div>
                         <div className="link">
-                            <Link href="/products">Rc Team </Link>
+                            <Link href="/rcplanes">Rc Team </Link>
                         </div>
                         <div className="link">
                             <Link href="/about">About</Link>
@@ -197,18 +215,18 @@ const Nav: React.FC = () => {
                 <div className="col col-2">
                     <div className="socials">
                         <div className="sub-col">
-                            <p>Lenskart HQ</p>
-                            <p>Gurugram</p>
-                            <p>Golf Course Rd, Sector 42</p>
-                            <p> Haryana India</p>
+                            <p>AeroModelling Club</p>
+                            <p>NIT Kurukshetra</p>
+                            <p>University Campus</p>
+                            <p>Haryana, India</p>
                             <br />
-                            <p>contact@lenskart.com</p>
-                            <p>job@lenskart.com</p>
+                            <p>aeroclub@nitkkr.ac.in</p>
+                            <p>join@aeroclub.nitkkr.ac.in</p>
                         </div>
                         <div className="sub-col">
                             <p>
                                 <a
-                                    href="https://www.instagram.com/lenskart/"
+                                    href="https://www.instagram.com/aero_modelling_club_nitkkr/"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="social-link"
@@ -219,7 +237,7 @@ const Nav: React.FC = () => {
                             </p>
                             <p>
                                 <a
-                                    href="https://www.linkedin.com/company/lenskart-com/"
+                                    href="https://www.linkedin.com/company/aero-modelling-club-nitkkr/"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="social-link"
@@ -230,18 +248,18 @@ const Nav: React.FC = () => {
                             </p>
                             <p>
                                 <a
-                                    href="https://x.com/lenskartME"
+                                    href="https://github.com/aeroclub-nitkkr"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="social-link"
                                 >
-                                    X <span className="arrow"><LiaLongArrowAltRightSolid /></span>
+                                    GitHub <span className="arrow"><LiaLongArrowAltRightSolid /></span>
                                     <span className="underline"></span>
                                 </a>
                             </p>
                             <p>
                                 <a
-                                    href="https://www.facebook.com/Lenskartindia"
+                                    href="https://www.facebook.com/aeroclub.nitkkr"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="social-link"
@@ -251,11 +269,11 @@ const Nav: React.FC = () => {
                                 </a>
                             </p>
                             <br />
-                            <p>99 99 8 99 99 8</p>
+                            <p>+91 9876543210</p>
                         </div>
                     </div>
                     <div className="header">
-                        <h1>Lenskart</h1>
+                        <h1>AeroClub</h1>
                     </div>
                 </div>
             </div>
