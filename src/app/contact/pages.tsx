@@ -1,6 +1,6 @@
-import ContactMini from '../components/ContactMini.tsx';
-import Nav from '../components/Nav';
-import Transition from '../components/Transition';
+import ContactMini from '../../components/ContactMini';
+import Nav from '../../components/Nav';
+
 
 const Contact = () => {
 
@@ -13,4 +13,4 @@ const Contact = () => {
     );
 };
 
-export default Transition(Contact);
+export default Contact;

@@ -174,7 +174,7 @@ const ContactMini: React.FC<ContactMiniProps> = ({ isHome }) => {
                         {/* Careers */}
                         <div>
                             <h3 className="text-gray-400 mb-2 hover-heading">CAREERS</h3>
-                            <p className="text-xs hover-item">Join our team – we're hiring across tech, retail, and design. Visit our careers page.</p>
+                            <p className="text-xs hover-item">Join our team – we&apos;re hiring across tech, retail, and design. Visit our careers page.</p>
                         </div>
                     </div>
                 </div>

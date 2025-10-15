@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Nav from '../../components/Nav';
 import { motion } from 'framer-motion';
-import ContactMini from '../../components/ContactMini';
+
 import Image from 'next/image';
 
 const RCPlanesPage = () => {
@@ -270,7 +270,7 @@ const RCPlanesPage = () => {
               transition={{ duration: 0.8, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-xl font-bold mb-6 tracking-wider">Flyer's Checklist</h3>
+              <h3 className="text-xl font-bold mb-6 tracking-wider">Flyer&apos; Checklist</h3>
               <ul className="space-y-3">
                 {[
                   "Double Tape, Cello Tape, Cutter", 
