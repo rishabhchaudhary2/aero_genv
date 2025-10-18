@@ -288,13 +288,13 @@ const Spotlight: React.FC = () => {
                         className="spotlight-intro-text flex-1 relative will-change-transform flex justify-end"
                         ref={(el) => setIntroTextRef(el, 0)}
                     >
-                        <p className="text-[1.5rem] font-medium leading-none">Lenskart</p>
+                        <p className="text-[1.5rem] font-medium leading-none">Rc planes </p>
                     </div>
                     <div
                         className="spotlight-intro-text flex-1 relative will-change-transform"
                         ref={(el) => setIntroTextRef(el, 1)}
                     >
-                        <p className="text-[1.5rem] font-medium leading-none">Collections</p>
+                        <p className="text-[1.5rem] font-medium leading-none">Drones </p>
                     </div>
                 </div>
 

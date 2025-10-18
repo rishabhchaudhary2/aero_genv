@@ -77,8 +77,8 @@ export default function BestGlasses() {
             const radius = getRadius();
             const arcAngle = getArcAngle();
             const startAngle = Math.PI / 2 - arcAngle / 2;
-            const totalTravel = 1 + totalCards / 7.5;
-            const adjustedProgress = (progress * totalTravel - 1) * 0.75;
+            const totalTravel = 1 + totalCards / 6.1;  // Further reduced divisor to delay card appearance
+            const adjustedProgress = (progress * totalTravel - 1) * 0.70;  // Fine-tuned multiplier
 
             cards.current.forEach((card, i) => {
                 if (!card) return;
@@ -100,6 +100,13 @@ export default function BestGlasses() {
         }
 
         positionCards(0);
+        
+        // Set initial counter position
+        if (countContainer.current) {
+            gsap.set(countContainer.current, {
+                y: 150 // Initial position to hide "01"
+            });
+        }
 
         const scrollTriggerInstance = ScrollTrigger.create({
             trigger: stickySection.current,
@@ -110,7 +117,9 @@ export default function BestGlasses() {
             scrub: 0.3,
             onUpdate: (self) => {
                 positionCards(self.progress);
-                let index = Math.floor(self.progress * totalCards);
+                // Adjust the progress calculation to match card positions
+                const adjustedProgressForIndex = Math.max(0, (self.progress * 1.3));  // Removed offset and reduced multiplier
+                let index = Math.floor(adjustedProgressForIndex * totalCards);
                 if (index >= totalCards) index = totalCards - 1;
                 const targetY = 150 - index * 150;
                 gsap.to(countContainer.current, {
@@ -166,7 +175,8 @@ export default function BestGlasses() {
     return (
         <div className="relative bg-[#e5e5dd] text-[#111] w-screen min-h-[900vh]">
             {/* Intro */}
-            <Link href="/products">
+            <h1> hero section is click able  can do something </h1>
+            <Link href="/about">
                 <section
                     ref={introRef}
                     className="h-screen w-screen bg-center bg-no-repeat bg-cover cursor-pointer"
@@ -189,7 +199,7 @@ export default function BestGlasses() {
                             className="relative flex flex-col will-change-transform"
                             style={{
                                 transformOrigin: "center",
-                                transform: "translateX(120px)",
+                                transform: "translate(120px, 150px)", // Move it down by 150px to hide "01"
                             }}
                         >
                             {[1, 2, 3, 4, 5].map((num) => (
