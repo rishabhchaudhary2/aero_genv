@@ -1,4 +1,4 @@
-import ContactMini from '../../components/ContactMini';
+import ContactMini from '../../components/Footer';
 import Nav from '../../components/Nav';
 
 

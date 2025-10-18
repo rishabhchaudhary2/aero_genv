@@ -8,8 +8,7 @@ import BestGlasses from '../components/BestGlasses';
 
 // import Transition from '../components/Transition';
 import Collections from '../components/Collections';
-import ContactMini from '../components/ContactMini';
-
+import Footer from '../components/Footer'
 const Home = () => {
     return (
         <>
@@ -41,7 +40,7 @@ const Home = () => {
             <BestGlasses />
             {/* <Text /> */}
             <Collections />
-            <ContactMini isHome={true} />
+            <Footer isHome={true} />
         </>
     );
 };
