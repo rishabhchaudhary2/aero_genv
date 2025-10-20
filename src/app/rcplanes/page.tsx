@@ -85,29 +85,17 @@ const RCPlanesPage = () => {
     };
   }, []);
 
-  // Handle project section wheel events
-  useEffect(() => {
-    const projectContainer = document.querySelector('.project-scroll');
-    if (!projectContainer) return;
-
-    const handleProjectWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      const container = e.currentTarget as HTMLElement;
-      const scrollAmount = e.deltaY;
-      
-      // Smooth scroll animation
-      container.scrollBy({
-        left: scrollAmount,
-        behavior: 'smooth'
-      });
-    };
-
-    projectContainer.addEventListener('wheel', handleProjectWheel, { passive: false });
-
-    return () => {
-      projectContainer.removeEventListener('wheel', handleProjectWheel);
-    };
-  }, []);
+  const handleProjectWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const container = e.currentTarget;
+    const scrollAmount = e.deltaY;
+    
+    // Smooth scroll animation
+    container.scrollBy({
+      left: scrollAmount,
+      behavior: 'smooth'
+    });
+  };
   
   const goToSection = (index: number) => {
     const container = scrollContainerRef.current;
@@ -479,6 +467,7 @@ const RCPlanesPage = () => {
             
             <div 
               className="h-[calc(100vh-200px)] overflow-x-auto custom-scrollbar project-scroll"
+              onWheel={handleProjectWheel}
             >
               <div className="flex space-x-6 md:space-x-8 pb-8 px-4 min-w-max">
                 {planeProjects.map((project, index) => (
