@@ -5,9 +5,15 @@ export interface DroneProject {
   rotation: string;
 }
 
-export interface FAQ {
-  question: string;
-  answer: string;
+export interface TeamMember {
+  name: string;
+  role: string;
+  email: string;
+  rollNo: string;
+  batch: string;
+  branch: string;
+  image: string;
+  linkedin: string;
 }
 
 export const SECTION_DURATION = 6000;
@@ -35,25 +41,45 @@ export const droneProjects: DroneProject[] = [
   }
 ];
 
-export const faqs: FAQ[] = [
+export const teamMembers: TeamMember[] = [
   {
-    question: "What types of drones are there?",
-    answer: "There are several types including quadcopters, hexacopters, fixed-wing drones, and hybrid VTOL models. Each has unique advantages depending on your application needs."
+    name: "John Smith",
+    role: "Drone Team Lead",
+    email: "john.smith@example.com",
+    rollNo: "20B0101",
+    batch: "2020-24",
+    branch: "Aerospace Engineering",
+    image: "/team/john-smith.jpg",
+    linkedin: "https://linkedin.com/in/john-smith"
   },
   {
-    question: "What are the legal requirements for flying drones?",
-    answer: "Requirements typically include registration, maintaining line-of-sight, avoiding no-fly zones, and possibly obtaining a license depending on your location and purpose (recreational vs. commercial)."
+    name: "Sarah Johnson",
+    role: "Design Engineer",
+    email: "sarah.johnson@example.com",
+    rollNo: "21B0202",
+    batch: "2021-25",
+    branch: "Mechanical Engineering",
+    image: "/team/sarah-johnson.jpg",
+    linkedin: "https://linkedin.com/in/sarah-johnson"
   },
   {
-    question: "How long can drones fly on a single charge?",
-    answer: "Flight time varies significantly by model, from 5-10 minutes for mini drones to 20-30 minutes for consumer models, and up to 40+ minutes for professional-grade drones."
+    name: "Mike Chen",
+    role: "Electronics Lead",
+    email: "mike.chen@example.com",
+    rollNo: "20B0303",
+    batch: "2020-24",
+    branch: "Electronics Engineering",
+    image: "/team/mike-chen.jpg",
+    linkedin: "https://linkedin.com/in/mike-chen"
   },
   {
-    question: "What features should I look for when buying a drone?",
-    answer: "Consider camera quality, flight time, range, GPS capabilities, obstacle avoidance, flight modes, size/portability, and whether it has a &apos;return to home&apos; feature."
-  },
-  {
-    question: "How do I maintain my drone?",
-    answer: "Regular maintenance includes checking propellers for damage, cleaning motors and sensors, battery care, firmware updates, and calibration before flights."
+    name: "Priya Patel",
+    role: "Software Engineer",
+    email: "priya.patel@example.com",
+    rollNo: "22B0404",
+    batch: "2022-26",
+    branch: "Computer Science",
+    image: "/team/priya-patel.jpg",
+    linkedin: "https://linkedin.com/in/priya-patel"
   }
 ];

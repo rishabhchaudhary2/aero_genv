@@ -4,10 +4,20 @@ import { useState, useRef, useEffect } from 'react';
 import Nav from '../../components/Nav';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { droneProjects, faqs, SECTION_DURATION, RESUME_TIMEOUT, SECTIONS_COUNT } from './data';
+
+interface TeamMember {
+  name: string;
+  role: string;
+  email: string;
+  rollNo: string;
+  batch: string;
+  branch: string;
+  image: string;
+  linkedin: string;
+}
+import { droneProjects, teamMembers, SECTION_DURATION, RESUME_TIMEOUT, SECTIONS_COUNT } from './data';
 
 const DronePage = () => {
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState<number>(0);
   const [isPaused, setIsPaused] = useState<boolean>(false);
@@ -99,9 +109,31 @@ const DronePage = () => {
     }
   };
 
-  const toggleFaq = (index: number) => {
-    setOpenFaq(openFaq === index ? null : index);
-  };
+  // Project section wheel events
+  useEffect(() => {
+    const projectContainer = document.querySelector('.project-scroll');
+    if (!projectContainer) return;
+
+    const handleProjectWheel = (e: Event) => {
+      if (e instanceof WheelEvent) {
+        e.preventDefault();
+        const container = e.currentTarget as HTMLElement;
+        const scrollAmount = e.deltaY;
+        
+        // Smooth scroll animation
+        container.scrollBy({
+          left: scrollAmount,
+          behavior: 'smooth'
+        });
+      }
+    };
+
+    projectContainer.addEventListener('wheel', handleProjectWheel as EventListener, { passive: false });
+
+    return () => {
+      projectContainer.removeEventListener('wheel', handleProjectWheel as EventListener);
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#e5e5dd] text-black overflow-hidden">
@@ -192,56 +224,77 @@ const DronePage = () => {
         </section>
         
         {/* Introduction Section - 02 */}
-        <section className="min-w-full h-screen flex items-center snap-start relative px-12 md:px-20">
-          <div className="absolute top-12 left-12 text-[8rem] font-bold opacity-10">02</div>
-          <div className="flex flex-col md:flex-row gap-12 items-start max-w-6xl">
-            <motion.div 
-              className="md:w-2/3"
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-3xl md:text-5xl font-bold uppercase mb-8 tracking-wider">Unmanned Aerial Vehicles</h2>
-              <p className="text-lg mb-6 font-light">
-                Drones, or Unmanned Aerial Vehicles (UAVs), are aircraft that can be navigated without a human pilot onboard. 
-                They can be remotely controlled or fly autonomously through software-controlled flight plans.
-              </p>
-              <p className="text-lg mb-6 font-light">
-                The AeroModelling Club provides a platform for students to explore drone technology 
-                through design, building, and flying. Our members gain practical engineering experience while working on 
-                cutting-edge aerial technology projects.
-              </p>
-            </motion.div>
-            
-            <motion.div 
-              className="md:w-1/3 border border-black p-8"
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
-              <h3 className="text-xl font-bold mb-6 tracking-wider">Drone Pilot&apos;s Checklist</h3>
-              <ul className="space-y-3">
-                {["Double tape, cello tape", "ESCs, battery", "Screw driver, L-keys", 
-                  "Motor, motor screw box", "Propellers", 
-                  "Transmitter, receiver"].map((item, index) => (
-                  <li key={index} className="flex items-start">
-                    <span className="mr-2 font-bold">—</span>
-                    <span className="font-light">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          </div>
-        </section>
-        
+       <section className="min-w-full min-h-screen flex md:items-center snap-start relative px-6 sm:px-12 md:px-20 pt-32 pb-24 md:pt-24 md:pb-20  ">
+  
+  {/* Decorative "02" - Pushed down and placed BEHIND content */}
+  <div className="absolute top-32 left-6 sm:left-12 md:left-20 text-[5rem] md:text-[7rem] font-bold opacity-50 z-20">02</div>
+  
+  {/* Content Wrapper - Placed ON TOP of "02" */}
+  <div className="relative flex flex-col md:flex-row gap-8 md:gap-12 items-start max-w-6xl z-30">
+    
+    {/* Left Column: Text Content */}
+    <motion.div 
+      className="md:w-2/3 w-full"
+      initial={{ opacity: 0, x: -30 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.8 }}
+      viewport={{ once: true }}
+    >
+      <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold uppercase mb-8 tracking-wider">Radio Controlled Aircrafts</h3>
+      <p className="text-base sm:text-lg mb-6">
+        RC planes are popular nowadays in the field of aviation. These model aircrafts, piloted from the ground by exceptionally 
+        trained operators, offer a fine amalgam of engineering science, aerodynamics principles, and precision controls.
+      </p>
+      <p className="text-base sm:text-lg mb-6">
+        The Aeromodelling club at NIT Kurukshetra gives us a chance to design, construct, and fly aeromodels, discussing detailed 
+        information and methods of designing, analysis, and manufacturing of RC planes.
+      </p>
+    </motion.div>
+    
+    {/* Right Column: Checklist - Changed border to be visible on dark bg */}
+    <motion.div 
+      className="md:w-1/3 w-full border border-gray-600 p-6 md:p-8"
+      initial={{ opacity: 0, x: 30 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.8, delay: 0.2 }}
+      viewport={{ once: true }}
+    >
+      <h3 className="text-xl font-bold mb-6 tracking-wider">Flyer&apos;s Checklist</h3>
+      <ul className="space-y-3">
+        {[
+          "Double Tape, Cello Tape, Cutter", 
+          "ESCs, Battery", 
+          "Screw Driver",
+          "Styrofoam, Balsa Wood", 
+          "Motor, Motor Screw Box", 
+          "Rubber Band, Propellers", 
+          "Transmitter, Receiver"
+        ].map((item, index) => (
+          <li key={index} className="flex items-start">
+            <span className="mr-2 font-bold">—</span>
+            <span className="font-light">{item}</span>
+          </li>
+        ))}
+      </ul>
+    </motion.div>
+  </div>
+  
+  {/* Background Image Overlay - Placed behind everything, above bg color */}
+  {/* <div className="absolute inset-0 w-full h-full opacity-30 z-10 overflow-hidden">
+    <Image
+      src="/planeimages/rc_bg.jpg"
+      alt="RC Plane in flight"
+      fill
+      style={{ objectFit: 'cover' }}
+    />
+  </div> */}
+</section>
         {/* Projects Section - 03 */}
-        <section className="min-w-full h-screen flex items-center snap-start relative px-12 md:px-20">
+        <section className="min-w-full h-screen flex flex-col snap-start relative px-4 sm:px-8 md:px-12 lg:px-20">
           <div className="absolute top-12 left-12 text-[8rem] font-bold opacity-10">03</div>
-          <div className="w-full max-w-6xl">
+          <div className="w-full max-w-6xl mx-auto pt-20 md:pt-24">
             <motion.h2 
-              className="text-3xl md:text-5xl font-bold uppercase mb-12 tracking-wider"
+              className="text-3xl md:text-5xl font-bold uppercase mb-8 tracking-wider"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
@@ -250,101 +303,107 @@ const DronePage = () => {
               Latest Projects
             </motion.h2>
             
-            <div className="relative h-[500px]">
-              {droneProjects.map((project, index) => (
-                <motion.div 
-                  key={index}
-                  className={`absolute ${project.rotation} shadow-lg`}
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.8, delay: index * 0.2 }}
-                  viewport={{ once: true }}
-                  whileHover={{ scale: 1.03, zIndex: 10 }}
-                  style={{
-                    left: `${index * 15 + 5}%`, 
-                    top: `${index % 2 === 0 ? 10 : 20}%`,
-                    zIndex: index
-                  }}
-                >
-                  <div className="w-[350px] h-[250px] relative overflow-hidden">
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      fill
-                      style={{ objectFit: 'cover' }}
-                    />
-                  </div>
-                  <div className="bg-[#e5e5dd] p-6 border-t border-black">
-                    <h3 className="text-xl font-bold mb-2 tracking-wide">{project.title}</h3>
-                    <p className="text-sm font-light">{project.description}</p>
-                  </div>
-                </motion.div>
-              ))}
+            <div 
+              className="h-[calc(100vh-200px)] overflow-x-auto custom-scrollbar project-scroll"
+            >
+              <div className="flex space-x-6 md:space-x-8 pb-8 px-4 min-w-max">
+                {droneProjects.map((project, index) => (
+                  <motion.div 
+                    key={index}
+                    className="w-[300px] md:w-[400px] flex-shrink-0 bg-white/5 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden"
+                    initial={{ opacity: 0, x: 50 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.8, delay: index * 0.2 }}
+                    viewport={{ once: true }}
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <div className="h-[200px] md:h-[250px] relative">
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 300px, 400px"
+                      />
+                    </div>
+                    <div className="p-6 bg-[#e5e5dd]">
+                      <h3 className="text-xl md:text-2xl font-bold mb-3 tracking-wide">{project.title}</h3>
+                      <p className="text-sm md:text-base font-light leading-relaxed">{project.description}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
         
-        {/* FAQs Section - 04 */}
-        <section className="min-w-full h-screen flex items-center snap-start relative px-12 md:px-20">
-          <div className="absolute top-12 left-12 text-[8rem] font-bold opacity-10">04</div>
-          <div className="w-full max-w-4xl mx-auto">
+        {/* Team Section - 04 */}
+        <section className="min-w-full h-screen flex flex-col snap-start relative px-4 sm:px-8 md:px-12 lg:px-20">
+          <div className="absolute top-10 md:top-20 left-6 bottom-5 md:left-12 text-[4rem] md:text-[8rem] font-bold opacity-10"></div>
+          <div className="w-full max-w-[1400px] mx-auto h-full pt-20 md:pt-24">
             <motion.h2 
-              className="text-3xl md:text-5xl font-bold uppercase mb-12 tracking-wider"
+              className="text-2xl sm:text-3xl md:text-5xl font-bold uppercase mb-8 tracking-wider"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              FAQ
+              Our Team
             </motion.h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {faqs.slice(0, 4).map((faq, index) => (
+            <div 
+              className="h-[calc(100vh-200px)] overflow-y-auto pr-2 md:pr-4 custom-scrollbar"
+              onWheel={(e) => {
+                e.currentTarget.scrollTop += e.deltaY;
+              }}
+            >
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
+              {teamMembers.map((member: TeamMember, index: number) => (
                 <motion.div 
                   key={index}
-                  className="border-t border-black pt-4"
+                  className="relative group mx-auto w-full max-w-sm"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   viewport={{ once: true }}
                 >
-                  <button
-                    className="w-full text-left flex justify-between items-center mb-2"
-                    onClick={() => toggleFaq(index)}
-                  >
-                    <span className="font-bold text-lg tracking-wide">{faq.question}</span>
-                    <span className="text-2xl">{openFaq === index ? '−' : '+'}</span>
-                  </button>
-                  
-                  <motion.div 
-                    className="overflow-hidden"
-                    initial={{ height: 0 }}
-                    animate={{ height: openFaq === index ? 'auto' : 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <div className="pb-4 font-light">
-                      {faq.answer}
+                  <div className="relative w-full aspect-[3/4] overflow-hidden rounded-lg bg-gray-900 shadow-lg">
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                    />
+                    {/* Overlay */}
+                    <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 sm:group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4 sm:p-6">
+                      <div className="flex justify-end space-x-3 sm:space-x-4">
+                        <a href={`mailto:${member.email}`} className="text-white hover:text-gray-200">
+                          <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                          </svg>
+                        </a>
+                        <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="text-white hover:text-gray-200">
+                          <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                          </svg>
+                        </a>
+                      </div>
+                      <div className="text-white">
+                        <p className="text-sm sm:text-base font-medium">{member.rollNo} | {member.batch}</p>
+                        <p className="text-xs sm:text-sm">{member.branch}</p>
+                      </div>
                     </div>
-                  </motion.div>
+                  </div>
+                  {/* Name and Role - Always visible */}
+                  <div className="mt-3 sm:mt-4">
+                    <h3 className="text-base sm:text-lg font-bold tracking-wide">{member.name}</h3>
+                    <p className="text-xs sm:text-sm text-gray-600">{member.role}</p>
+                  </div>
                 </motion.div>
               ))}
+              </div>
             </div>
-            
-            {/* Contact/Join Section */}
-            <motion.div
-              className="mt-20 border-t border-black pt-8"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              <p className="text-xl font-light mb-6">
-                Interested in drones? Join our club to learn, build, and fly together.
-              </p>
-              <button className="border border-black px-10 py-3 text-lg font-bold tracking-wider hover:bg-black hover:text-[#e5e5dd] transition-colors">
-                Contact Us
-              </button>
-            </motion.div>
           </div>
         </section>
       </div>
@@ -353,6 +412,20 @@ const DronePage = () => {
       <style jsx global>{`
         .hide-scrollbar::-webkit-scrollbar {
           display: none;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: rgba(0, 0, 0, 0.1);
+          border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(0, 0, 0, 0.2);
+          border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(0, 0, 0, 0.3);
         }
         body {
           overflow: hidden;
