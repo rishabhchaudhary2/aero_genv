@@ -5,6 +5,7 @@ import { LiaLongArrowAltRightSolid } from "react-icons/lia";
 import Link from "next/link";
 import "./Navbar.css";
 
+
 const Nav: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
@@ -160,7 +161,7 @@ const Nav: React.FC = () => {
             `}</style>
 
             <div className="logo">
-                <Link href="/">AeroModelling</Link>
+                <Link href="/"><img src="/aerologo.png" alt="AeroModelling Logo" height={120} width={120} /></Link>
             </div>
 
             <div 
@@ -180,31 +181,38 @@ const Nav: React.FC = () => {
             </div>
 
             <div className={`menu ${isOpen ? 'open' : ''}`} ref={menuRef}>
-                <div className="col col-1">
+                <div className="col col-2">
                     <div className="menu-logo">
-                        <Link href="/">AeroModelling</Link>
+                        <Link href="/"><img src="/aerologo.png" alt="AeroModelling Logo" height={120} width={120} /></Link>
                     </div>
-                    <div className="links">
+                    <div className="links flex gap-10">
+                        <div className="">
                         <div className="link">
                             <Link href="/">Home</Link>
                         </div>
                         <div className="link">
-                            <Link href="/drones">Drone Team</Link>
+                            <Link href="/drones">Drone </Link>
                         </div>
                         <div className="link">
-                            <Link href="/rcplanes">Rc Team</Link>
-                        </div>
-                        <div className="link">
-                            <Link href="/about">About</Link>
+                            <Link href="/rcplanes">Rc Planes</Link>
                         </div>
                         <div className="link">
                             <Link href="/techspardha">Techspardha</Link>
+                        </div>
+                        </div>
+                        <div>
+                        <div className="link">
+                            <Link href="/techspardha">WorkShops</Link>
+                        </div>
+                        <div className="link">
+                            <Link href="/techspardha">External Events</Link>
                         </div>
                         <div className="link">
                             <Link href="/gallery">Gallery</Link>
                         </div>
                         <div className="link">
                             <Link href="/login">Login</Link>
+                        </div>
                         </div>
                     </div>
                     <div className="video-wrapper">
@@ -247,7 +255,7 @@ const Nav: React.FC = () => {
                                 </a>
                             </p>
                             <p>
-                                <a
+                                {/* <a
                                     href="https://github.com/aeroclub-nitkkr"
                                     target="_blank"
                                     rel="noopener noreferrer"
@@ -255,7 +263,7 @@ const Nav: React.FC = () => {
                                 >
                                     GitHub <span className="arrow"><LiaLongArrowAltRightSolid /></span>
                                     <span className="underline"></span>
-                                </a>
+                                </a> */}
                             </p>
                             <p>
                                 <a
@@ -269,7 +277,7 @@ const Nav: React.FC = () => {
                                 </a>
                             </p>
                             <br />
-                            <p>+91 9876543210</p>
+                            <p>+91 98127 63151</p>
                         </div>
                     </div>
                     <div className="header">
