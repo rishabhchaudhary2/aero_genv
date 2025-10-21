@@ -10,42 +10,45 @@ const events = [
         images: [
             "/galleryimages/techspardha/dronewebfiesta1.jpg",
             "/galleryimages/techspardha/dronewebfiesta2.jpg",
+            "/galleryimages/techspardha/dronewebfiesta3.jpg",
         ],
         description:
-            "An exciting competition focused on designing, building, and showcasing drone prototypes. Participants demonstrate their drones' stable flight capabilities and tackle various performance challenges to prove their engineering prowess.",
+            "Teams design, assemble, and fly drones through challenging tasks and obstacle courses. The event offers hands-on learning in drone mechanics, control, and teamwork, blending creativity with aerial performance.",
     },
     {
         name: "High Sky",
         images: [
             "/galleryimages/techspardha/highsky1.jpg",
             "/galleryimages/techspardha/highsky2.jpg",
+            "/galleryimages/techspardha/highsky3.jpg",
         ],
         description:
-            "A thrilling aerial event spotlighting RC (radio-controlled) planes with perfect mid-air maneuvers and precision control. Watch skilled pilots showcase their abilities as they navigate through challenging flight patterns and aerial stunts.",
+            "Teams of four design, build, and fly RC aircraft with strong gliding ability. Participants learn flight basics, aerodynamics, and RC controls like transmitters and servo motors. The goal — craft a stable plane that flies smoothly and performs precise maneuvers.",
     },
     {
         name: "Drone Racing League",
         images: [
             "/galleryimages/techspardha/droneracing1.jpg",
             "/galleryimages/techspardha/droneracing2.jpg",
+            "/galleryimages/techspardha/droneracing3.jpg",
         ],
         description:
-            "Experience high-octane competitive drone racing emphasizing speed, agility, and obstacle navigation. Pilots push their drones to the limit as they race through complex courses, testing reflexes and flying skills in an adrenaline-pumping competition.",
+            "A fast-paced drone race where participants fly mini drones through thrilling tracks. Success depends on speed, control, and tuning for stability — a perfect test of reflexes, design, and flying skill.",
     },
     {
         name: "SimSky",
         images: [
             "/galleryimages/techspardha/simsky1.jpg",
             "/galleryimages/techspardha/simsky2.jpg",
+            "/galleryimages/techspardha/simsky3.jpg",
         ],
         description:
-            "Enter the world of virtual drone-racing simulation for strategic and precision-based competitions. Perfect your flying techniques in a digital environment where strategy, timing, and control determine victory without the constraints of physical flight.",
+            "A virtual drone race using real transmitters connected to simulators. Participants fly drones in Acro mode, competing for the fastest lap times on virtual tracks. It’s a realistic blend of gaming and aeromodelling — no drone required.",
     },
 ];
 
 const Techspardha = () => {
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-    const [hoveredCard, setHoveredCard] = useState<number | null>(null);
     const [scrollY, setScrollY] = useState(0);
     const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
     const containerRef = useRef<HTMLDivElement>(null);
@@ -108,18 +111,7 @@ const Techspardha = () => {
                     }}
                 ></div>
                 
-                {/* Grid pattern overlay */}
-                <div 
-                    className="absolute inset-0 opacity-[0.03]"
-                    style={{
-                        backgroundImage: `
-                            linear-gradient(to right, #222 1px, transparent 1px),
-                            linear-gradient(to bottom, #222 1px, transparent 1px)
-                        `,
-                        backgroundSize: '60px 60px',
-                        transform: `translateY(${scrollY * 0.5}px)`
-                    }}
-                ></div>
+
                 
                 {/* Floating geometric shapes */}
                 <div 
@@ -189,102 +181,159 @@ const Techspardha = () => {
             `}</style>
             
             <Nav />
-            <div className="flex flex-col items-center justify-center w-full pt-24 pb-12 relative z-10">
+            <div className="flex flex-col items-center justify-center w-full pt-32 md:pt-40 pb-12 relative z-10">
                 {/* Elegant Title */}
-                <div className="mb-12 relative">
-                    <h1 className="text-6xl md:text-8xl font-bold tracking-tight text-center font-final relative">
+                <div className="mb-12 md:mb-16 relative px-4">
+                    <h1 className="text-6xl md:text-8xl font-bold tracking-tight text-center font-final relative leading-tight mb-4 md:mb-0">
                         <span className="inline-block">Techspardha</span>
-                        <span className="block text-3xl md:text-4xl mt-4 text-[#222] font-normal">
-                            2025
-                        </span>
+                        
                     </h1>
                 </div>
 
                 {/* Subtitle */}
-                <p className="max-w-3xl text-center text-lg md:text-xl mb-16 font-santoshi text-[#444] px-4">
+                <p className="max-w-3xl text-center text-xl md:text-2xl font-medium mb-10 md:mb-12 font-santoshi text-[#333] px-6 leading-relaxed">
                     Experience the ultimate drone and aeromodelling competition
                 </p>
+
+                {/* About Techspardha */}
+                <div className="max-w-4xl text-center mb-20 px-6">
+                    <p className="text-lg md:text-xl font-normal font-santoshi leading-loose text-[#444] tracking-wide">
+                        Techspardha is NIT Kurukshetra&apos;s national-level techno-managerial fest, celebrating innovation, technology, and engineering excellence. It brings together some of the brightest minds from across the country to showcase their creativity, technical skills, and problem-solving abilities through a wide range of competitions, workshops, and exhibitions.
+                    </p>
+                </div>
+
+                {/* Theme Launch Section - images left, heading right */}
+                <div className="w-full max-w-7xl mb-24 px-4">
+                    <div className="bg-white/40 backdrop-blur-sm rounded-3xl p-6 md:p-10 border border-white/60 shadow-xl">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                            {/* Images - left column */}
+                            <div className="order-1 lg:order-1">
+                                <div className="grid grid-cols-1 gap-4">
+                                    <div className="relative h-[260px] md:h-[300px] overflow-hidden rounded-2xl shadow-lg group">
+                                        <Image
+                                            src="/galleryimages/techspardha/theme-launch-1.jpg"
+                                            alt="Theme Launch Main"
+                                            fill
+                                            className="object-cover group-hover:scale-105 transition-transform duration-700"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    </div>
+
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className="relative h-[140px] overflow-hidden rounded-2xl shadow-lg group">
+                                            <Image
+                                                src="/galleryimages/techspardha/theme-launch-2.jpg"
+                                                alt="Theme Launch Crowd"
+                                                fill
+                                                className="object-cover group-hover:scale-105 transition-transform duration-700"
+                                            />
+                                        </div>
+                                        <div className="relative h-[140px] overflow-hidden rounded-2xl shadow-lg group">
+                                            <Image
+                                                src="/galleryimages/techspardha/theme-launch-3.jpg"
+                                                alt="Theme Launch Stage"
+                                                fill
+                                                className="object-cover group-hover:scale-105 transition-transform duration-700"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Heading & Description - right column */}
+                            <div className="order-2 lg:order-2 text-center lg:text-right">
+                                <div className="inline-block mb-4 px-4 py-1 bg-[#111] text-white rounded-full">
+                                    <span className="text-xs md:text-sm font-santoshi font-semibold tracking-wider">
+                                        HIGHLIGHT EVENT
+                                    </span>
+                                </div>
+                                <h2 className="text-4xl md:text-5xl font-bold font-final uppercase tracking-wide text-[#111] mb-6">
+                                    Theme Launch
+                                </h2>
+                                <p className="text-lg md:text-xl font-santoshi leading-relaxed text-[#111] max-w-2xl mx-auto lg:mx-0">
+                                    The Theme Launch event marks the grand opening of Techspardha, where we unveil the central theme that will inspire all competitions and activities throughout the festival. This spectacular event brings together students, faculty, and aviation enthusiasts to kick off an unforgettable journey.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Events Section Header */}
+                <div className="w-full max-w-7xl mb-12 px-4 text-center">
+
+                    <h2 className="text-5xl md:text-6xl font-bold font-final uppercase tracking-wide mb-6 text-[#111]">
+                        Events
+                    </h2>
+                    <p className="text-lg md:text-xl font-santoshi text-[#555] max-w-3xl mx-auto leading-relaxed">
+                        Compete in cutting-edge drone and aeromodelling competitions that test your skills, creativity, and technical expertise
+                    </p>
+                    <div className="mt-8 w-24 h-1 bg-gradient-to-r from-transparent via-[#222] to-transparent mx-auto"></div>
+                </div>
+
                 {/* Events - Clean Modern Design */}
                 <div className="w-full max-w-7xl px-4 mb-16">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="flex flex-col gap-8">
                     {events.map((event, index) => {
-                        const isHovered = hoveredCard === index;
-                        const accentColors = ['#8B5CF6', '#3B82F6', '#F59E0B', '#10B981'];
+                        const isEven = index % 2 === 0;
                         
                         return (
                             <div
                                 key={event.name}
-                                onMouseEnter={() => setHoveredCard(index)}
-                                onMouseLeave={() => setHoveredCard(null)}
                                 className="group relative"
                             >
-                                <div className="relative bg-white rounded-3xl shadow-lg hover:shadow-2xl overflow-hidden transition-all duration-500 hover:-translate-y-2">
-                                    {/* Clean number badge */}
-                                    <div 
-                                        className="absolute top-4 left-4 z-20 w-12 h-12 bg-[#222] text-white rounded-full flex items-center justify-center font-bold text-xl font-final shadow-lg transition-all duration-300"
-                                        style={{
-                                            backgroundColor: isHovered ? accentColors[index] : '#222'
-                                        }}
-                                    >
-                                        {index + 1}
-                                    </div>
-                                    
-                                    {/* Main image with subtle effects */}
-                                    <div className="relative h-64 overflow-hidden">
-                                        <Image
-                                            src={event.images[0]}
-                                            alt={event.name}
-                                            fill
-                                            sizes="(max-width: 768px) 100vw, 50vw"
-                                            className="object-cover transition-transform duration-700 group-hover:scale-110"
-                                        />
-                                        <div 
-                                            className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500"
-                                            style={{ backgroundColor: accentColors[index] }}
-                                        ></div>
-                                    </div>
-
-                                    {/* Content */}
-                                    <div className="p-6 relative">
-                                        <h2 className="text-2xl md:text-3xl font-bold mb-3 text-[#222] font-final">
+                                <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${!isEven ? 'lg:grid-flow-dense' : ''}`}>
+                                    {/* Text Content */}
+                                    <div className={isEven ? '' : 'lg:col-start-2'}>
+                                        <h2 className="text-4xl md:text-5xl font-bold mb-6 font-final uppercase tracking-wide text-[#111]">
                                             {event.name}
                                         </h2>
+                                        <p className="text-lg md:text-xl font-santoshi leading-relaxed text-[#111] mb-8">
+                                            {event.description}
+                                        </p>
+                                        {/* Action Buttons */}
+                                        <div className="flex flex-wrap gap-4">
+                                            <button className="px-8 py-3 bg-[#111] text-white font-santoshi font-semibold rounded-full hover:bg-[#333] transition-colors duration-300">
+                                                Register
+                                            </button>
+                                            <button className="px-8 py-3 border-2 border-[#111] text-[#111] font-santoshi font-semibold rounded-full hover:bg-[#111] hover:text-white transition-all duration-300">
+                                                Leaderboard
+                                            </button>
+                                        </div>
+                                    </div>
 
-                                        {/* Accent line */}
-                                        <div 
-                                            className="w-16 h-1 mb-4 transition-all duration-500"
-                                            style={{ 
-                                                backgroundColor: accentColors[index],
-                                                width: isHovered ? '100%' : '64px'
-                                            }}
-                                        ></div>
-
-                                        {/* Secondary image */}
-                                        <div className="relative h-28 mb-4 rounded-xl overflow-hidden border-2 border-[#e5e5dd] shadow-md">
+                                    {/* Image Grid - 2x2 with 3 images */}
+                                    <div className={`relative grid grid-cols-2 grid-rows-2 gap-4 h-[350px] ${!isEven ? 'lg:col-start-1 lg:row-start-1' : ''}`}>
+                                        {/* Large image - takes full left column */}
+                                        <div className="relative row-span-2 rounded-lg overflow-hidden shadow-lg">
                                             <Image
-                                                src={event.images[1]}
-                                                alt={event.name}
+                                                src={event.images[0]}
+                                                alt={`${event.name} - Main`}
                                                 fill
-                                                sizes="400px"
+                                                sizes="(max-width: 768px) 50vw, 25vw"
                                                 className="object-cover"
                                             />
                                         </div>
-
-                                        <p className="text-[#444] font-santoshi leading-relaxed mb-6 text-sm">
-                                            {event.description}
-                                        </p>
-
-                                        {/* Clean buttons */}
-                                        <div className="flex flex-col sm:flex-row gap-3">
-                                            <button 
-                                                className="flex-1 text-white px-6 py-3 rounded-full font-bold font-final hover:scale-105 hover:brightness-110 transition-all duration-300 shadow-md hover:shadow-lg"
-                                                style={{ backgroundColor: '#deb887' }}
-                                            >
-                                                Register
-                                            </button>
-                                            <button className="flex-1 bg-white text-[#222] border-2 px-6 py-3 rounded-full font-bold font-final hover:brightness-110 hover:scale-105 transition-all duration-300 shadow-md hover:shadow-lg" style={{ borderColor: '#deb887' }}>
-                                                Leaderboard
-                                            </button>
+                                        
+                                        {/* Top right image */}
+                                        <div className="relative rounded-lg overflow-hidden shadow-lg">
+                                            <Image
+                                                src={event.images[1]}
+                                                alt={`${event.name} - Detail 1`}
+                                                fill
+                                                sizes="(max-width: 768px) 50vw, 25vw"
+                                                className="object-cover"
+                                            />
+                                        </div>
+                                        
+                                        {/* Bottom right image */}
+                                        <div className="relative rounded-lg overflow-hidden shadow-lg">
+                                            <Image
+                                                src={event.images[2]}
+                                                alt={`${event.name} - Detail 2`}
+                                                fill
+                                                sizes="(max-width: 768px) 50vw, 25vw"
+                                                className="object-cover"
+                                            />
                                         </div>
                                     </div>
                                 </div>
