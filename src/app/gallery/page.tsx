@@ -369,10 +369,12 @@ interface Event {
 // Sample event data with mock images
 const events: Event[] = [
   {
-    id: 1,
-    name: "Group Photos",
-    coverImage: "https://lh3.googleusercontent.com/d/1xD4UMOQ-JJMDZIJb2GiMN3IlSWV4_m4s",
-    images: [
+    "id": 1,
+    "name": "Group Photos",
+    "coverImage": "https://lh3.googleusercontent.com/d/1xD4UMOQ-JJMDZIJb2GiMN3IlSWV4_m4s",
+    "images": [
+      "https://lh3.googleusercontent.com/d/1f3I980N-LSB0c_qrs76G84e7e9fNLu7y",
+      "https://lh3.googleusercontent.com/d/1vTmJMrJyoQnglw6dKXeEVYBVgVrIHU0f",
       "https://lh3.googleusercontent.com/d/1xD4UMOQ-JJMDZIJb2GiMN3IlSWV4_m4s",
       "https://lh3.googleusercontent.com/d/1rnV8wK-ana6MsPkTy6qSpn-R2_bzBxvQ",
       "https://lh3.googleusercontent.com/d/1j1_0vT9iTeGSpzovBjjri3Ey7KlRMAWi",
@@ -382,14 +384,18 @@ const events: Event[] = [
       "https://lh3.googleusercontent.com/d/1yih5h-ZutVC2geYSwadA3B9yQ7xG5_NA",
       "https://lh3.googleusercontent.com/d/1pvb5PuX4MmPoT8sKyc29jv2kuzVTLpab",
       "https://lh3.googleusercontent.com/d/1_yJW6DjgNE6YTBuGi9XMtRCGt46H1ukk",
-      "https://lh3.googleusercontent.com/d/1XfodDSZTIUTf03BDtCiJbgmQgivg3d48"
+      "https://lh3.googleusercontent.com/d/1XfodDSZTIUTf03BDtCiJbgmQgivg3d48",
+      "https://lh3.googleusercontent.com/d/1Qa3Y8h7sVhwOh1-pR5GWq4u9geyvdXIV",
+      "https://lh3.googleusercontent.com/d/1jkSxw4uSUkjL2rJDEFn942FS97hci1aE",
+      "https://lh3.googleusercontent.com/d/1u1K0uaGB1-X4-5weR7OeyRNV011NOJ34",
+      "https://lh3.googleusercontent.com/d/1d0fd-I0o5hv-xvEEkICBKxb7DIIqrvIP"
     ]
   },
   {
-    id: 2,
-    name: "Freshers",
-    coverImage: "https://lh3.googleusercontent.com/d/16zYdznpk9oXn9m6jpkF9FKarUDtAfSrD",
-    images: [
+    "id": 2,
+    "name": "Freshers",
+    "coverImage": "https://lh3.googleusercontent.com/d/16zYdznpk9oXn9m6jpkF9FKarUDtAfSrD",
+    "images": [
       "https://lh3.googleusercontent.com/d/16zYdznpk9oXn9m6jpkF9FKarUDtAfSrD",
       "https://lh3.googleusercontent.com/d/18x0BeWSMlDtCcMwA5FiovyMTHW6hVvpR",
       "https://lh3.googleusercontent.com/d/1DNadrh1bc_c4BZbUjoKpbVAbBjrgDwL_",
@@ -403,37 +409,62 @@ const events: Event[] = [
     ]
   },
   {
-    id: 3,
-    name: "Farewell",
-    coverImage: "https://lh3.googleusercontent.com/d/1dgCgic0KH5WlCYAm2fd9MP2f4xO8qMzg",
-    images: [
+    "id": 3,
+    "name": "Farewell",
+    "coverImage": "https://lh3.googleusercontent.com/d/1dgCgic0KH5WlCYAm2fd9MP2f4xO8qMzg",
+    "images": [
       "https://lh3.googleusercontent.com/d/1dgCgic0KH5WlCYAm2fd9MP2f4xO8qMzg",
+      "https://lh3.googleusercontent.com/d/1xQiEkEQUCCLhBMIqXm51y6HcFYq_ImD-",
+      "https://lh3.googleusercontent.com/d/1EX5hTx1Rvw-o3VxSPyZ1eDR12-d1kYvl",
+      "https://lh3.googleusercontent.com/d/1EwO_nao-4IOjbDndopwciXshA4aW9M2P",
+      "https://lh3.googleusercontent.com/d/1oardQ-C0LZvHfTILqR6cixDfH2Vk5uvQ",
+      "https://lh3.googleusercontent.com/d/1s1L3onoIosSiHRFAc3DRUAewa55XIo5r",
+      "https://lh3.googleusercontent.com/d/1jtu0q2rE-CwkYaeoG0VjqnD0iWq-Lbfp",
+      "https://lh3.googleusercontent.com/d/1Lm6o2ZDRq8tNcFDFAhsaO4WbEQ9YlvxS",
+      "https://lh3.googleusercontent.com/d/1yirgamjbbsWn7ly78dMP9DuFuYgSedM-",
+      "https://lh3.googleusercontent.com/d/1II9CQJTCm8BNWluYPmahQ_hXycxvBFtT",
       "https://lh3.googleusercontent.com/d/1dFCpxtbzQk4v6T6xYvnVIaWGbTdQu33f",
       "https://lh3.googleusercontent.com/d/11y2-9PzTQ2SCPJimcNwHy_20eEFt4BQr"
     ]
   },
   {
-    id:4 ,
-    name: "RC Plane",
-    coverImage: "https://lh3.googleusercontent.com/d/1T08eK_MhP_K3nd0DzSbty9XoqzxLGeke",
-    images: [
+    "id": 4,
+    "name": "RC Plane",
+    "coverImage": "https://lh3.googleusercontent.com/d/1T08eK_MhP_K3nd0DzSbty9XoqzxLGeke",
+    "images": [
       "https://lh3.googleusercontent.com/d/1T08eK_MhP_K3nd0DzSbty9XoqzxLGeke",
       "https://lh3.googleusercontent.com/d/1gmwaxWej_8kmIRuES27XiMXfzuUO7K_g",
       "https://lh3.googleusercontent.com/d/1Qsun2RfCsKOlh6nCoJ1EQJ7nE0ef6sPR",
       "https://lh3.googleusercontent.com/d/1QOQXhE1o-0WGA9GouPeVhJRHUaizje2Z",
+      "https://lh3.googleusercontent.com/d/1Hs4bwKjMu0rh03ukukFA06655RAAJf3Y",
       "https://lh3.googleusercontent.com/d/1olzITW10tj2r6EtzfvHxPxudxhwfBmkv",
       "https://lh3.googleusercontent.com/d/1n3zmV0UdwmfwMuuaKjXplfSsCR5MHXOB",
       "https://lh3.googleusercontent.com/d/1F2pbjimKEBgyJM3zpYSA1pVb7W4G78F4",
       "https://lh3.googleusercontent.com/d/1z1zNiTxHQ23Up53sgh67C0hHeetHVlxw",
+      "https://lh3.googleusercontent.com/d/17YvWPkRzqioz3m5g51xFFrMGi8iZe4EX",
+      "https://lh3.googleusercontent.com/d/1uvw_BHTgMlp1nJFS9PhwWw4M3PM-QnTb",
       "https://lh3.googleusercontent.com/d/1QmoYtWsFm0Ej8rgKSzJW5V1Q-o5oxyrS",
-      "https://lh3.googleusercontent.com/d/1bWntdD_EEgMd3I0QXjONKY4qsMcISXM-",
-      "https://lh3.googleusercontent.com/d/1bHZ3Cx3qO__bLPSTqGT04qBvfSDFWA8t",
-      "https://lh3.googleusercontent.com/d/1SNB5AtYWHK56gJQFj3_MDFEQcdB88wN7",
-      "https://lh3.googleusercontent.com/d/1CXyJRjXU3vvhnvANLhav2zvcvbyBR7rt",
-      "https://lh3.googleusercontent.com/d/1YerxQX8SXgqmPlZYzSx0RitS2G3m49yA"
+      "https://lh3.googleusercontent.com/d/1bWntdD_EEg5EAm0MJIKFtjXPD_ahO9o5",
+      "https://lh3.googleusercontent.com/d/1nFPd98_OHZ-Ke7fBEbsDj1nAfEGOlmSo",
+      "https://lh3.googleusercontent.com/d/1nFPd98_OHZ-Ke7fBEbsDj1nAfEGOlmSo"
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Techspardha",
+    "coverImage": "https://lh3.googleusercontent.com/d/1eohdZYgLAAZlMnzROk0cyOTQb9aEXJ2D",
+    "images": [
+      "https://lh3.googleusercontent.com/d/1eohdZYgLAAZlMnzROk0cyOTQb9aEXJ2D",
+      "https://lh3.googleusercontent.com/d/1Hn3BvXHV_OHeRZqHciLUQZ2gAO9E6kmr",
+      "https://lh3.googleusercontent.com/d/1v6m7FHDakj8FCmZalprw9l2QEnNHcI5E",
+      "https://lh3.googleusercontent.com/d/1sFS5oc7NDalCU2DL6Zs6LuD7iA5nLC4v",
+      "https://lh3.googleusercontent.com/d/1WaGTITq0ilFc9QHzHXrOiJkxkdcYp85Y",
+      "https://lh3.googleusercontent.com/d/1eN1yTDkKQdOVYGHJpMKDLEIvUMqD5-Zw",
+      "https://lh3.googleusercontent.com/d/1JuAtnQUZhP3qKM1fKzNC7BGDk7F_p-lz"
     ]
   }
 ]
+
 
 
 
