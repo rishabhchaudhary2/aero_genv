@@ -25,6 +25,7 @@
 *.pem
 __pycache__
 *.guide
+sheet-key.json
 
 # debug
 npm-debug.log*
