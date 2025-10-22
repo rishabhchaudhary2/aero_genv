@@ -3,7 +3,7 @@
 import Nav from '../components/Nav';
 // import ImageTrail from '../components/ImageTrail';
 import Header from '../components/Header';
-import Showcase from '../components/Showcase';
+// import Showcase from '../components/Showcase';
 import BestGlasses from '../components/BestGlasses';
 
 // import Transition from '../components/Transition';
@@ -35,9 +35,9 @@ const Home = () => {
                     /> */}
                 </div>
             </div>
-            <div className="font-final">
+            {/* <div className="font-final">
                 <Showcase />
-            </div>
+            </div> */}
             <BestGlasses />
             {/* <Text /> */}
             <Collections />
