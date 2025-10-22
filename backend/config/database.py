@@ -34,6 +34,12 @@ async def connect_to_mongo():
     await database.pending_users.create_index("email", unique=True)
     await database.pending_users.create_index("created_at", expireAfterSeconds=86400)  # Expire after 24 hours
     
+    # Form entries collection indexes
+    await database.form_entries.create_index([("form_id", 1), ("user_id", 1)], unique=True)  # Prevent duplicate submissions
+    await database.form_entries.create_index("user_id")
+    await database.form_entries.create_index("form_id")
+    await database.form_entries.create_index("submitted_at")
+    
     print("Database indexes created")
     
 async def close_mongo_connection():
