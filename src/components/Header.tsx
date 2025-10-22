@@ -6,14 +6,14 @@ import DecoderMotion from '../components/DecoderMotion';
 
 const Header: React.FC = () => {
     const headingsTopRight: string[] = [
-        "Real Recommendation By Real People",
-        "Genuine Opinions From Real Users"
+        "Real Ideas from Real Innovators.",
+        "Genuine creations by real Engineers"
     ];
     const [topIndex, setTopIndex] = useState<number>(0);
 
     const headingsBottomLeft: string[] = [
-        "See Better. Look Smarter. Only with Lenskart.",
-        "Eyewear That Reflects Your Style."
+        "Design Better. Fly Smarter. Only with AERO Modelling.",
+        "Aircrafts that reflect your passion."
     ];
     const [bottomIndex, setBottomIndex] = useState<number>(0);
 
@@ -44,7 +44,7 @@ const Header: React.FC = () => {
                 </h5>
                 <DecoderMotion />
 
-                {/* Glasses image on "WEAR" side */}
+                {/* Glasses image on "WEAR" side
                 <motion.img
                     initial={{ x: -300, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
@@ -55,14 +55,14 @@ const Header: React.FC = () => {
                 />
 
                 {/* Glasses image on "lenskart" side */}
-                <motion.img
+                {/* <motion.img
                     initial={{ x: 300, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
                     className="absolute -bottom-10 -right-10 md:-right-30 h-24 md:h-44 rotate-[-15deg]"
                     src="/icons/glasses.png"
                     alt=""
-                />
+                /> */}
             </div>
             {/* Top-Right Animated Heading */}
             <div className="absolute top-20 right-10 text-[0.6rem] md:text-xs uppercase text-[#8472F6] font-final font-thin max-w-[30vw] text-right">
