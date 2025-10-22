@@ -22,20 +22,20 @@ export const SECTIONS_COUNT = 4;
 
 export const droneProjects: DroneProject[] = [
   {
-    title: "Object Tracking Drone",
-    description: "Advanced drone with real-time object tracking capabilities using computer vision algorithms.",
+    title: "Cave exploration drone",
+    description: "Equipped with LiDAR, thermal cameras, and multi-gas sensors, our cave exploration drone maps complex underground terrains with pinpoint accuracy. It detects hazardous gases, monitors environmental conditions, and navigates tight passages, making exploration safer and efficient.",
     image: "/droneimages/project1.jpg",
     rotation: "-rotate-3"
   },
   {
-    title: "Arduino Mini Drone",
-    description: "DIY drone kit perfect for beginners, built with Arduino technology for easy customization.",
+    title: "Gesture operated drone",
+    description: "Take flight with just a wave of your hand. Gesture-controlled drone responds instantly to your movements, combining intuitive sensors, motion recognition, and real-time stabilization for a seamless, hands-on flying experience.",
     image: "/droneimages/project2.jpg",
     rotation: "rotate-2"
   },
   {
-    title: "FPV Racing Drone",
-    description: "High-speed racing drone with first-person view capabilities for immersive flight experience.",
+    title: "Connected Drone",
+    description: "Our connected drone leverages real-time GPS, IoT connectivity, and cloud integration to share live data, enable remote operation, and ensure seamless coordination, making every flight smarter and more connected.",
     image: "/droneimages/project3.jpg",
     rotation: "-rotate-1"
   }
