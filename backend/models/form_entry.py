@@ -33,6 +33,7 @@ class FormEntryInDB(BaseModel):
     user_name: Optional[str] = None
     responses: Dict[str, str]
     submitted_at: datetime
+    score: Optional[float] = None
     
     class Config:
         populate_by_name = True
@@ -47,3 +48,4 @@ class FormEntryResponse(BaseModel):
     user_name: Optional[str] = None
     responses: Dict[str, str]
     submitted_at: datetime
+    score: Optional[float] = None
