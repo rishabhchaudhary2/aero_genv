@@ -152,7 +152,7 @@ export default function BestGlasses() {
   }, []);
 
   return (
-    <div className="relative bg-[#e5e5dd] text-[#111] w-screen min-h-[900vh]">
+    <div className="relative bg-[#ffffff] text-[#111] w-screen min-h-[900vh]">
       <section
         ref={stickySection}
         className="relative h-screen w-screen overflow-hidden"

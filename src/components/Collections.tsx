@@ -9,13 +9,12 @@ import Image from 'next/image';
 gsap.registerPlugin(ScrollTrigger);
 
 const spotlightItems = [
-  { name: "Welcome to Post Holders Intro", img: "/galleryimages/1.jpg", nameColor: "#000", postColor: "#444", bgColor: "#E5E5DD" },
-  { name: "Priyanshu Soni", img: "/galleryimages/President.jpg", post: "President", nameColor: "#ff4d4d", postColor: "#ff9999", bgColor: "#ffe6e6" },
-  { name: "Omkar Dua", img: "/galleryimages/Vice_President.jpg", post: "Vice President", nameColor: "#4d79ff", postColor: "#99b3ff", bgColor: "#e6ecff" },
-  { name: "Jay Kumar Gupta", img: "/galleryimages/Secretary.png", post: "Secretary", nameColor: "#33cc33", postColor: "#99ff99", bgColor: "#e6ffe6" },
-  { name: "Harsh Raj", img: "/galleryimages/Joint_Secretary.jpg", post: "Joint Secretary", nameColor: "#ff9900", postColor: "#ffd699", bgColor: "#fff2e6" },
-  { name: "Hiphop", img: "/galleryimages/6.jpg", nameColor: "#aa33ff", postColor: "#d699ff", bgColor: "#f0e6ff" }
-];
+  { name: "", img: "/galleryimages/post.png", nameColor: "#1A1A1A", postColor: "#666666", bgColor: "#FFFFFF" },
+  { name: "Harsh Raj", img: "/galleryimages/Joint_Secretary.jpg", post: "Joint Secretary", nameColor: "#1E40AF", postColor: "#3B82F6", bgColor: "#F6EDE1" },
+  { name: "Jay Kumar Gupta", img: "/galleryimages/Secretary.png", post: "Secretary", nameColor: "#172554", postColor: "#2563EB", bgColor: "#F8FAFC" },
+  { name: "Omkar Dua", img: "/galleryimages/Vice_President.jpg", post: "Vice President", nameColor: "#0F172A", postColor: "#1D4ED8", bgColor: "#95e0f5" },
+  { name: "Priyanshu Soni", img: "/galleryimages/President.jpg", post: "President", nameColor: "#0C4A6E", postColor: "#0EA5E9", bgColor: "#F0F9FF" },
+  ];
 
 const Spotlight: React.FC = () => {
   const [mounted, setMounted] = useState(false);
@@ -89,21 +88,21 @@ const Spotlight: React.FC = () => {
         const progress = self.progress;
 
         // ---- Intro animation ----
-        if (progress <= 0.2) {
-          const animProgress = progress / 0.2;
-          if (spotlightBgImgRef.current) gsap.set(spotlightBgImgRef.current, { scale: animProgress });
-          if (imageRefs.current[0]) {
-            gsap.set(imageRefs.current[0], {
-              y: -animProgress * 150,
-              scale: 0.5 + animProgress * 0.5,
-              opacity: animProgress
-            });
-          }
-          introTextElementsRef.current.forEach((el, i) => {
-            if (!el) return;
-            gsap.set(el, { x: (i === 0 ? -1 : 1) * animProgress * window.innerWidth * 0.6, opacity: 1 });
-          });
-        }
+        // if (progress <= 0.2) {
+        //   const animProgress = progress / 0.2;
+        //   if (spotlightBgImgRef.current) gsap.set(spotlightBgImgRef.current, { scale: animProgress });
+        //   if (imageRefs.current[0]) {
+        //     gsap.set(imageRefs.current[0], {
+        //       y: -animProgress * 150,
+        //       scale: 0.5 + animProgress * 0.5,
+        //       opacity: animProgress
+        //     });
+        //   }
+        //   introTextElementsRef.current.forEach((el, i) => {
+        //     if (!el) return;
+        //     gsap.set(el, { x: (i === 0 ? -1 : 1) * animProgress * window.innerWidth * 0.6, opacity: 1 });
+        //   });
+        // }
 
         // ---- Bézier arc animation for other images ----
         if (progress > 0.25 && progress <= 0.95) {
@@ -185,16 +184,9 @@ const Spotlight: React.FC = () => {
   if (!mounted) return null;
 
   return (
-    <section className="spotlight relative w-screen h-[100svh] overflow-hidden font-santoshi" style={{ height: "100svh", backgroundColor: bgColor }}>
+    <section className="spotlight relative w-screen h-svh overflow-hidden font-santoshi" style={{ height: "100svh", backgroundColor: bgColor }}>
       {/* Intro text */}
-      <div className="spotlight-intro-text-wrapper absolute w-full top-1/2 -translate-y-1/2 flex gap-2">
-        <div className="flex-1 relative will-change-transform flex justify-end" ref={el => setIntroTextRef(el, 0)}>
-          <p className="text-[1.5rem] font-medium leading-none">Post</p>
-        </div>
-        <div className="flex-1 relative will-change-transform" ref={el => setIntroTextRef(el, 1)}>
-          <p className="text-[1.5rem] font-medium leading-none">Holders</p>
-        </div>
-      </div>
+     
 
       {/* Background image */}
       <div className="spotlight-bg-img absolute w-full h-full overflow-hidden will-change-transform z-0" ref={spotlightBgImgRef}>
@@ -242,15 +234,15 @@ const Spotlight: React.FC = () => {
       {/* Images */}
       <div className="spotlight-images absolute top-0 left-0 w-1/2 min-w-[300px] h-full pointer-events-none z-10" ref={imagesContainerRef}>
         {spotlightItems.map((item, idx) => (
-          <div key={idx} className="spotlight-img absolute md:right-[-10%] w-[200px] h-[150px] will-change-transform" ref={el => { if (el) imageRefs.current[idx] = el; }} style={{ opacity: 0 }}>
+          <div key={idx} className="spotlight-img absolute md:right-[-19%] w-[250px] h-[270px] will-change-transform" ref={el => { if (el) imageRefs.current[idx] = el; }} style={{ opacity: 0 }}>
             <Image src={item.img} alt={item.name} fill sizes="(max-width: 768px) 100vw, 200px" className="w-full h-full object-cover"/>
           </div>
         ))}
       </div>
 
       {/* Header */}
-      <div className="spotlight-header absolute top-1/2 left-[10%] -translate-y-1/2 text-black transition-opacity duration-300 opacity-0 z-20" ref={spotlightHeaderRef}>
-        <p className="text-[1.5rem] font-medium leading-none">Meet the Post Holders</p>
+      <div className="spotlight-header absolute top-1/2 left-[2%] -translate-y-1/2 text-black transition-opacity duration-300 opacity-0 z-20" ref={spotlightHeaderRef}>
+        <p className="text-[2.2rem] font-bold leading-none">Meet the Post Holders</p>
       </div>
     </section>
   );
