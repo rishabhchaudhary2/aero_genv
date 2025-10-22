@@ -13,15 +13,51 @@ interface TeamMember {
   batch: string;
   branch: string;
   image: string;
-  linkedin: string;
+  subDomain?: string;
 }
-import { droneProjects, teamMembers, SECTION_DURATION, RESUME_TIMEOUT, SECTIONS_COUNT } from './data';
+import { droneProjects, SECTION_DURATION, RESUME_TIMEOUT, SECTIONS_COUNT } from './data';
 
 const DronePage = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState<number>(0);
   const [isPaused, setIsPaused] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [loadingMembers, setLoadingMembers] = useState(true);
+  
+  // Fetch Drones team members from API
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        setLoadingMembers(true);
+        const response = await fetch('http://localhost:8000/api/members?team=drones');
+        if (!response.ok) throw new Error('Failed to fetch members');
+        const data = await response.json();
+        setTeamMembers(data);
+      } catch (error) {
+        console.error('Error fetching members:', error);
+        // Fallback to empty array on error
+        setTeamMembers([]);
+      } finally {
+        setLoadingMembers(false);
+      }
+    };
+
+    fetchMembers();
+  }, []);
+
+  // Group members by batch year
+  const groupedMembers = teamMembers.reduce((acc: { [year: string]: TeamMember[] }, member) => {
+    const year = member.batch // Extract graduation year from "2023-2027"
+    if (!acc[year]) {
+      acc[year] = [];
+    }
+    acc[year].push(member);
+    return acc;
+  }, {});
+
+  // Sort years in ascending order (lowest first)
+  const sortedYears = Object.keys(groupedMembers).sort((a, b) => parseInt(a) - parseInt(b));
   
   // Auto-scroll between sections
   useEffect(() => {
@@ -357,52 +393,79 @@ const DronePage = () => {
                 e.currentTarget.scrollTop += e.deltaY;
               }}
             >
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
-              {teamMembers.map((member: TeamMember, index: number) => (
-                <motion.div 
-                  key={index}
-                  className="relative group mx-auto w-full max-w-sm"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  <div className="relative w-full aspect-[3/4] overflow-hidden rounded-lg bg-gray-900 shadow-lg">
-                    <Image
-                      src={member.image}
-                      alt={member.name}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    />
-                    {/* Overlay */}
-                    <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 sm:group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4 sm:p-6">
-                      <div className="flex justify-end space-x-3 sm:space-x-4">
-                        <a href={`mailto:${member.email}`} className="text-white hover:text-gray-200">
-                          <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                          </svg>
-                        </a>
-                        <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="text-white hover:text-gray-200">
-                          <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                          </svg>
-                        </a>
-                      </div>
-                      <div className="text-white">
-                        <p className="text-sm sm:text-base font-medium">{member.rollNo} | {member.batch}</p>
-                        <p className="text-xs sm:text-sm">{member.branch}</p>
-                      </div>
+              {loadingMembers ? (
+                <div className="flex items-center justify-center h-full">
+                  <div className="text-center">
+                    <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-black mx-auto mb-4"></div>
+                    <p className="text-gray-600">Loading team members...</p>
+                  </div>
+                </div>
+              ) : sortedYears.length === 0 ? (
+                <div className="flex items-center justify-center h-full">
+                  <p className="text-gray-600">No team members found</p>
+                </div>
+              ) : (
+                sortedYears.map((year) => (
+                  <div key={year} className="mb-12">
+                    {/* Year Heading */}
+                    <motion.h3
+                      className="text-xl sm:text-2xl md:text-3xl font-bold uppercase mb-6 tracking-wide border-b-2 border-black pb-2"
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.6 }}
+                      viewport={{ once: true }}
+                    >
+                      Batch of {year}
+                    </motion.h3>
+
+                    {/* Members Grid for this year */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
+                      {groupedMembers[year].map((member: TeamMember, index: number) => (
+                        <motion.div 
+                          key={`${year}-${index}`}
+                          className="relative group mx-auto w-full max-w-sm"
+                          initial={{ opacity: 0, y: 20 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5, delay: index * 0.1 }}
+                          viewport={{ once: true }}
+                        >
+                          <div className="relative w-full aspect-3/4 overflow-hidden rounded-lg bg-gray-900 shadow-lg">
+                            <Image
+                              src={member.image || '/galleryimages/1.jpg'}
+                              alt={member.name}
+                              fill
+                              className="object-cover"
+                              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                            />
+                            {/* Overlay */}
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 sm:group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4 sm:p-6">
+                              <div className="flex justify-end space-x-3 sm:space-x-4">
+                                <a href={`mailto:${member.email}`} className="text-white hover:text-gray-200">
+                                  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                                  </svg>
+                                </a>
+                              </div>
+                              <div className="text-white">
+                                <p className="text-sm sm:text-base font-medium">{member.rollNo} | {member.batch}</p>
+                                <p className="text-xs sm:text-sm">{member.branch}</p>
+                                {member.subDomain && (
+                                  <p className="text-xs sm:text-sm mt-1 opacity-80">{member.subDomain}</p>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          {/* Name and Role - Always visible */}
+                          <div className="mt-3 sm:mt-4">
+                            <h3 className="text-base sm:text-lg font-bold tracking-wide">{member.name}</h3>
+                            <p className="text-xs sm:text-sm text-gray-600">{member.role}</p>
+                          </div>
+                        </motion.div>
+                      ))}
                     </div>
                   </div>
-                  {/* Name and Role - Always visible */}
-                  <div className="mt-3 sm:mt-4">
-                    <h3 className="text-base sm:text-lg font-bold tracking-wide">{member.name}</h3>
-                    <p className="text-xs sm:text-sm text-gray-600">{member.role}</p>
-                  </div>
-                </motion.div>
-              ))}
-              </div>
+                ))
+              )}
             </div>
           </div>
         </section>
