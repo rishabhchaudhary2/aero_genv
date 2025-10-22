@@ -2,6 +2,8 @@ from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel, EmailStr
 from typing import Optional
+
+import pytz
 from models.user import UserCreate, UserResponse, Token, UserInDB
 from services.user_service import (
     get_user_by_email,
@@ -165,8 +167,8 @@ async def signup_verify(request: SignupVerifyRequest):
         "hashed_password": pending_user["hashed_password"],
         "is_active": True,
         "is_verified": True,  # Email verified via OTP
-        "created_at": datetime.utcnow(),
-        "updated_at": datetime.utcnow()
+        "created_at": datetime.now(tz = pytz.timezone('Asia/Kolkata')),
+        "updated_at": datetime.now(tz = pytz.timezone('Asia/Kolkata'))
     }
     
     result = await db.users.insert_one(user_dict)

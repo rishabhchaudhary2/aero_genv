@@ -41,8 +41,8 @@ class UserInDB(BaseModel):
     profile_picture: Optional[str] = None
     is_active: bool = True
     is_verified: bool = False
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=datetime.now)
+    updated_at: datetime = Field(default_factory=datetime.now)
     
     class Config:
         populate_by_name = True
