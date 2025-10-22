@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef,  } from "react";
+import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -60,15 +60,7 @@ const Showcase: React.FC = () => {
         });
 
         const animate = () => {
-            const {
-                currentTranslateY,
-                scale,
-                targetMouseX,
-                currentMouseX,
-                gap,
-                fontSize,
-            } = state;
-
+            const { currentTranslateY, scale, targetMouseX, currentMouseX, gap, fontSize } = state;
             const scaleMoveX = (1 - scale) * 700;
             const maxX = scale < 0.95 ? targetMouseX * scaleMoveX : 0;
 
@@ -222,7 +214,7 @@ const Showcase: React.FC = () => {
                 >
                     <div className="relative w-full aspect-video rounded-3xl overflow-hidden bg-[#b9b9b3]">
                         <div className="absolute inset-0 rounded-3xl overflow-hidden">
-                                                        <video
+                            <video
                                 className="w-full h-full object-cover"
                                 autoPlay
                                 loop
@@ -282,7 +274,7 @@ const Showcase: React.FC = () => {
                     {/* Left Title */}
                     <div className="md:w-1/3 w-full" ref={leftTitleRef}>
                         <p className="text-lg md:text-xl font-semibold pl-1 md:pl-2 tracking-wide">
-                            {"WHAT WE DO!".split("").map((letter, i) => (
+                            {"ABOUT US".split("").map((letter, i) => (
                                 <span
                                     key={i}
                                     className="inline-block opacity-0 translate-y-5  transition duration-300 hover:text-red-500 hover:scale-125"
@@ -299,21 +291,21 @@ const Showcase: React.FC = () => {
                         className="md:w-2/3 w-full flex flex-col justify-center gap-8 md:pl-10 transition-all"
                     >
                         <p className="uppercase text-[10px] font-semibold mt-10 md:mt-0 tracking-wider">
-                           add some line here 
+                           Elevating flight through passion and innovation
                         </p>
 
                         <div className="text-[7vw] sm:text-[6vw] md:text-[3.5vw] uppercase font-medium tracking-tight leading-[1.2]">
-                            <p>Our motto is simple:</p>
+                            <p>Our motto:</p>
                             <p>&ldquo;If it flies,</p>
                             <p>we build it.&rdquo;</p>
                         </div>
 
                         <div className="flex flex-col md:flex-row gap-6 md:gap-10 font-mono text-[10px] sm:text-xs leading-relaxed pt-8">
                             <p className="md:w-1/2">
-                              WE DESIGN AND BUILD MINIATURE AIRCRAFT USING MATERIALS LIKE BALSA WOOD, FOAM, AND CARBON FIBER. WHAT STARTED AS BUILDING SIMPLE RC AIRCRAFT HAS EVOLVED INTO TACKLING REAL ENGINEERING CHALLENGES IN DEFENSE, RENEWABLE ENERGY, AND SURVEILLANCE TECH. WE TRANSFORM IDEAS INTO FLYING MACHINES THROUGH DESIGN, CONSTRUCTION, AND RELENTLESS TESTING
+                              Aero Club is where creativity meets engineering. We design and build miniature aircraft with precision, transforming simple ideas into machines that soar. From balsa wood gliders to advanced RC aircraft, our members experiment, learn, and push the boundaries of what’s possible in aviation.
                             </p>
                             <p className="md:w-1/2">
-                               GETTING SOMETHING TO ACTUALLY FLY THE WAY YOU WANT IT TO IS HARDER THAN IT LOOKS. MOST OF US HAVE CRASHED MORE PLANES THAN WE&apos;VE SUCCESSFULLY LANDED, BUT EVERY CRASH TEACHES LESSONS THAT BRING US CLOSER TO PERFECT FLIGHT. IN THE END, HANDS-ON EXPERIENCE PROVES MORE VALUABLE THAN THEORY ALONE
+                               Every project challenges us to innovate and think critically. Failures are celebrated as learning opportunities, and successes fuel our curiosity. Through collaboration, hands-on experimentation, and relentless testing, we nurture a community of aspiring engineers and pilots ready to take flight into the future.
                             </p>
                         </div>
                     </div>

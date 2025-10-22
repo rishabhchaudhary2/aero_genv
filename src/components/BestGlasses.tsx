@@ -3,281 +3,244 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+
 gsap.registerPlugin(ScrollTrigger);
 
 type CardType = {
-    src: string;
-    text: string;
+  src: string;
+  text: string;
+  link: string;
 };
 
 export default function BestGlasses() {
-    const stickySection = useRef<HTMLDivElement>(null);
-    const countContainer = useRef<HTMLDivElement>(null);
-    const cards = useRef<HTMLDivElement[]>([]);
-    const introRef = useRef<HTMLElement>(null);
+  const stickySection = useRef<HTMLDivElement>(null);
+  const countContainer = useRef<HTMLDivElement>(null);
+  const cards = useRef<HTMLDivElement[]>([]);
 
-    // Array of objects with image src and paragraph text
-    const items: CardType[] = [
-        {
-            src: "/galleryimages/1.jpg",
-            text: "Classic full-rim frames that blend timeless style with modern durability.",
-        },
-        {
-            src: "/galleryimages/2.jpg",
-            text: "Lightweight metal frames offering a sleek and professional look.",
-        },
-        {
-            src: "/galleryimages/3.jpg",
-            text: "Bold and trendy acetate frames perfect for making a statement.",
-        },
-        {
-            src: "/galleryimages/4.jpg",
-            text: "Minimalist frameless design for a clean, barely-there aesthetic.",
-        },
-        {
-            src: "/galleryimages/5.jpg",
-            text: "Discover our stylish and affordable eyewear crafted for everyday comfort.",
-        }
-    ];
+  const items: CardType[] = [
+    {
+      src: "/planeimages/rc_bg2.jpg",
+      text: "RC planes gliding through the skies, reflecting innovation, control, and the passion for aerodynamics that drives the spirit of modern engineering.",
+      link: "/rcplanes",
+    },
+    {
+      src: "/galleryimages/drone.jpg",
+      text: "Drones soaring high, embodying innovation, precision, and the spirit of modern engineering, showcasing how creativity and technology come together to redefine the future of flight.",
+      link: "/drones",
+    },
+    {
+      src: "/galleryimages/techspardha.jpg",
+      text: "At Techspardha, the Aero Club of NIT Kurukshetra inspired students to build drones and RC planes, ending with a thrilling competition of skill and flight.",
+      link: "/techspardha",
+    },
+    {
+      src: "/galleryimages/workshop1.jpg",
+      text: "Skyforge, where freshers explored the fascinating world of drones and discovered how innovation truly takes flight with the Aero Club.",
+      link: "/workshop",
+    },
+    {
+      src: "/galleryimages/5.jpg",
+      text: "Aero Club soaring beyond boundaries, showcasing cutting-edge drone and RC plane innovations while excelling in national competitions against the best.",
+      link: "/external_events",
+    },
+  ];
 
-    useEffect(() => {
-        if (introRef.current) {
-            gsap.fromTo(
-                introRef.current,
-                { clipPath: "inset(0 100% 0 0)" },
-                {
-                    clipPath: "inset(0 0% 0 0)",
-                    ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: introRef.current,
-                        start: "top 80%",
-                        end: "bottom 20%",
-                        scrub: true,
-                    },
-                }
-            );
-        }
+  useEffect(() => {
+    const stickyHeight = window.innerHeight * 7;
+    const totalCards = cards.current.length;
 
-        const stickyHeight = window.innerHeight * 7;
-        const totalCards = cards.current.length;
+    function getRadius() {
+      if (window.innerWidth < 600) return window.innerWidth * 5;
+      if (window.innerWidth < 900) return window.innerWidth * 6;
+      return window.innerWidth * 2.5;
+    }
 
-        function getRadius() {
-            if (window.innerWidth < 600) return window.innerWidth * 5;
-            if (window.innerWidth < 900) return window.innerWidth * 6;
-            return window.innerWidth * 2.5;
-        }
+    function getArcAngle() {
+      return window.innerWidth < 600 ? Math.PI * 0.6 : Math.PI * 0.4;
+    }
 
-        function getArcAngle() {
-            return window.innerWidth < 600 ? Math.PI * 0.6 : Math.PI * 0.4;
-        }
+    function positionCards(progress = 0) {
+      const radius = getRadius();
+      const arcAngle = getArcAngle();
+      const startAngle = Math.PI / 2 - arcAngle / 2;
+      const totalTravel = 1 + totalCards / 6.1;
+      const adjustedProgress = (progress * totalTravel - 1) * 0.7;
 
-        function positionCards(progress = 0) {
-            const radius = getRadius();
-            const arcAngle = getArcAngle();
-            const startAngle = Math.PI / 2 - arcAngle / 2;
-            const totalTravel = 1 + totalCards / 6.1;  // Further reduced divisor to delay card appearance
-            const adjustedProgress = (progress * totalTravel - 1) * 0.70;  // Fine-tuned multiplier
+      cards.current.forEach((card, i) => {
+        if (!card) return;
+        const normalizedProgress = (totalCards - 1 - i) / totalCards;
+        const cardProgress = normalizedProgress + adjustedProgress;
+        const clampedProgress = Math.min(Math.max(cardProgress, 0), 1);
+        const angle = startAngle + arcAngle * clampedProgress;
+        const x = Math.cos(angle) * radius;
+        const y = Math.sin(angle) * radius;
+        const rotation = (angle - Math.PI / 2) * (180 / Math.PI);
 
-            cards.current.forEach((card, i) => {
-                if (!card) return;
-                const normalizedProgress = (totalCards - 1 - i) / totalCards;
-                const cardProgress = normalizedProgress + adjustedProgress;
-                const clampedProgress = Math.min(Math.max(cardProgress, 0), 1);
-                const angle = startAngle + arcAngle * clampedProgress;
-                const x = Math.cos(angle) * radius;
-                const y = Math.sin(angle) * radius;
-                const rotation = (angle - Math.PI / 2) * (180 / Math.PI);
-
-                gsap.set(card, {
-                    x,
-                    y: -y + radius,
-                    rotation: -rotation,
-                    transformOrigin: "center center",
-                });
-            });
-        }
-
-        positionCards(0);
-        
-        // Set initial counter position
-        if (countContainer.current) {
-            gsap.set(countContainer.current, {
-                y: 150 // Initial position to hide "01"
-            });
-        }
-
-        const scrollTriggerInstance = ScrollTrigger.create({
-            trigger: stickySection.current,
-            start: "top top+=1",
-            end: `+=${stickyHeight}`,
-            pin: true,
-            pinSpacing: true,
-            scrub: 0.3,
-            onUpdate: (self) => {
-                positionCards(self.progress);
-                // Adjust the progress calculation to match card positions
-                const adjustedProgressForIndex = Math.max(0, (self.progress * 1.3));  // Removed offset and reduced multiplier
-                let index = Math.floor(adjustedProgressForIndex * totalCards);
-                if (index >= totalCards) index = totalCards - 1;
-                const targetY = 150 - index * 150;
-                gsap.to(countContainer.current, {
-                    y: targetY,
-                    duration: 0.3,
-                    ease: "power1.out",
-                    overwrite: true,
-                });
-            },
+        gsap.set(card, {
+          x,
+          y: -y + radius,
+          rotation: -rotation,
+          transformOrigin: "center center",
         });
+      });
+    }
 
-        let resizeTimeout: NodeJS.Timeout;
-        let loadTimeout: NodeJS.Timeout;
+    positionCards(0);
 
-        // Handle window resize
-        function handleResize() {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => {
-                positionCards(0);
-                ScrollTrigger.refresh();
-            }, 150);
-        }
+    if (countContainer.current) {
+      gsap.set(countContainer.current, { y: 150 });
+    }
 
-        // Handle initial page load
-        function handleLoaded() {
-            clearTimeout(loadTimeout);
-            loadTimeout = setTimeout(() => {
-                positionCards(0);
-                ScrollTrigger.refresh();
-            }, 100);
-        }
+    const scrollTriggerInstance = ScrollTrigger.create({
+      trigger: stickySection.current,
+      start: "top top+=1",
+      end: `+=${stickyHeight}`,
+      pin: true,
+      pinSpacing: true,
+      scrub: 0.3,
+      onUpdate: (self) => {
+        positionCards(self.progress);
+        const adjustedProgressForIndex = Math.max(0, self.progress * 1.3);
+        let index = Math.floor(adjustedProgressForIndex * totalCards);
+        if (index >= totalCards) index = totalCards - 1;
+        const targetY = 150 - index * 150;
+        gsap.to(countContainer.current, {
+          y: targetY,
+          duration: 0.3,
+          ease: "power1.out",
+          overwrite: true,
+        });
+      },
+    });
 
-        // Attach listeners
-        window.addEventListener("resize", handleResize);
+    let resizeTimeout: NodeJS.Timeout;
+    let loadTimeout: NodeJS.Timeout;
 
-        if (document.readyState === "complete") {
-            handleLoaded();
-        } else {
-            window.addEventListener("load", handleLoaded);
-        }
+    function handleResize() {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        positionCards(0);
+        ScrollTrigger.refresh();
+      }, 150);
+    }
 
-        // Cleanup
-        return () => {
-            scrollTriggerInstance.kill();
-            clearTimeout(resizeTimeout);
-            clearTimeout(loadTimeout);
-            window.removeEventListener("resize", handleResize);
-            window.removeEventListener("load", handleLoaded);
-        };
+    function handleLoaded() {
+      clearTimeout(loadTimeout);
+      loadTimeout = setTimeout(() => {
+        positionCards(0);
+        ScrollTrigger.refresh();
+      }, 100);
+    }
 
-    }, []);
+    window.addEventListener("resize", handleResize);
 
-    return (
-        <div className="relative bg-[#e5e5dd] text-[#111] w-screen min-h-[900vh]">
-            {/* Intro */}
-            <h1> hero section is click able  can do something </h1>
-            <Link href="/about">
-                <section
-                    ref={introRef}
-                    className="h-screen w-screen bg-center bg-no-repeat bg-cover cursor-pointer"
-                    style={{ backgroundImage: `url(/galleryimages/hero.jpg)` }}
-                    title="Go to Products"
-                ></section>
-            </Link>
+    if (document.readyState === "complete") {
+      handleLoaded();
+    } else {
+      window.addEventListener("load", handleLoaded);
+    }
 
-            {/* Steps */}
-            <section ref={stickySection} className="relative h-screen w-screen overflow-hidden">
-                <div className="absolute flex flex-col m-4 md:m-8 select-none z-9 font-final">
-                    <div className="relative w-[1200px] h-[150px] overflow-hidden clip-path-polygon">
-                        <h1 className="uppercase font-black text-[2rem] sm:text-[4rem] md:text-[6rem] xl:text-[8rem] leading-none tracking-tight whitespace-nowrap">
-                            Best Frames
-                        </h1>
-                    </div>
-                    <div className="relative w-[1200px] h-[120px]   -top-2 overflow-hidden clip-path-polygon">
-                        <div
-                            ref={countContainer}
-                            className="relative flex flex-col will-change-transform"
-                            style={{
-                                transformOrigin: "center",
-                                transform: "translate(120px, 150px)", // Move it down by 150px to hide "01"
-                            }}
-                        >
-                            {[1, 2, 3, 4, 5].map((num) => (
-                                <h1
-                                    key={num}
-                                    className="uppercase font-bold text-[9rem] leading-none tracking-tight whitespace-nowrap"
-                                >
-                                    {num.toString().padStart(2, "0")}
-                                </h1>
-                            ))}
-                        </div>
-                    </div>
-                </div>
+    return () => {
+      scrollTriggerInstance.kill();
+      clearTimeout(resizeTimeout);
+      clearTimeout(loadTimeout);
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("load", handleLoaded);
+    };
+  }, []);
 
-                {/* Cards */}
-                <div
-                    className="absolute top-[25%] left-1/2 w-[150vw] h-[600px] -translate-x-1/2 will-change-transform z-10"
-                    aria-label="Cards Container"
+  return (
+    <div className="relative bg-[#e5e5dd] text-[#111] w-screen min-h-[900vh]">
+      <section
+        ref={stickySection}
+        className="relative h-screen w-screen overflow-hidden"
+      >
+        <div className="absolute flex flex-col m-4 md:m-8 select-none z-9 font-final">
+          <div className="relative w-[1200px] h-[150px] overflow-hidden clip-path-polygon">
+            <h1 className="uppercase font-black text-[2rem] sm:text-[4rem] md:text-[6rem] xl:text-[8rem] leading-none tracking-tight whitespace-nowrap">
+              What We Do!
+            </h1>
+          </div>
+          <div className="relative w-[1200px] h-[120px] -top-2 overflow-hidden clip-path-polygon">
+            <div
+              ref={countContainer}
+              className="relative flex flex-col will-change-transform"
+              style={{
+                transformOrigin: "center",
+                transform: "translate(120px, 150px)",
+              }}
+            >
+              {[1, 2, 3, 4, 5].map((num) => (
+                <h1
+                  key={num}
+                  className="uppercase font-bold text-[9rem] leading-none tracking-tight whitespace-nowrap"
                 >
-                    {[...items, null, null].map((item, idx) => {
-                        if (!item) {
-                            return (
-                                <div
-                                    key={"empty" + idx}
-                                    className="card empty w-[500px] h-[550px] opacity-0"
-                                    ref={el => {
-                                        if (el && cards.current) {
-                                            cards.current[idx] = el;
-                                        }
-                                    }}
-                                ></div>
-                            );
-                        }
-                        return (
-                            <div
-                                key={idx}
-                                className="card w-[500px] h-[550px] flex flex-col gap-4 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-                                ref={el => {
-                                    if (el && cards.current) {
-                                        cards.current[idx] = el;
-                                    }
-                                }}
-                            >
-                                <div className="card-img rounded-lg overflow-hidden flex-1">
-                                    <Image
-                                        src={item.src}
-                                        alt={`Step ${idx + 1}`}
-                                        className="w-[80%] h-[80%] object-cover"
-                                        width={400}
-                                        height={440}
-                                        priority
-                                    />
-                                </div>
-                                <div className="card-content">
-                                    <p className="text-[#111] text-[1.1rem] font-santoshi  font-medium leading-snug text-left">
-                                        {item.text}
-                                    </p>
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
-            </section>
+                  {num.toString().padStart(2, "0")}
+                </h1>
+              ))}
+            </div>
+          </div>
+        </div>
 
-            {/* Styles */}
-            <style>{`
+        {/* Cards */}
+        <div
+          className="absolute top-[25%] left-1/2 w-[150vw] h-[600px] -translate-x-1/2 will-change-transform z-10"
+          aria-label="Cards Container"
+        >
+          {[...items, null, null].map((item, idx) => {
+            if (!item) {
+              return (
+                <div
+                  key={"empty" + idx}
+                  className="card empty opacity-0"
+                  ref={(el) => {
+                    if (el && cards.current) cards.current[idx] = el;
+                  }}
+                ></div>
+              );
+            }
+            return (
+              <div
+                key={idx}
+                className="card flex flex-col absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                ref={(el) => {
+                  if (el && cards.current) cards.current[idx] = el;
+                }}
+              >
+                <Link href={item.link} className="block w-[90%] h-[75%] mx-auto mt-2">
+                  <Image
+                    src={item.src}
+                    alt={`Step ${idx + 1}`}
+                    className="w-full h-full object-cover rounded-lg"
+                    width={360} // reduced size slightly
+                    height={320}
+                    priority
+                  />
+                </Link>
+                <div className="card-content mt-1">
+                  <p className="text-[#111] text-[1.1rem] font-santoshi font-medium leading-snug text-left">
+                    {item.text}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      <style>{`
         .card {
-        position: absolute;
-        width: 500px;
-        height: 550px;
-        top: 50%;
-        left: 50%;
-        transform-origin: center center;
-        margin-left: -250px;
-        display: flex;
-        flex-direction: column;
-        gap: 1em;
-        will-change: transform;
+          position: absolute;
+          width: 400px; /* slightly reduced */
+          height: 480px; /* slightly reduced */
+          top: 50%;
+          left: 50%;
+          transform-origin: center center;
+          display: flex;
+          flex-direction: column;
+          will-change: transform;
         }
 
         .empty {
@@ -288,30 +251,17 @@ export default function BestGlasses() {
         }
         @media (max-width: 900px) {
           .card {
-            width: 350px;
-            height: 400px;
-            margin-left: -175px;
-          }
-          .relative.w-[1200px] {
-            width: 90vw !important;
-          }
-          .text-[150px] {
-            font-size: 5rem !important;
-            line-height: 1;
+            width: 300px;
+            height: 380px;
           }
         }
         @media (max-width: 600px) {
           .card {
-            width: 280px;
-            height: 350px;
-            margin-left: -140px;
-          }
-          .text-[150px] {
-            font-size: 4rem !important;
-            line-height: 1;
+            width: 240px;
+            height: 320px;
           }
         }
       `}</style>
-        </div>
-    );
+    </div>
+  );
 }
