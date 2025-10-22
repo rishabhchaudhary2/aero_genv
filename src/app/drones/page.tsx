@@ -235,11 +235,11 @@ const DronePage = () => {
             transition={{ duration: 1 }}
             className="max-w-5xl"
           >
-            <h1 className="text-[4rem] md:text-[8rem] font-bold leading-none tracking-wider uppercase mb-6">
+            <h1 className="text-[3.7rem] md:text-[8rem] font-bold leading-none tracking-wider uppercase mb-6">
               Drones
             </h1>
             <p className="text-xl md:text-2xl max-w-2xl font-light tracking-wide">
-              The future of aerial technology and innovation
+              Drones are transforming the way we fly, going beyond what humans can do on their own. With smart sensors, adaptable systems, and eco-friendly designs, they&apos;re more than just convenient tools, they&apos;re symbols of innovation, adventure, and progress in the skies.
             </p>
           </motion.div>
           
@@ -278,12 +278,12 @@ const DronePage = () => {
     >
       <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold uppercase mb-8 tracking-wider">Radio Controlled Aircrafts</h3>
       <p className="text-base sm:text-lg mb-6">
-        RC planes are popular nowadays in the field of aviation. These model aircrafts, piloted from the ground by exceptionally 
-        trained operators, offer a fine amalgam of engineering science, aerodynamics principles, and precision controls.
+       Drones represent the next leap in aerospace innovation, merging advanced aerodynamics, intelligent control systems, and real-time data capabilities. From aerial mapping and surveillance to delivery and disaster response, drones are transforming industries. As technology evolves, drones continue to redefine how we see, sense, and interact with the world above us.
       </p>
       <p className="text-base sm:text-lg mb-6">
-        The Aeromodelling club at NIT Kurukshetra gives us a chance to design, construct, and fly aeromodels, discussing detailed 
-        information and methods of designing, analysis, and manufacturing of RC planes.
+       At Aeromodelling club, we pioneer next-gen drone systems designed for precision, performance, and reliability. We integrate advanced aerodynamics, intelligent control systems, and real-time data analytics to power solutions across defence, logistics, and industrial applications.
+We don’t just build drones — we engineer the future of flight.
+
       </p>
     </motion.div>
     
@@ -295,15 +295,15 @@ const DronePage = () => {
       transition={{ duration: 0.8, delay: 0.2 }}
       viewport={{ once: true }}
     >
-      <h3 className="text-xl font-bold mb-6 tracking-wider">Flyer&apos;s Checklist</h3>
+      <h3 className="text-xl font-bold mb-6 tracking-wider">Drone Pilot&apos;s Checklist</h3>
       <ul className="space-y-3">
         {[
           "Double Tape, Cello Tape, Cutter", 
           "ESCs, Battery", 
-          "Screw Driver",
-          "Styrofoam, Balsa Wood", 
-          "Motor, Motor Screw Box", 
+          "Screw Driver,L-keys",
+          "Motor, Motor Screw Box, Motor Shat", 
           "Rubber Band, Propellers", 
+          "Propeller Guards,Pliers,Jumper Wires", 
           "Transmitter, Receiver"
         ].map((item, index) => (
           <li key={index} className="flex items-start">
@@ -346,7 +346,7 @@ const DronePage = () => {
                 {droneProjects.map((project, index) => (
                   <motion.div 
                     key={index}
-                    className="w-[300px] md:w-[400px] flex-shrink-0 bg-white/5 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden"
+                    className="w-[300px] md:w-[400px] shrink-0 bg-white/5 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden"
                     initial={{ opacity: 0, x: 50 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.8, delay: index * 0.2 }}

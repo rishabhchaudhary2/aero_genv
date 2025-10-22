@@ -1,7 +1,7 @@
 'use client';
 
 import Nav from '../components/Nav';
-// import ImageTrail from '../components/ImageTrail';
+import ImageTrail from '../components/ImageTrail';
 import Header from '../components/Header';
 import Showcase from '../components/Showcase';
 import BestGlasses from '../components/BestGlasses';
@@ -17,21 +17,22 @@ const Home = () => {
             <div className="h-screen w-full bg-[#e5e5dd] relative">
                 <div className="h-full w-full overflow-hidden">
                     <Header />
-                    {/* <ImageTrail
+                    <ImageTrail
                         items={[
-                            "/galleryimages/trail1.jpg",
-                            "/galleryimages/trail2.jpg",
-                            "/galleryimages/trail3.jpg",
-                            "/galleryimages/trail4.jpg",
-                            "/galleryimages/trail5.jpg",
-                            "/galleryimages/trail6.jpg",
-                            "/galleryimages/trail7.jpg",
-                            "/galleryimages/trail8.jpg",
-                            "/galleryimages/trail9.jpg",
-                            "/galleryimages/trail1.jpg",
+                            '/galleryimages/1.jpg',
+                            '/galleryimages/2.jpg',
+                            '/galleryimages/3.jpg',
+                            '/galleryimages/4.jpg',
+                            '/galleryimages/5.jpg',
+                            '/galleryimages/6.jpg',
+                            '/galleryimages/7.jpg',
+                            '/galleryimages/8.jpg',
+                            '/galleryimages/9.jpg',
+                            '/galleryimages/10.jpg',
+                            '/galleryimages/11.jpg',
                         ]}
                         variant={1}
-                    /> */}
+                    />
                 </div>
             </div>
             <div className="font-final">
