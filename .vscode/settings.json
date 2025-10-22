@@ -1,0 +1,21 @@
+{
+	"editor.detectIndentation": true,
+	"editor.tabFocusMode": false,
+	"actionButtons": {
+		"commands": [
+			{
+				"name": "Run Frontend",
+				"command": "npm run dev",
+				"color": "lightblue"
+			},
+			{
+				"name": "Run Backend",
+				"command": "cd backend && uvicorn main:app --reload --port 8000",
+				"color": "lightgreen"
+			}
+		],
+		"defaultColor": "white",
+		"reloadButton": "↻",
+		"loadNpmCommands": false
+	}
+}

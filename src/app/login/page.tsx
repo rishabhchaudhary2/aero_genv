@@ -8,8 +8,12 @@ import { FcGoogle } from 'react-icons/fc';
 import { HiOutlineMail } from 'react-icons/hi';
 import { RiLockPasswordLine } from 'react-icons/ri';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
+import { useAuth } from '@/contexts/AuthContext';
+import Script from 'next/script';
+import { formatRedirectUrl } from '@/lib/redirectHelper';
 
 const Login = () => {
+  const { login: authLogin, loginWithGoogle } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -18,6 +22,8 @@ const Login = () => {
   const [passwordError, setPasswordError] = useState('');
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [loginError, setLoginError] = useState<string>('');
+  const [googleLoaded, setGoogleLoaded] = useState(false);
+  const [redirectUrl, setRedirectUrl] = useState<string>('');
   
   // Floating airplane animation
   const [planes, setPlanes] = useState<{id: number, x: number, y: number, delay: number, scale: number, rotate: number}[]>([]);
@@ -36,6 +42,12 @@ const Login = () => {
       });
     }
     setPlanes(newPlanes);
+
+    // Check for redirect URL
+    const redirect = localStorage.getItem('redirect_after_login');
+    if (redirect && redirect !== '/') {
+      setRedirectUrl(redirect);
+    }
   }, []);
   
   const validateEmail = (email: string) => {
@@ -70,24 +82,68 @@ const Login = () => {
     setFormSubmitted(true);
     
     try {
-      // Replace this with your actual login API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await authLogin(email, password);
       
-      // On successful login
-      // You can add your authentication logic here
-      // For example: router.push('/dashboard')
+      // On successful login, redirect to home or dashboard
+      // router.push('/');
+      
+      const redirect = localStorage.getItem("redirect_after_login") || "/";
+      window.location.href = redirect;
       
     } catch (error) {
       console.error('Login error:', error);
-      setLoginError('An error occurred during login. Please try again.');
+      setLoginError(error instanceof Error ? error.message : 'An error occurred during login. Please try again.');
+      setFormSubmitted(false);
     } finally {
       setIsLoading(false);
     }
   };
 
+  // Google Sign-In handler
+  const handleGoogleLogin = async () => {
+    setIsLoading(true);
+    setLoginError('');
+    
+    try {
+      // @ts-expect-error - Google API types
+      const client = window.google?.accounts?.oauth2?.initTokenClient({
+        client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+        scope: 'email profile',
+        callback: async (response: { access_token?: string }) => {
+          try {
+            if (response.access_token) {
+              // Login with backend using Google access token
+              await loginWithGoogle(response.access_token);
+              
+              // Redirect on success
+              const redirect = localStorage.getItem("redirect_after_login") || "/";
+              window.location.href = redirect;
+            }
+          } catch (error) {
+            console.error('Google login error:', error);
+            setLoginError(error instanceof Error ? error.message : 'Google login failed. Please try again.');
+          } finally {
+            setIsLoading(false);
+          }
+        },
+      });
+      
+      client?.requestAccessToken();
+    } catch (error) {
+      console.error('Google login initialization error:', error);
+      setLoginError('Failed to initialize Google login. Please try again.');
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-[#e5e5dd] text-black overflow-hidden relative">
-      <Nav />
+    <>
+      <Script 
+        src="https://accounts.google.com/gsi/client" 
+        onLoad={() => setGoogleLoaded(true)}
+      />
+      <div className="min-h-screen bg-[#e5e5dd] text-black overflow-hidden relative">
+        <Nav />
       
       {/* Decorative airplane elements */}
       {planes.map((plane) => (
@@ -176,6 +232,30 @@ const Login = () => {
                 className="bg-white p-8 rounded-lg shadow-lg border border-gray-200"
               >
                 <h2 className="text-2xl font-bold mb-6">Login to your account</h2>
+                
+                {/* Redirect notification */}
+                {redirectUrl && (() => {
+                  const { display, description } = formatRedirectUrl(redirectUrl);
+                  return (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-md"
+                    >
+                      <div className="flex items-start gap-2">
+                        <span className="text-blue-500 text-lg">ℹ️</span>
+                        <div className="flex-1">
+                          <p className="text-sm text-blue-800 font-medium">
+                            You&apos;ll be redirected after login
+                          </p>
+                          <p className="text-xs text-blue-600 mt-1">
+                            <span className="font-semibold">{display}</span> • {description}
+                          </p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })()}
                 
                 <form onSubmit={handleSubmit}>
                   <div className="mb-4">
@@ -273,7 +353,9 @@ const Login = () => {
                   <div className="mt-6">
                     <motion.button
                       type="button"
-                      className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors"
+                      onClick={handleGoogleLogin}
+                      disabled={isLoading || !googleLoaded}
+                      className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                       whileHover={{ scale: 1.02, boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)" }}
                       whileTap={{ scale: 0.98 }}
                     >
@@ -368,7 +450,8 @@ const Login = () => {
           </div>
         </footer>
       </div>
-    </div>
+      </div>
+      </>
   );
 };
 
