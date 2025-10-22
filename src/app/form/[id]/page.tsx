@@ -569,12 +569,6 @@ const DynamicForm = () => {
 
               <div className="space-y-3">
                 <button
-                  onClick={() => router.push('/forms')}
-                  className="w-full px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800 transition-colors font-semibold"
-                >
-                  Browse Other Forms
-                </button>
-                <button
                   onClick={() => router.push('/')}
                   className="w-full px-6 py-3 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
                 >
