@@ -3,7 +3,7 @@
 import Nav from '../components/Nav';
 // import ImageTrail from '../components/ImageTrail';
 import Header from '../components/Header';
-import Showcase from '../components/Showcase';
+// import Showcase from '../components/Showcase';
 import BestGlasses from '../components/BestGlasses';
 
 // import Transition from '../components/Transition';
