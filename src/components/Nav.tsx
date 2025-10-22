@@ -2,18 +2,35 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { LiaLongArrowAltRightSolid } from "react-icons/lia";
+import { FiLogOut, FiUser } from "react-icons/fi";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
 import "./Navbar.css";
 
 
 const Nav: React.FC = () => {
+    const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
+    const [isHoveringProfile, setIsHoveringProfile] = useState(false);
+    const { user, isLoading: isLoadingUser, logout } = useAuth();
     const menuRef = useRef<HTMLDivElement>(null);
     
     const toggleMenu = () => {
         if (isAnimating) return;
         setIsOpen(!isOpen);
+    };
+
+    // Handle logout
+    const handleLogout = async () => {
+        try {
+            await logout();
+            setIsOpen(false);
+            router.push('/');
+        } catch (error) {
+            console.error('Logout failed:', error);
+        }
     };
 
     // Handle animation state
@@ -68,6 +85,7 @@ const Nav: React.FC = () => {
                 .menu.open .link:nth-child(5) { transition-delay: 1.25s; }
                 .menu.open .link:nth-child(6) { transition-delay: 1.35s; }
                 .menu.open .link:nth-child(7) { transition-delay: 1.45s; }
+                .menu.open .link:nth-child(8) { transition-delay: 1.55s; }
 
                 .socials p {
                     opacity: 0;
@@ -409,6 +427,48 @@ const Nav: React.FC = () => {
                 html, body {
                     overflow-x: hidden;
                     max-width: 100vw;
+                .profile-text {
+                    position: relative;
+                    display: block;
+                    overflow: hidden;
+                    width: 100%;
+                    min-width: 240px;
+                }
+
+                .profile-text-content {
+                    display: block;
+                    width: 100%;
+                    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                }
+
+                .profile-card:hover .profile-text-content {
+                    transform: translateY(-100%);
+                }
+
+                .profile-text-alt {
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    right: 0;
+                    width: 100%;
+                    min-width: 200px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                }
+
+                .profile-card:hover .profile-text-alt {
+                    transform: translateY(-100%);
+                }
+
+                .profile-avatar {
+                    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                }
+
+                .profile-card:hover .profile-avatar {
+                    transform: scale(1.1) rotate(5deg);
+                    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
                 }
             `}</style>
 
@@ -462,9 +522,28 @@ const Nav: React.FC = () => {
                             <div className="link">
                                 <Link href="/gallery">Gallery</Link>
                             </div>
-                            <div className="link">
-                                <Link href="/login">Login</Link>
-                            </div>
+                            {!isLoadingUser && (
+                                user ? (
+                                    <div className="link">
+                                        <a 
+                                            onClick={handleLogout}
+                                            style={{ cursor: 'pointer' }}
+                                            className="flex items-center gap-2"
+                                        >
+                                            Logout
+                                        </a>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <div className="link">
+                                            <Link href="/login">Login</Link>
+                                        </div>
+                                        <div className="link">
+                                            <Link href="/signup">Sign Up</Link>
+                                        </div>
+                                    </>
+                                )
+                            )}
                         </div>
                     </div>
                     <div className="video-wrapper">
@@ -473,6 +552,40 @@ const Nav: React.FC = () => {
                 </div>
 
                 <div className="col col-2">
+                    {user && (
+                        <div className="sub-col mb-8">
+                            <div 
+                                className="flex items-center gap-3 mb-2 cursor-pointer profile-card"
+                                onMouseEnter={() => setIsHoveringProfile(true)}
+                                onMouseLeave={() => setIsHoveringProfile(false)}
+                            >
+                                <div className="text-white flex-1">
+                                    <p className="text-right !opacity-70 !transform-none !text-transform-none">
+                                        Logged in as
+                                    </p>
+                                    <div className="text-right text-sm !transform-none !text-transform-none profile-text">
+                                        <div className="profile-text-content">
+                                            {user.full_name || 'User'}
+                                        </div>
+                                        <div className="profile-text-alt">
+                                            {user.email}
+                                        </div>
+                                    </div>
+                                </div>
+                                {user.profile_picture ? (
+                                    <img 
+                                        src={user.profile_picture} 
+                                        alt={user.full_name || user.email}
+                                        className="w-12 h-12 rounded-full border-2 border-current profile-avatar"
+                                    />
+                                ) : (
+                                    <div className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center border-2 border-current profile-avatar">
+                                        <FiUser className="w-6 h-6" />
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
                     <div className="socials">
                         <div className="sub-col">
                             <p>AeroModelling Club</p>
