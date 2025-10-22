@@ -522,6 +522,9 @@ const Nav: React.FC = () => {
                                 <Link href="/techspardha">External Events</Link>
                             </div>
                             <div className="link">
+                                <Link href="/members">Our Members</Link>
+                            </div>
+                            <div className="link">
                                 <Link href="/gallery">Gallery</Link>
                             </div>
                             {!isLoadingUser && (
