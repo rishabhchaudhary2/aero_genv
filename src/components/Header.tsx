@@ -2,7 +2,6 @@
 
 import {  useState, useEffect } from 'react';
 import { motion, AnimatePresence } from "framer-motion";
-import DecoderMotion from '../components/DecoderMotion';
 
 const Header: React.FC = () => {
     const headingsTopRight: string[] = [
@@ -57,7 +56,7 @@ const Header: React.FC = () => {
                         transition={{ duration: 0.8, delay: 0.7, ease: "easeOut" }}
                         className="text-lg md:text-2xl font-final font-semibold text-[#195E39] mb-6 tracking-wide"
                     >
-                        "If it flies, we build it."
+                        &ldquo;If it flies, we build it.&rdquo;
                     </motion.h3>
                     
                     {/* Description Text */}
