@@ -1,3 +1,4 @@
+import pytz
 from config.database import get_database
 from models.otp import OTPInDB, PendingUserCreate
 from services.email_service import generate_otp, send_otp_email
@@ -16,7 +17,7 @@ async def create_pending_user(email: str, password: str, full_name: Optional[str
         "email": email,
         "full_name": full_name,
         "hashed_password": get_password_hash(password),
-        "created_at": datetime.utcnow()
+        "created_at": datetime.now(tz = pytz.timezone('Asia/Kolkata'))
     }
     
     await db.pending_users.insert_one(pending_user)
@@ -43,8 +44,8 @@ async def store_otp(email: str, otp: str, expiry_minutes: int = 10) -> bool:
     otp_data = {
         "email": email,
         "otp": otp,
-        "expires_at": datetime.utcnow() + timedelta(minutes=expiry_minutes),
-        "created_at": datetime.utcnow()
+        "expires_at": datetime.now(tz = pytz.timezone('Asia/Kolkata')) + timedelta(minutes=expiry_minutes),
+        "created_at": datetime.now(tz = pytz.timezone('Asia/Kolkata'))
     }
     
     await db.otps.insert_one(otp_data)
@@ -60,7 +61,7 @@ async def verify_otp(email: str, otp: str) -> bool:
         return False
     
     # Check if OTP is expired
-    if otp_record["expires_at"] < datetime.utcnow():
+    if otp_record["expires_at"] < datetime.now(tz = pytz.timezone('Asia/Kolkata')):
         # Delete expired OTP
         await db.otps.delete_one({"email": email})
         return False
@@ -84,10 +85,10 @@ async def send_verification_otp(email: str, name: Optional[str] = None) -> str:
 async def cleanup_expired_otps():
     """Remove expired OTPs from database"""
     db = await get_database()
-    await db.otps.delete_many({"expires_at": {"$lt": datetime.utcnow()}})
+    await db.otps.delete_many({"expires_at": {"$lt": datetime.now(tz = pytz.timezone('Asia/Kolkata'))}})
 
 async def cleanup_old_pending_users():
     """Remove pending users older than 24 hours"""
     db = await get_database()
-    cutoff_time = datetime.utcnow() - timedelta(hours=24)
+    cutoff_time = datetime.now(tz = pytz.timezone('Asia/Kolkata')) - timedelta(hours=24)
     await db.pending_users.delete_many({"created_at": {"$lt": cutoff_time}})

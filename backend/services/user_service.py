@@ -1,3 +1,4 @@
+import pytz
 from config.database import get_database
 from models.user import UserInDB, UserCreate
 from services.auth_service import get_password_hash
@@ -39,8 +40,8 @@ async def create_user(user_data: UserCreate) -> UserInDB:
         "hashed_password": get_password_hash(user_data.password),
         "is_active": True,
         "is_verified": False,
-        "created_at": datetime.utcnow(),
-        "updated_at": datetime.utcnow()
+        "created_at": datetime.now(tz = pytz.timezone('Asia/Kolkata')),
+        "updated_at": datetime.now(tz = pytz.timezone('Asia/Kolkata'))
     }
     
     result = await db.users.insert_one(user_dict)
@@ -59,8 +60,8 @@ async def create_google_user(email: str, google_id: str, full_name: Optional[str
         "profile_picture": profile_picture,
         "is_active": True,
         "is_verified": True,  # Google accounts are pre-verified
-        "created_at": datetime.utcnow(),
-        "updated_at": datetime.utcnow()
+        "created_at": datetime.now(tz = pytz.timezone('Asia/Kolkata')),
+        "updated_at": datetime.now(tz = pytz.timezone('Asia/Kolkata'))
     }
     
     result = await db.users.insert_one(user_dict)
@@ -72,7 +73,7 @@ async def update_user(user_id: str, update_data: dict) -> Optional[UserInDB]:
     """Update user information"""
     db = await get_database()
     
-    update_data["updated_at"] = datetime.utcnow()
+    update_data["updated_at"] = datetime.now(tz = pytz.timezone('Asia/Kolkata'))
     
     await db.users.update_one(
         {"_id": ObjectId(user_id)},
