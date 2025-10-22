@@ -468,7 +468,6 @@ const RCPlanesPage = () => {
                                 </a>
                               </div>
                               <div className="text-white">
-                                <p className="text-sm sm:text-base font-medium">{member.rollNo} | {member.batch}</p>
                                 <p className="text-xs sm:text-sm">{member.branch}</p>
                                 {member.subDomain && (
                                   <p className="text-xs sm:text-sm mt-1 opacity-80">{member.subDomain}</p>
