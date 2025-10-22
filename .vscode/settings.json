@@ -10,7 +10,8 @@
 			},
 			{
 				"name": "Run Backend",
-				"command": "cd backend && uvicorn main:app --reload --port 8000",
+				"command": "uvicorn main:app --reload --port 8000",
+				"cwd": "D:/Coding/javascript/next/aero_genv/backend",
 				"color": "lightgreen"
 			}
 		],
