@@ -1,250 +1,239 @@
 'use client';
 
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Lenis from "lenis";
+import React from "react";
 import Image from 'next/image';
 
-gsap.registerPlugin(ScrollTrigger);
-
 const spotlightItems = [
-  { name: "", img: "/galleryimages/post.png", nameColor: "#1A1A1A", postColor: "#666666", bgColor: "#FFFFFF" },
-  { name: "Harsh Raj", img: "/galleryimages/Joint_Secretary.jpg", post: "Joint Secretary", nameColor: "#1E40AF", postColor: "#3B82F6", bgColor: "#F6EDE1" },
-  { name: "Jay Kumar Gupta", img: "/galleryimages/Secretary.png", post: "Secretary", nameColor: "#172554", postColor: "#2563EB", bgColor: "#F8FAFC" },
-  { name: "Omkar Dua", img: "/galleryimages/Vice_President.jpg", post: "Vice President", nameColor: "#0F172A", postColor: "#1D4ED8", bgColor: "#95e0f5" },
-  { name: "Priyanshu Soni", img: "/galleryimages/President.jpg", post: "President", nameColor: "#0C4A6E", postColor: "#0EA5E9", bgColor: "#F0F9FF" },
-  ];
+  { name: "Priyanshu Soni", img: "/galleryimages/President.jpg", post: "President", nameColor: "#0C4A6E", postColor: "#0EA5E9" },
+  { name: "Omkar Dua", img: "/galleryimages/Vice_President.jpg", post: "Vice President", nameColor: "#0F172A", postColor: "#1D4ED8" },
+  { name: "Jay Kumar Gupta", img: "/galleryimages/Secretary.png", post: "Secretary", nameColor: "#172554", postColor: "#2563EB" },
+  { name: "Harsh Raj", img: "/galleryimages/Joint_Secretary.jpg", post: "Joint Secretary", nameColor: "#1E40AF", postColor: "#3B82F6" },
+];
 
 const Spotlight: React.FC = () => {
-  const [mounted, setMounted] = useState(false);
-  const [bgImgSrc, setBgImgSrc] = useState(spotlightItems[0].img);
-  const [bgColor, setBgColor] = useState(spotlightItems[0].bgColor);
-
-  const titlesContainerRef = useRef<HTMLDivElement | null>(null);
-  const titlesContainerElementRef = useRef<HTMLDivElement | null>(null);
-  const imagesContainerRef = useRef<HTMLDivElement | null>(null);
-  const spotlightHeaderRef = useRef<HTMLDivElement | null>(null);
-  const spotlightBgImgRef = useRef<HTMLDivElement | null>(null);
-  const introTextElementsRef = useRef<Array<HTMLDivElement | null>>([]);
-  const imageRefs = useRef<Array<HTMLDivElement | null>>([]);
-  const titleRefs = useRef<Array<HTMLHeadingElement | null>>([]);
-  const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
-  const lenisRef = useRef<Lenis | null>(null);
-
-  const totalItems = spotlightItems.length;
-  const config = { gap: 0.8 / totalItems, speed: 0.3, arcRadius: 500 };
-
-  useEffect(() => setMounted(true), []);
-
-  const setIntroTextRef = (el: HTMLDivElement | null, i: number) => {
-    introTextElementsRef.current[i] = el;
-  };
-
-  useLayoutEffect(() => {
-    if (!mounted) return;
-
-    const lenis = new Lenis();
-    lenisRef.current = lenis;
-    const rafCallback = (time: number) => lenis.raf(time * 1000);
-    lenis.on("scroll", ScrollTrigger.update);
-    gsap.ticker.add(rafCallback);
-    gsap.ticker.lagSmoothing(0);
-
-    if (!titlesContainerRef.current || !imagesContainerRef.current) return;
-
-    let currentActiveIndex = 0;
-
-    const getBezierPosition = (t: number) => {
-      const containerWidth = window.innerWidth * 0.3;
-      const containerHeight = window.innerHeight;
-      const arcStartX = containerWidth - 220;
-      const arcStartY = -200;
-      const arcEndY = containerHeight + 200;
-      const arcControlX = arcStartX + config.arcRadius;
-      const arcControlY = containerHeight / 2;
-      const x = (1 - t) * (1 - t) * arcStartX + 2 * (1 - t) * t * arcControlX + t * t * arcStartX;
-      const y = (1 - t) * (1 - t) * arcStartY + 2 * (1 - t) * t * arcControlY + t * t * arcEndY;
-      return { x, y };
-    };
-
-    const getImgProgressState = (index: number, overallProgress: number) => {
-      const startTime = index * config.gap;
-      const endTime = startTime + config.speed;
-      if (overallProgress < startTime) return -1;
-      if (overallProgress > endTime) return 2;
-      return (overallProgress - startTime) / config.speed;
-    };
-
-    imageRefs.current.forEach(img => img && gsap.set(img, { opacity: 0 }));
-
-    scrollTriggerRef.current = ScrollTrigger.create({
-      trigger: ".spotlight",
-      start: "top top",
-      end: `+=${window.innerHeight * (3 + totalItems / 2)}`,
-      pin: true,
-      scrub: 1,
-      onUpdate: (self) => {
-        const progress = self.progress;
-
-        // ---- Intro animation ----
-        // if (progress <= 0.2) {
-        //   const animProgress = progress / 0.2;
-        //   if (spotlightBgImgRef.current) gsap.set(spotlightBgImgRef.current, { scale: animProgress });
-        //   if (imageRefs.current[0]) {
-        //     gsap.set(imageRefs.current[0], {
-        //       y: -animProgress * 150,
-        //       scale: 0.5 + animProgress * 0.5,
-        //       opacity: animProgress
-        //     });
-        //   }
-        //   introTextElementsRef.current.forEach((el, i) => {
-        //     if (!el) return;
-        //     gsap.set(el, { x: (i === 0 ? -1 : 1) * animProgress * window.innerWidth * 0.6, opacity: 1 });
-        //   });
-        // }
-
-        // ---- Bézier arc animation for other images ----
-        if (progress > 0.25 && progress <= 0.95) {
-          const switchProgress = (progress - 0.25) / 0.7;
-          const viewportHeight = window.innerHeight;
-          const titlesHeight = titlesContainerRef.current?.scrollHeight || 0;
-          const startY = viewportHeight;
-          const targetY = -titlesHeight;
-          const totalDist = startY - targetY;
-          const currentY = startY - switchProgress * totalDist;
-          if (titlesContainerRef.current) gsap.set(titlesContainerRef.current, { y: currentY });
-
-          imageRefs.current.forEach((img, idx) => {
-            if (!img) return;
-            if (idx === 0) return;
-            const imgProgress = getImgProgressState(idx, switchProgress);
-            if (imgProgress < 0 || imgProgress > 1) gsap.set(img, { opacity: 0 });
-            else {
-              const pos = getBezierPosition(imgProgress);
-              gsap.set(img, { x: pos.x - 100, y: pos.y - 75, opacity: 1 });
-            }
-          });
-
-          const mid = viewportHeight / 2;
-          let closestIndex = 0;
-          let closestDist = Infinity;
-          titleRefs.current.forEach((title, i) => {
-            if (!title) return;
-            const rect = title.getBoundingClientRect();
-            const center = rect.top + rect.height / 2;
-            const dist = Math.abs(center - mid);
-            if (dist < closestDist) {
-              closestDist = dist;
-              closestIndex = i;
-            }
-          });
-
-          if (closestIndex !== currentActiveIndex) {
-            if (titleRefs.current[currentActiveIndex]) titleRefs.current[currentActiveIndex]!.style.opacity = "0.25";
-            if (titleRefs.current[closestIndex]) titleRefs.current[closestIndex]!.style.opacity = "1";
-            const img = new window.Image();
-            img.src = spotlightItems[closestIndex].img;
-            img.onload = () => {
-              setBgImgSrc(spotlightItems[closestIndex].img);
-              setBgColor(spotlightItems[closestIndex].bgColor);
-            };
-            currentActiveIndex = closestIndex;
-          }
-        }
-
-        // ---- Header & triangular lines visibility (fixed for scroll up) ----
-        if (progress > 0.2 && progress <= 0.95) {
-          if (spotlightHeaderRef.current) spotlightHeaderRef.current.style.opacity = "1";
-          if (titlesContainerElementRef.current) {
-            titlesContainerElementRef.current.style.setProperty("--before-opacity", "1");
-            titlesContainerElementRef.current.style.setProperty("--after-opacity", "1");
-          }
-        } else {
-          if (spotlightHeaderRef.current) spotlightHeaderRef.current.style.opacity = "0";
-          if (titlesContainerElementRef.current) {
-            titlesContainerElementRef.current.style.setProperty("--before-opacity", "0");
-            titlesContainerElementRef.current.style.setProperty("--after-opacity", "0");
-          }
-        }
-      },
-    });
-
-    return () => {
-      gsap.killTweensOf("*");
-      scrollTriggerRef.current?.kill();
-      ScrollTrigger.getAll().forEach(st => st.kill());
-      lenisRef.current?.destroy();
-      gsap.ticker.remove(rafCallback);
-      imageRefs.current = [];
-      titleRefs.current = [];
-    };
-  }, [mounted]);
-
-  if (!mounted) return null;
-
   return (
-    <section className="spotlight relative w-screen h-svh overflow-hidden font-santoshi" style={{ height: "100svh", backgroundColor: bgColor }}>
-      {/* Intro text */}
-     
+    <>
+      {/* Competitions Timeline Section */}
+      <section className="relative w-full min-h-[60vh] bg-gradient-to-b from-[#f5f5f0] via-[#ffffff] to-[#e5e5dd] py-16 md:py-24 font-final overflow-hidden">
+        {/* Background Decorative Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-green-200/30 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-200/30 rounded-full blur-3xl"></div>
+        </div>
 
-      {/* Background image */}
-      <div className="spotlight-bg-img absolute w-full h-full overflow-hidden will-change-transform z-0" ref={spotlightBgImgRef}>
-        <Image src={bgImgSrc} alt="Background" fill sizes="100vw" quality={100} className="w-full h-full object-contain"/>
-      </div>
+        {/* Header */}
+        <div className="relative text-center mb-12 md:mb-16 px-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold uppercase tracking-tight mb-3 text-[#111]">
+            Competitions Timeline
+          </h2>
+          <p className="text-sm md:text-base text-[#666] font-santoshi max-w-2xl mx-auto">
+            Our journey in national and international aeromodelling competitions
+          </p>
+        </div>
 
-      {/* Titles container with triangular lines */}
-      <div className="spotlight-titles-container uppercase font-bold text-[4rem] absolute top-0 left-[15vw] w-full h-full overflow-hidden" ref={titlesContainerElementRef} style={{ "--before-opacity": 0, "--after-opacity": 0 } as React.CSSProperties}>
-        <style>{`
-          .spotlight-titles-container::before,
-          .spotlight-titles-container::after {
-            content: "";
-            position: absolute;
-            width: 100svh;
-            height: 2.5px;
-            background: #fff;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            z-index: 10;
-          }
-          .spotlight-titles-container::before {
-            top: 0;
-            left: 0;
-            transform: rotate(-45deg) translate(-7rem);
-            opacity: var(--before-opacity);
-          }
-          .spotlight-titles-container::after {
-            bottom: 0;
-            left: 0;
-            transform: rotate(45deg) translate(-7rem);
-            opacity: var(--after-opacity);
-          }
-        `}</style>
+        {/* Timeline */}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Timeline Items */}
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-4 md:gap-0 relative">
+            {/* Timeline Line - positioned to pass through dots */}
+            <div className="absolute left-0 right-0 top-[8px] h-1 bg-gradient-to-r from-[#195E39] via-[#2d7a52] to-[#195E39] hidden md:block"></div>
+            
+            {/* 2022 - IIT Kanpur */}
+            <div className="flex flex-col items-center text-center group">
+              <div className="relative mb-4">
+                <div className="w-4 h-4 bg-[#195E39] rounded-full border-4 border-white shadow-lg relative z-10 group-hover:scale-150 transition-transform duration-300"></div>
+                <div className="absolute inset-0 w-4 h-4 bg-[#195E39] rounded-full animate-ping opacity-50"></div>
+              </div>
+              <p className="text-[#195E39] font-bold text-base md:text-lg mb-2">2022</p>
+              <p className="text-[#333] font-semibold text-xs md:text-sm">IIT Kanpur</p>
+            </div>
 
-        <div className="spotlight-titles relative left-[15%] w-[75%] h-full flex flex-col gap-20 translate-y-full z-20" ref={titlesContainerRef}>
-          {spotlightItems.map((item, idx) => (
-            <div key={idx}>
-              <h1 ref={el => { if (el) titleRefs.current[idx] = el; }} style={{ opacity: idx === 0 ? 1 : 0.25, color: item.nameColor }}>{item.name}</h1>
-              {item.post && <p style={{ color: item.postColor, fontSize: "1rem", marginTop: "0.5rem" }}>{item.post}</p>}
+            {/* 2022 - NIT Calicut */}
+            <div className="flex flex-col items-center text-center group">
+              <div className="relative mb-4">
+                <div className="w-4 h-4 bg-[#2d7a52] rounded-full border-4 border-white shadow-lg relative z-10 group-hover:scale-150 transition-transform duration-300"></div>
+                <div className="absolute inset-0 w-4 h-4 bg-[#2d7a52] rounded-full animate-ping opacity-50"></div>
+              </div>
+              <p className="text-[#195E39] font-bold text-base md:text-lg mb-2">2022</p>
+              <p className="text-[#333] font-semibold text-xs md:text-sm">NIT Calicut</p>
+            </div>
+
+            {/* 2023 - SIH */}
+            <div className="flex flex-col items-center text-center group">
+              <div className="relative mb-4">
+                <div className="w-4 h-4 bg-[#195E39] rounded-full border-4 border-white shadow-lg relative z-10 group-hover:scale-150 transition-transform duration-300"></div>
+                <div className="absolute inset-0 w-4 h-4 bg-[#195E39] rounded-full animate-ping opacity-50"></div>
+              </div>
+              <p className="text-[#195E39] font-bold text-base md:text-lg mb-2">2023</p>
+              <p className="text-[#333] font-semibold text-xs md:text-sm">SIH</p>
+            </div>
+
+            {/* 2024 - IIT Bombay */}
+            <div className="flex flex-col items-center text-center group">
+              <div className="relative mb-4">
+                <div className="w-4 h-4 bg-[#2d7a52] rounded-full border-4 border-white shadow-lg relative z-10 group-hover:scale-150 transition-transform duration-300"></div>
+                <div className="absolute inset-0 w-4 h-4 bg-[#2d7a52] rounded-full animate-ping opacity-50"></div>
+              </div>
+              <p className="text-[#195E39] font-bold text-base md:text-lg mb-2">2024</p>
+              <p className="text-[#333] font-semibold text-xs md:text-sm">IIT Bombay</p>
+            </div>
+
+            {/* 2025 - IIT Roorkee */}
+            <div className="flex flex-col items-center text-center group">
+              <div className="relative mb-4">
+                <div className="w-4 h-4 bg-[#195E39] rounded-full border-4 border-white shadow-lg relative z-10 group-hover:scale-150 transition-transform duration-300"></div>
+                <div className="absolute inset-0 w-4 h-4 bg-[#195E39] rounded-full animate-ping opacity-50"></div>
+              </div>
+              <p className="text-[#195E39] font-bold text-base md:text-lg mb-2">2025</p>
+              <p className="text-[#333] font-semibold text-xs md:text-sm">IIT Roorkee</p>
+            </div>
+
+            {/* 2025 - NIDAR */}
+            <div className="flex flex-col items-center text-center group">
+              <div className="relative mb-4">
+                <div className="w-4 h-4 bg-[#2d7a52] rounded-full border-4 border-white shadow-lg relative z-10 group-hover:scale-150 transition-transform duration-300"></div>
+                <div className="absolute inset-0 w-4 h-4 bg-[#2d7a52] rounded-full animate-ping opacity-50"></div>
+              </div>
+              <p className="text-[#195E39] font-bold text-base md:text-lg mb-2">2025</p>
+              <p className="text-[#333] font-semibold text-xs md:text-sm">NIDAR</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Leaders Section */}
+      <section className="relative w-full min-h-screen bg-gradient-to-b from-[#e5e5dd] via-[#f5f5f0] to-[#e5e5dd] py-16 md:py-24 font-final">
+        {/* Header */}
+        <div className="text-center mb-12 md:mb-16 px-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold uppercase tracking-tight text-[#111] mb-3">
+            Meet Our Leaders
+          </h2>
+          <p className="text-sm md:text-base text-[#666] font-santoshi max-w-2xl mx-auto">
+            The visionaries steering Aero Club to new heights
+          </p>
+        </div>
+
+      {/* Grid of Leaders */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+          {spotlightItems.map((item, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 group"
+            >
+              <div className="grid grid-cols-1 sm:grid-cols-5">
+                {/* Image */}
+                <div className="relative h-64 sm:h-auto sm:col-span-2 bg-gradient-to-br from-gray-100 to-gray-50 overflow-hidden">
+                  <div className="absolute inset-0">
+                    <Image 
+                      src={item.img} 
+                      alt={item.name}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                  </div>
+                  {/* Gradient Overlay on Hover */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                </div>
+
+                {/* Info */}
+                <div className="p-6 sm:p-8 sm:col-span-3 flex flex-col justify-center">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: item.postColor }}></div>
+                    <p 
+                      className="text-xs md:text-sm font-semibold uppercase tracking-wide"
+                      style={{ color: item.postColor }}
+                    >
+                      {item.post}
+                    </p>
+                  </div>
+                  
+                  <h3 
+                    className="text-xl md:text-2xl lg:text-3xl font-bold leading-tight mb-4 group-hover:translate-x-2 transition-transform duration-300"
+                    style={{ color: item.nameColor }}
+                  >
+                    {item.name}
+                  </h3>
+                  
+                  <div className="w-12 h-1 rounded-full transition-all duration-300 group-hover:w-20" style={{ backgroundColor: item.postColor }}></div>
+                </div>
+              </div>
             </div>
           ))}
         </div>
       </div>
+    </section>
 
-      {/* Images */}
-      <div className="spotlight-images absolute top-0 left-0 w-1/2 min-w-[300px] h-full pointer-events-none z-10" ref={imagesContainerRef}>
-        {spotlightItems.map((item, idx) => (
-          <div key={idx} className="spotlight-img absolute md:right-[-19%] w-[250px] h-[270px] will-change-transform" ref={el => { if (el) imageRefs.current[idx] = el; }} style={{ opacity: 0 }}>
-            <Image src={item.img} alt={item.name} fill sizes="(max-width: 768px) 100vw, 200px" className="w-full h-full object-cover"/>
-          </div>
-        ))}
+    {/* Sponsors Section */}
+    <section className="relative w-full min-h-[50vh] bg-gradient-to-b from-[#e5e5dd] via-[#f5f5f0] to-[#e5e5dd] py-16 md:py-24 font-final overflow-hidden">
+      {/* Background Decorative Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
+        <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-[#195E39]/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-[#195E39]/20 rounded-full blur-3xl"></div>
       </div>
 
       {/* Header */}
-      <div className="spotlight-header absolute top-1/2 left-[2%] -translate-y-1/2 text-black transition-opacity duration-300 opacity-0 z-20" ref={spotlightHeaderRef}>
-        <p className="text-[2.2rem] font-bold leading-none">Meet the Post Holders</p>
+      <div className="relative text-center mb-12 md:mb-16 px-4">
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold uppercase tracking-tight mb-3 text-[#111]">
+          Our Past Sponsors
+        </h2>
+      </div>
+
+      {/* Sponsors Grid */}
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+          {/* Unstop */}
+          <div className="flex flex-col items-center justify-center group">
+            <div className="w-24 h-24 md:w-28 md:h-28 bg-white rounded-full shadow-lg flex items-center justify-center mb-3 transition-transform duration-300 group-hover:scale-110 group-hover:shadow-xl border-2 border-[#195E39]/10">
+              <div className="w-16 h-16 md:w-18 md:h-18 bg-[#0066CC] rounded-full flex items-center justify-center">
+                <span className="text-white font-black text-xs md:text-sm">Unstop</span>
+              </div>
+            </div>
+            <h3 className="text-sm md:text-base font-semibold text-[#333] group-hover:text-[#195E39] transition-colors duration-300">
+              Unstop
+            </h3>
+          </div>
+
+          {/* Polygon */}
+          <div className="flex flex-col items-center justify-center group">
+            <div className="w-24 h-24 md:w-28 md:h-28 bg-white rounded-full shadow-lg flex items-center justify-center mb-3 transition-transform duration-300 group-hover:scale-110 group-hover:shadow-xl border-2 border-[#195E39]/10">
+              <div className="w-16 h-16 md:w-18 md:h-18 bg-gradient-to-br from-[#8247E5] to-[#A855F7] rounded-full flex items-center justify-center">
+                <span className="text-white font-black text-xs md:text-sm">Polygon</span>
+              </div>
+            </div>
+            <h3 className="text-sm md:text-base font-semibold text-[#333] group-hover:text-[#195E39] transition-colors duration-300">
+              Polygon
+            </h3>
+          </div>
+
+          {/* Dassault Systems */}
+          <div className="flex flex-col items-center justify-center group">
+            <div className="w-24 h-24 md:w-28 md:h-28 bg-white rounded-full shadow-lg flex items-center justify-center mb-3 transition-transform duration-300 group-hover:scale-110 group-hover:shadow-xl border-2 border-[#195E39]/10">
+              <div className="w-16 h-16 md:w-18 md:h-18 bg-[#005A9C] rounded-full flex items-center justify-center">
+                <span className="text-white font-black text-xs text-center px-1">Dassault</span>
+              </div>
+            </div>
+            <h3 className="text-sm md:text-base font-semibold text-[#333] group-hover:text-[#195E39] transition-colors duration-300">
+              Dassault Systems
+            </h3>
+          </div>
+
+          {/* EM Works */}
+          <div className="flex flex-col items-center justify-center group">
+            <div className="w-24 h-24 md:w-28 md:h-28 bg-white rounded-full shadow-lg flex items-center justify-center mb-3 transition-transform duration-300 group-hover:scale-110 group-hover:shadow-xl border-2 border-[#195E39]/10">
+              <div className="w-16 h-16 md:w-18 md:h-18 bg-gradient-to-br from-[#DC2626] to-[#1E40AF] rounded-full flex items-center justify-center">
+                <span className="text-white font-black text-xs">EM Works</span>
+              </div>
+            </div>
+            <h3 className="text-sm md:text-base font-semibold text-[#333] group-hover:text-[#195E39] transition-colors duration-300">
+              EM Works
+            </h3>
+          </div>
+        </div>
       </div>
     </section>
+    </>
   );
 };
 
