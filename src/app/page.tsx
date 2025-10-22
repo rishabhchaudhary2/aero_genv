@@ -35,9 +35,9 @@ const Home = () => {
                     /> */}
                 </div>
             </div>
-            <div className="font-final">
+            {/* <div className="font-final">
                 <Showcase />
-            </div>
+            </div> */}
             <BestGlasses />
             {/* <Text /> */}
             <Collections />
