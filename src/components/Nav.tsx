@@ -427,6 +427,8 @@ const Nav: React.FC = () => {
                 html, body {
                     overflow-x: hidden;
                     max-width: 100vw;
+                }
+
                 .profile-text {
                     position: relative;
                     display: block;
@@ -572,17 +574,9 @@ const Nav: React.FC = () => {
                                         </div>
                                     </div>
                                 </div>
-                                {user.profile_picture ? (
-                                    <img 
-                                        src={user.profile_picture} 
-                                        alt={user.full_name || user.email}
-                                        className="w-12 h-12 rounded-full border-2 border-current profile-avatar"
-                                    />
-                                ) : (
-                                    <div className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center border-2 border-current profile-avatar">
-                                        <FiUser className="w-6 h-6" />
-                                    </div>
-                                )}
+                                <div className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center border-2 border-current profile-avatar">
+                                    <FiUser className="w-6 h-6" />
+                                </div>
                             </div>
                         </div>
                     )}
