@@ -60,8 +60,10 @@ async def verify_otp(email: str, otp: str) -> bool:
     if not otp_record:
         return False
     
+    new_expiry = otp_record["expires_at"].replace(tzinfo=pytz.utc)
+    
     # Check if OTP is expired
-    if otp_record["expires_at"] < datetime.now(tz = pytz.timezone('Asia/Kolkata')):
+    if new_expiry < datetime.now(tz = pytz.timezone('Asia/Kolkata')):
         # Delete expired OTP
         await db.otps.delete_one({"email": email})
         return False
