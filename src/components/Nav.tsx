@@ -37,7 +37,6 @@ const Nav: React.FC = () => {
     useEffect(() => {
         if (isOpen) {
             setIsAnimating(true);
-            // Animation duration is 1500ms
             const timer = setTimeout(() => setIsAnimating(false), 1500);
             return () => clearTimeout(timer);
         } else {
@@ -60,6 +59,7 @@ const Nav: React.FC = () => {
                     pointer-events: none;
                     clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
                     transition: clip-path 1.5s cubic-bezier(0.354, 0, 0.498, 0.502);
+                    overflow-y: auto;
                 }
 
                 .menu.open {
@@ -177,6 +177,256 @@ const Nav: React.FC = () => {
                     width: 100%;
                 }
 
+                /* Responsive Styles */
+                @media (max-width: 768px) {
+                    body {
+                        overflow-x: hidden;
+                    }
+
+                    .logo {
+                        padding: 15px;
+                    }
+
+                    .logo img {
+                        height: 60px !important;
+                        width: 60px !important;
+                    }
+
+                    .menu-toggle {
+                        padding: 15px;
+                    }
+
+                    .menu-toggle-icon {
+                        transform: scale(0.8);
+                    }
+
+                    .menu-copy p {
+                        font-size: 12px;
+                    }
+
+                    .menu {
+                        display: flex;
+                        flex-direction: column;
+                        padding: 20px;
+                        overflow-x: hidden;
+                        width: 100vw;
+                    }
+
+                    .col {
+                        width: 100% !important;
+                        padding: 20px 0 !important;
+                        max-width: 100%;
+                    }
+
+                    .col-2:first-child {
+                        order: 1;
+                    }
+
+                    .col-2:last-child {
+                        order: 2;
+                    }
+
+                    .menu-logo {
+                        margin-bottom: 30px;
+                    }
+
+                    .menu-logo img {
+                        height: 80px !important;
+                        width: 80px !important;
+                    }
+
+                    .links {
+                        flex-direction: column !important;
+                        gap: 20px !important;
+                        margin-bottom: 30px;
+                    }
+
+                    .link {
+                        font-size: 24px;
+                        margin-bottom: 15px;
+                    }
+
+                    .video-wrapper {
+                        display: none;
+                    }
+
+                    .socials {
+                        display: none;
+                    }
+
+                    .header {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        min-height: 300px;
+                    }
+
+                    .header h1 {
+                        font-size: 80px;
+                        justify-content: center;
+                        flex-wrap: wrap;
+                    }
+
+                    .header-char {
+                        font-size: 80px;
+                    }
+
+                    .col-2:last-child {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                }
+
+                @media (min-width: 769px) and (max-width: 1024px) {
+                    body {
+                        overflow-x: hidden;
+                    }
+
+                    .logo img {
+                        height: 90px !important;
+                        width: 90px !important;
+                    }
+
+                    .menu {
+                        padding: 30px;
+                        overflow-x: hidden;
+                        width: 100vw;
+                    }
+
+                    .col {
+                        max-width: 100%;
+                    }
+
+                    .links {
+                        gap: 30px !important;
+                    }
+
+                    .link {
+                        font-size: 28px;
+                    }
+
+                    .video-wrapper {
+                        display: none;
+                    }
+
+                    .socials {
+                        display: none;
+                    }
+
+                    .header {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        min-height: 200px;
+                    }
+
+                    .header h1 {
+                        font-size: 56px;
+                    }
+                }
+
+                @media (max-width: 480px) {
+                    body {
+                        overflow-x: hidden;
+                    }
+
+                    .logo img {
+                        height: 50px !important;
+                        width: 50px !important;
+                    }
+
+                    .menu {
+                        padding: 15px;
+                        overflow-x: hidden;
+                        width: 100vw;
+                    }
+
+                    .col {
+                        max-width: 100%;
+                    }
+
+                    .link {
+                        font-size: 20px;
+                        margin-bottom: 12px;
+                    }
+
+                    .video-wrapper {
+                        display: none;
+                    }
+
+                    .socials {
+                        display: none;
+                    }
+
+                    .header {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        min-height: 220px;
+                    }
+
+                    .header h1 {
+                        font-size: 64px;
+                    }
+
+                    .header-char {
+                        font-size: 64px;
+                    }
+                }
+
+                /* Ensure menu content doesn't overflow */
+                @media (max-height: 700px) and (max-width: 768px) {
+                    body {
+                        overflow-x: hidden;
+                    }
+
+                    .menu {
+                        overflow-y: auto;
+                        overflow-x: hidden;
+                        width: 100vw;
+                    }
+
+                    .col {
+                        max-width: 100%;
+                    }
+
+                    .link {
+                        font-size: 18px;
+                        margin-bottom: 10px;
+                    }
+
+                    .video-wrapper {
+                        display: none;
+                    }
+
+                    .socials {
+                        display: none;
+                    }
+
+                    .header {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        min-height: 120px;
+                    }
+
+                    .header h1 {
+                        font-size: 24px;
+                    }
+
+                    .menu-logo {
+                        margin-bottom: 20px;
+                    }
+                }
+
+                * {
+                    box-sizing: border-box;
+                }
+
+                html, body {
+                    overflow-x: hidden;
+                    max-width: 100vw;
                 .profile-text {
                     position: relative;
                     display: block;
@@ -249,51 +499,51 @@ const Nav: React.FC = () => {
                     </div>
                     <div className="links flex gap-10">
                         <div className="">
-                        <div className="link">
-                            <Link href="/">Home</Link>
-                        </div>
-                        <div className="link">
-                            <Link href="/drones">Drone </Link>
-                        </div>
-                        <div className="link">
-                            <Link href="/rcplanes">Rc Planes</Link>
-                        </div>
-                        <div className="link">
-                            <Link href="/techspardha">Techspardha</Link>
-                        </div>
+                            <div className="link">
+                                <Link href="/">Home</Link>
+                            </div>
+                            <div className="link">
+                                <Link href="/drones">Drone </Link>
+                            </div>
+                            <div className="link">
+                                <Link href="/rcplanes">Rc Planes</Link>
+                            </div>
+                            <div className="link">
+                                <Link href="/techspardha">Techspardha</Link>
+                            </div>
                         </div>
                         <div>
-                        <div className="link">
-                            <Link href="/techspardha">WorkShops</Link>
-                        </div>
-                        <div className="link">
-                            <Link href="/techspardha">External Events</Link>
-                        </div>
-                        <div className="link">
-                            <Link href="/gallery">Gallery</Link>
-                        </div>
-                        {!isLoadingUser && (
-                            user ? (
-                                <div className="link">
-                                    <a 
-                                        onClick={handleLogout}
-                                        style={{ cursor: 'pointer' }}
-                                        className="flex items-center gap-2"
-                                    >
-                                        Logout
-                                    </a>
-                                </div>
-                            ) : (
-                                <>
+                            <div className="link">
+                                <Link href="/workshop">WorkShops</Link>
+                            </div>
+                            <div className="link">
+                                <Link href="/techspardha">External Events</Link>
+                            </div>
+                            <div className="link">
+                                <Link href="/gallery">Gallery</Link>
+                            </div>
+                            {!isLoadingUser && (
+                                user ? (
                                     <div className="link">
-                                        <Link href="/login">Login</Link>
+                                        <a 
+                                            onClick={handleLogout}
+                                            style={{ cursor: 'pointer' }}
+                                            className="flex items-center gap-2"
+                                        >
+                                            Logout
+                                        </a>
                                     </div>
-                                    <div className="link">
-                                        <Link href="/signup">Sign Up</Link>
-                                    </div>
-                                </>
-                            )
-                        )}
+                                ) : (
+                                    <>
+                                        <div className="link">
+                                            <Link href="/login">Login</Link>
+                                        </div>
+                                        <div className="link">
+                                            <Link href="/signup">Sign Up</Link>
+                                        </div>
+                                    </>
+                                )
+                            )}
                         </div>
                     </div>
                     <div className="video-wrapper">
