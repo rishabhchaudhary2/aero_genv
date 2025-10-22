@@ -34,6 +34,7 @@ const events = [
         ],
         description:
             "A fast-paced drone race where participants fly mini drones through thrilling tracks. Success depends on speed, control, and tuning for stability — a perfect test of reflexes, design, and flying skill.",
+        leaderboard: true,
     },
     {
         name: "SimSky",
@@ -44,6 +45,7 @@ const events = [
         ],
         description:
             "A virtual drone race using real transmitters connected to simulators. Participants fly drones in Acro mode, competing for the fastest lap times on virtual tracks. It’s a realistic blend of gaming and aeromodelling — no drone required.",
+        leaderboard: true,
     },
 ];
 
@@ -295,9 +297,9 @@ const Techspardha = () => {
                                             <button className="px-8 py-3 bg-[#111] text-white font-santoshi font-semibold rounded-full hover:bg-[#333] transition-colors duration-300">
                                                 Register
                                             </button>
-                                            <button className="px-8 py-3 border-2 border-[#111] text-[#111] font-santoshi font-semibold rounded-full hover:bg-[#111] hover:text-white transition-all duration-300">
+                                            {event.leaderboard && (<button className="px-8 py-3 border-2 border-[#111] text-[#111] font-santoshi font-semibold rounded-full hover:bg-[#111] hover:text-white transition-all duration-300">
                                                 Leaderboard
-                                            </button>
+                                            </button>)}
                                         </div>
                                     </div>
 
