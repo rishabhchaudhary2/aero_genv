@@ -51,6 +51,8 @@ const DynamicForm = () => {
   const [validationErrors, setValidationErrors] = useState<{ [key: string]: string }>({});
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [submissionData, setSubmissionData] = useState<SubmissionCheck['submission']>(undefined);
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  const [isSavingDraft, setIsSavingDraft] = useState(false);
   
   // Decorative airplane animation
   const [planes, setPlanes] = useState<{id: number, x: number, y: number, delay: number, scale: number, rotate: number}[]>([]);
@@ -89,7 +91,7 @@ const DynamicForm = () => {
     }
   }, [user, authLoading, formId, router]);
 
-  // Fetch form data
+  // Fetch form data and load draft
   useEffect(() => {
     const fetchFormData = async () => {
       try {
@@ -133,14 +135,34 @@ const DynamicForm = () => {
               }
             }
           }
+
+          // Try to load saved draft
+          const draftResponse = await fetch(
+            `http://localhost:8000/api/forms/${formId}/draft`,
+            {
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            }
+          );
+
+          if (draftResponse.ok) {
+            const draftData = await draftResponse.json();
+            if (draftData.has_draft) {
+              // Load draft responses
+              setResponses(draftData.draft.responses);
+              setLastSaved(new Date(draftData.draft.last_saved));
+              console.log('Draft loaded:', draftData.draft);
+            } else {
+              // Initialize empty responses
+              const initialResponses: FormResponses = {};
+              data.questions.forEach(q => {
+                initialResponses[q.question_key] = '';
+              });
+              setResponses(initialResponses);
+            }
+          }
         }
-        
-        // Initialize responses object
-        const initialResponses: FormResponses = {};
-        data.questions.forEach(q => {
-          initialResponses[q.question_key] = '';
-        });
-        setResponses(initialResponses);
         
         // Check if form is open
         const now = new Date();
@@ -160,6 +182,49 @@ const DynamicForm = () => {
       fetchFormData();
     }
   }, [formId, user, router]);
+
+  // Auto-save draft after 2 seconds of inactivity
+  useEffect(() => {
+    // Don't save if form is submitted or not loaded yet
+    if (hasSubmitted || !formData || !user) return;
+
+    // Check if there's any content to save
+    const hasContent = Object.values(responses).some(value => value.trim() !== '');
+    if (!hasContent) return;
+
+    const saveDraft = async () => {
+      try {
+        setIsSavingDraft(true);
+        const token = localStorage.getItem('access_token');
+        if (!token) return;
+
+        await fetch(`http://localhost:8000/api/forms/${formId}/draft`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            form_id: formId,
+            responses
+          })
+        });
+
+        setLastSaved(new Date());
+        console.log('Draft saved automatically');
+      } catch (err) {
+        console.error('Error saving draft:', err);
+      } finally {
+        setIsSavingDraft(false);
+      }
+    };
+
+    // Set timeout for 2 seconds after last change
+    const timeoutId = setTimeout(saveDraft, 1000);
+
+    // Cleanup timeout on unmount or when dependencies change
+    return () => clearTimeout(timeoutId);
+  }, [responses, formId, hasSubmitted, formData, user]);
 
   const handleInputChange = (questionKey: string, value: string) => {
     setResponses(prev => ({
@@ -361,9 +426,10 @@ const DynamicForm = () => {
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString('en-US', {
+    return new Date(dateString + "+00:00").toLocaleString('en-IN', {
       dateStyle: 'long',
-      timeStyle: 'short'
+      timeStyle: 'short',
+      timeZone: 'Asia/Kolkata'
     });
   };
 
@@ -623,6 +689,37 @@ const DynamicForm = () => {
               </div>
             </div>
           </motion.div>
+
+          {/* Draft Status Indicator */}
+          {!hasSubmitted && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="mb-4 flex items-center justify-end gap-2 text-xs text-gray-500"
+            >
+              {isSavingDraft ? (
+                <>
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                    className="w-3 h-3 border-2 border-gray-400 border-t-transparent rounded-full"
+                  />
+                  <span>Saving draft...</span>
+                </>
+              ) : lastSaved ? (
+                <>
+                  <svg className="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span>Draft saved at {new Date(lastSaved).toLocaleTimeString('en-US', { 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                  })}</span>
+                </>
+              ) : null}
+            </motion.div>
+          )}
           
           {/* Form */}
           <AnimatePresence mode="wait">

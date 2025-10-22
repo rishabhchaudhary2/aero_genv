@@ -40,6 +40,11 @@ async def connect_to_mongo():
     await database.form_entries.create_index("form_id")
     await database.form_entries.create_index("submitted_at")
     
+    # Form drafts collection indexes
+    await database.form_drafts.create_index([("form_id", 1), ("user_id", 1)], unique=True)  # One draft per user per form
+    await database.form_drafts.create_index("user_id")
+    await database.form_drafts.create_index("last_saved")
+    
     print("Database indexes created")
     
 async def close_mongo_connection():
