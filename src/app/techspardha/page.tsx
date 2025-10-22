@@ -3,9 +3,11 @@
 import Nav from '../../components/Nav';
 import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 
 const events = [
     {
+        id: 4,
         name: "Drone Webfiesta",
         images: [
             "/galleryimages/techspardha/dronewebfiesta1.jpg",
@@ -16,6 +18,7 @@ const events = [
             "Teams design, assemble, and fly drones through challenging tasks and obstacle courses. The event offers hands-on learning in drone mechanics, control, and teamwork, blending creativity with aerial performance.",
     },
     {
+        id: 3,
         name: "High Sky",
         images: [
             "/galleryimages/techspardha/highsky1.jpg",
@@ -26,6 +29,7 @@ const events = [
             "Teams of four design, build, and fly RC aircraft with strong gliding ability. Participants learn flight basics, aerodynamics, and RC controls like transmitters and servo motors. The goal — craft a stable plane that flies smoothly and performs precise maneuvers.",
     },
     {
+        id: 2,
         name: "Drone Racing League",
         images: [
             "/galleryimages/techspardha/droneracing1.jpg",
@@ -37,6 +41,7 @@ const events = [
         leaderboard: true,
     },
     {
+        id: 1,
         name: "SimSky",
         images: [
             "/galleryimages/techspardha/simsky1.jpg",
@@ -50,6 +55,7 @@ const events = [
 ];
 
 const Techspardha = () => {
+    const router = useRouter();
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const [scrollY, setScrollY] = useState(0);
     const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
@@ -294,10 +300,10 @@ const Techspardha = () => {
                                         </p>
                                         {/* Action Buttons */}
                                         <div className="flex flex-wrap gap-4">
-                                            <button className="px-8 py-3 bg-[#111] text-white font-santoshi font-semibold rounded-full hover:bg-[#333] transition-colors duration-300">
+                                            <button onClick={() => router.push('/form/' + event.id)} className="cursor-pointer px-8 py-3 bg-[#111] text-white font-santoshi font-semibold rounded-full hover:bg-[#333] transition-colors duration-300">
                                                 Register
                                             </button>
-                                            {event.leaderboard && (<button className="px-8 py-3 border-2 border-[#111] text-[#111] font-santoshi font-semibold rounded-full hover:bg-[#111] hover:text-white transition-all duration-300">
+                                            {event.leaderboard && (<button onClick={() => router.push('/leaderboard/' + event.id)} className="cursor-pointer px-8 py-3 border-2 border-[#111] text-[#111] font-santoshi font-semibold rounded-full hover:bg-[#111] hover:text-white transition-all duration-300">
                                                 Leaderboard
                                             </button>)}
                                         </div>

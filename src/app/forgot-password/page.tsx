@@ -387,7 +387,7 @@ const ForgotPassword = () => {
 										disabled={isLoading}
 										whileHover={{ scale: 1.02 }}
 										whileTap={{ scale: 0.98 }}
-										className="w-full bg-black text-white py-2 rounded-md transition-colors relative overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed"
+										className="w-full cursor-pointer bg-black text-white py-2 rounded-md transition-colors relative overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed"
 									>
 										{isLoading ? (
 											<span className="flex items-center justify-center">

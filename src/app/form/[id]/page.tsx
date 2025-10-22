@@ -733,7 +733,7 @@ const DynamicForm = () => {
                   disabled={!isFormOpen || isSubmitting}
                   whileHover={isFormOpen && !isSubmitting ? { scale: 1.02 } : {}}
                   whileTap={isFormOpen && !isSubmitting ? { scale: 0.98 } : {}}
-                  className={`w-full py-3 px-4 rounded-md font-semibold transition-colors ${
+                  className={`w-full cursor-pointer py-3 px-4 rounded-md font-semibold transition-colors ${
                     isFormOpen && !isSubmitting
                       ? 'bg-black text-white hover:bg-gray-800'
                       : 'bg-gray-300 text-gray-500 cursor-not-allowed'
