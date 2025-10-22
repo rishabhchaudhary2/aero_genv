@@ -19,16 +19,17 @@ const Home = () => {
                     <Header />
                     {/* <ImageTrail
                         items={[
-                            "/galleryimages/trail1.jpg",
-                            "/galleryimages/trail2.jpg",
-                            "/galleryimages/trail3.jpg",
-                            "/galleryimages/trail4.jpg",
-                            "/galleryimages/trail5.jpg",
-                            "/galleryimages/trail6.jpg",
-                            "/galleryimages/trail7.jpg",
-                            "/galleryimages/trail8.jpg",
-                            "/galleryimages/trail9.jpg",
-                            "/galleryimages/trail1.jpg",
+                            '/galleryimages/1.jpg',
+                            '/galleryimages/2.jpg',
+                            '/galleryimages/3.jpg',
+                            '/galleryimages/4.jpg',
+                            '/galleryimages/5.jpg',
+                            '/galleryimages/6.jpg',
+                            '/galleryimages/7.jpg',
+                            '/galleryimages/8.jpg',
+                            '/galleryimages/9.jpg',
+                            '/galleryimages/10.jpg',
+                            '/galleryimages/11.jpg',
                         ]}
                         variant={1}
                     /> */}
