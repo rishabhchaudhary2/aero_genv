@@ -21,6 +21,9 @@ class Settings(BaseSettings):
     # Application
     FRONTEND_URL: str = "http://localhost:3000"
     
+    # Admin Emails
+    ADMIN_EMAILS: str = ""  # Comma-separated list of admin emails
+    
     # SMTP Email Configuration (for production)
     SMTP_HOST: Optional[str] = None
     SMTP_PORT: Optional[int] = None
