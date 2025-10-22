@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from typing import List, Optional, Literal, Dict
 from datetime import datetime, timezone
 from models.form_entry import FormEntryCreate, FormEntryInDB, FormEntryResponse
+from models.form_draft import FormDraftCreate, FormDraftInDB, FormDraftResponse
 from models.user import UserInDB
 from routes.auth import get_current_user
 from config.database import get_database
@@ -90,10 +91,11 @@ async def submit_form(
         )
     
     # Validate time window
+    print(form_data["opening_time"], type(form_data["opening_time"]))
     now = datetime.now(timezone.utc)
-    opening = datetime.fromisoformat(form_data["opening_time"].replace('Z', '+00:00'))
-    closing = datetime.fromisoformat(form_data["closing_time"].replace('Z', '+00:00'))
-    
+    opening: datetime = form_data["opening_time"].replace(tzinfo=timezone.utc)
+    closing: datetime = form_data["closing_time"].replace(tzinfo=timezone.utc)
+
     if now < opening:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -143,9 +145,122 @@ async def submit_form(
     
     result = await db.form_entries.insert_one(entry_data)
     
+    # Delete draft after successful submission
+    await db.form_drafts.delete_one({
+        "form_id": form_id,
+        "user_id": str(current_user.id)
+    })
+    
     return {
         "message": "Form submitted successfully",
         "submission_id": str(result.inserted_id),
         "submitted_at": now.isoformat(),
         "redirect_to": form_data.get("redirect_to")
+    }
+
+@router.get("/forms/{form_id}/draft")
+async def get_draft(form_id: str, current_user: UserInDB = Depends(get_current_user)):
+    """Get saved draft for a form"""
+    db = await get_database()
+    
+    # Check if form exists
+    form_doc = await db.forms.find_one({"id": form_id})
+    if not form_doc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Form with id '{form_id}' not found"
+        )
+    
+    # Get draft
+    draft = await db.form_drafts.find_one({
+        "form_id": form_id,
+        "user_id": str(current_user.id)
+    })
+    
+    if not draft:
+        return {
+            "has_draft": False,
+            "draft": None
+        }
+    
+    return {
+        "has_draft": True,
+        "draft": {
+            "id": str(draft["_id"]),
+            "form_id": draft["form_id"],
+            "responses": draft["responses"],
+            "last_saved": draft["last_saved"].isoformat()
+        }
+    }
+
+@router.post("/forms/{form_id}/draft")
+async def save_draft(
+    form_id: str,
+    draft: FormDraftCreate,
+    current_user: UserInDB = Depends(get_current_user)
+):
+    """Save or update draft for a form"""
+    db = await get_database()
+    
+    # Check if form exists
+    form_doc = await db.forms.find_one({"id": form_id})
+    if not form_doc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Form with id '{form_id}' not found"
+        )
+    now = datetime.now(timezone.utc)
+    
+    # Check if user already submitted this form
+    existing_entry = await db.form_entries.find_one({
+        "form_id": form_id,
+        "user_id": str(current_user.id)
+    })
+    
+    if existing_entry:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Form already submitted, cannot save draft"
+        )
+    
+    # Upsert draft (update if exists, insert if not)
+    draft_data = {
+        "form_id": form_id,
+        "user_id": str(current_user.id),
+        "responses": draft.responses,
+        "last_saved": now
+    }
+    
+    result = await db.form_drafts.update_one(
+        {
+            "form_id": form_id,
+            "user_id": str(current_user.id)
+        },
+        {"$set": draft_data},
+        upsert=True
+    )
+    
+    return {
+        "message": "Draft saved successfully",
+        "last_saved": now.isoformat()
+    }
+
+@router.delete("/forms/{form_id}/draft")
+async def delete_draft(form_id: str, current_user: UserInDB = Depends(get_current_user)):
+    """Delete saved draft for a form"""
+    db = await get_database()
+    
+    result = await db.form_drafts.delete_one({
+        "form_id": form_id,
+        "user_id": str(current_user.id)
+    })
+    
+    if result.deleted_count == 0:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No draft found"
+        )
+    
+    return {
+        "message": "Draft deleted successfully"
     }
