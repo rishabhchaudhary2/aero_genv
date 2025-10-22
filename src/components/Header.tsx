@@ -34,7 +34,7 @@ const Header: React.FC = () => {
 
     return (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-            <div className="relative text-center">
+            <div className="relative text-center max-w-7xl mx-auto px-4">
                 <h1 className="text-[5rem] md:text-[9rem] font-three font-thin leading-none tracking-wider uppercase text-black">
                     Aero Modelling Club
                 </h1>
@@ -42,7 +42,34 @@ const Header: React.FC = () => {
                 <h5 className="text-[2rem] md:text-[4rem] font-three font-thin leading-none tracking-wider uppercase text-black">
                     NIT Kurukshetra
                 </h5>
-                <DecoderMotion />
+                
+                {/* Sleek Description Section */}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
+                    className="mt-10 md:mt-14 max-w-3xl mx-auto px-6"
+                >
+                    {/* Motto Heading */}
+                    <motion.h3
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.7, ease: "easeOut" }}
+                        className="text-lg md:text-2xl font-final font-semibold text-[#195E39] mb-6 tracking-wide"
+                    >
+                        "If it flies, we build it."
+                    </motion.h3>
+                    
+                    {/* Description Text */}
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.9, ease: "easeOut" }}
+                        className="text-sm md:text-base font-final leading-relaxed text-black/75 max-w-2xl mx-auto"
+                    >
+                        At Aero Modelling Club, NIT Kurukshetra, we blend creativity and engineering to design, build, and fly miniature aircraft. From gliders to RC planes, every project pushes our curiosity higher. We learn, innovate, and take flight — one idea at a time.
+                    </motion.p>
+                </motion.div>
 
                 {/* Glasses image on "WEAR" side
                 <motion.img

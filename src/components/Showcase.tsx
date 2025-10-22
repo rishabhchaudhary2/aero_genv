@@ -194,7 +194,7 @@ const Showcase: React.FC = () => {
     return (
         <div>
             {/* Hero */}
-            <section className="w-screen h-[100svh] p-10 flex flex-col justify-between pt-20">
+            {/* <section className="w-screen h-[100svh] p-10 flex flex-col justify-between pt-20">
                 <h1 className="relative uppercase font-bold text-[19vw] tracking-[-0.01em] leading-none md:-left-[0.05em] -left-[0.3em]">
                     AeroClub
                 </h1>
@@ -204,61 +204,9 @@ const Showcase: React.FC = () => {
                     </p>
                     <p className="text-[12px] md:text-[20px] font-medium">(Scroll)</p>
                 </div>
-            </section>
+            </section> */}
 
-            {/* Intro */}
-            <section className="intro w-screen p-10">
-                <div
-                    ref={videoContainerRef}
-                    className="video-container-desktop hidden md:flex flex-col will-change-transform origin-center gap-[2em]"
-                >
-                    <div className="relative w-full aspect-video rounded-3xl overflow-hidden bg-[#b9b9b3]">
-                        <div className="absolute inset-0 rounded-3xl overflow-hidden">
-                            <video
-                                className="w-full h-full object-cover"
-                                autoPlay
-                                loop
-                                muted
-                                playsInline
-                                src="/videos/intro.mp4"
-                            />
-                        </div>
-                    </div>
-                    <div className="video-title">
-                        {["Aero", "(Frame - 2025)"].map((text, index) => (
-                            <p
-                                key={index}
-                                ref={(el) => {
-                                    if (el) videoTitleRef.current[index] = el;
-                                }}
-                                className="font-medium"
-                            >
-                                {text}
-                            </p>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Mobile View */}
-                <div className="video-container-mobile flex md:hidden flex-col gap-4 w-full max-w-[800px] mx-auto">
-                    <div className="relative w-full aspect-video rounded-3xl overflow-hidden bg-[#b9b9b3]">
-                        <div className="absolute inset-0 rounded-3xl overflow-hidden">
-                            <video
-                                className="w-full h-full object-cover"
-                                autoPlay
-                                loop
-                                muted
-                                playsInline
-                                src="/videos/intro.mp4"
-                            />
-                        </div>
-                    </div>
-                    <div className="video-title">
-                        <p className="text-sm font-medium">Lenskart <span className="font-three">X</span> Superman</p>
-                        <p className="text-sm font-medium">(Frame - 2025)</p>
-                    </div>
-                </div>
-            </section>
+           
 
             {/* Outro */}
             <section className="w-full md:min-h-screen font-final uppercase text-[#111] font-sans px-4 md:px-10 py-6 md:py-10 flex flex-col">
