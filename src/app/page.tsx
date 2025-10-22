@@ -40,7 +40,7 @@ const Home = () => {
             <BestGlasses />
             {/* <Text /> */}
             <Collections />
-            <Footer isHome={true} />
+            <Footer />
         </>
     );
 };
