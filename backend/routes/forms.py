@@ -2,11 +2,14 @@ from fastapi import APIRouter, HTTPException, status, Depends
 from pydantic import BaseModel
 from typing import List, Optional, Literal, Dict
 from datetime import datetime, timezone
+
+import pytz
 from models.form_entry import FormEntryCreate, FormEntryInDB, FormEntryResponse
 from models.form_draft import FormDraftCreate, FormDraftInDB, FormDraftResponse
 from models.user import UserInDB
 from routes.auth import get_current_user
 from config.database import get_database
+from services.google_sheets_service import google_sheets_service
 
 router = APIRouter()
 
@@ -25,6 +28,7 @@ class FormResponse(BaseModel):
     closing_time: datetime
     questions: List[QuestionOption]
     redirect_to: Optional[str] = None
+    leaderboard: Optional[bool] = False
 
 @router.get("/forms/{form_id}", response_model=FormResponse)
 async def get_form(form_id: str):
@@ -92,9 +96,9 @@ async def submit_form(
     
     # Validate time window
     print(form_data["opening_time"], type(form_data["opening_time"]))
-    now = datetime.now(timezone.utc)
-    opening: datetime = form_data["opening_time"].replace(tzinfo=timezone.utc)
-    closing: datetime = form_data["closing_time"].replace(tzinfo=timezone.utc)
+    now = datetime.now(tz = pytz.timezone('Asia/Kolkata'))
+    opening: datetime = form_data["opening_time"].replace(tzinfo=pytz.timezone('Asia/Kolkata'))
+    closing: datetime = form_data["closing_time"].replace(tzinfo=pytz.timezone('Asia/Kolkata'))
 
     if now < opening:
         raise HTTPException(
@@ -144,6 +148,20 @@ async def submit_form(
     }
     
     result = await db.form_entries.insert_one(entry_data)
+    
+    # Push to Google Sheets
+    try:
+        await google_sheets_service.append_form_submission(
+            form_name=form_data["name"],
+            user_name=current_user.full_name,
+            user_email=current_user.email,
+            questions=form_data["questions"],
+            responses=submission.responses,
+            timestamp=now
+        )
+    except Exception as e:
+        # Log the error but don't fail the submission
+        print(f"Warning: Failed to push form submission to Google Sheets: {str(e)}")
     
     # Delete draft after successful submission
     await db.form_drafts.delete_one({
@@ -209,7 +227,7 @@ async def save_draft(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Form with id '{form_id}' not found"
         )
-    now = datetime.now(timezone.utc)
+    now = datetime.now(tz = pytz.timezone('Asia/Kolkata'))
     
     # Check if user already submitted this form
     existing_entry = await db.form_entries.find_one({
