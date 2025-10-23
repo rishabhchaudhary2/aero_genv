@@ -22,12 +22,12 @@ export default function BestGlasses() {
 
   const items: CardType[] = [
     {
-      src: "/planeimages/pixhawk.jpg",
+      src: "/planeimages/projects.png",
       text: "Innovative projects bringing ideas to life — from ornithopters and VTOL aircraft to Pixhawk-powered autonomous planes. Explore our cutting-edge creations.",
       link: "/workshop",
     },
     {
-      src: "/galleryimages/techspardha/dronewebfiesta2.jpg",
+      src: "/galleryimages/techspardha/theme.png",
       text: "At Techspardha, the Aero Club of NIT Kurukshetra inspired students to build drones and RC planes, ending with a thrilling competition of skill and flight.",
       link: "/techspardha",
     },
@@ -37,9 +37,9 @@ export default function BestGlasses() {
       link: "/workshop",
     },
     {
-      src: "/galleryimages/techspardha/theme-launch-1.jpg",
+      src: "/galleryimages/techspardha/ext.png",
       text: "Aero Club soaring beyond boundaries, showcasing cutting-edge drone and RC plane innovations while excelling in national competitions against the best.",
-      link: "/techspardha",
+      link: "",
     },
   ];
 
@@ -173,11 +173,11 @@ export default function BestGlasses() {
         {/* Header Section */}
         <div className="absolute flex flex-col m-3 sm:m-4 md:m-6 lg:m-8 xl:m-12 select-none z-20 font-final">
           <div className="relative overflow-hidden">
-            <h1 className="uppercase font-bold text-[1.5rem] xs:text-[2rem] sm:text-[2.5rem] md:text-[3.5rem] lg:text-[4.5rem] xl:text-[5.5rem] leading-none tracking-tight whitespace-nowrap text-[#111]">
+            <h1 className="uppercase font-bold text-[2rem] xs:text-[2rem] sm:text-[2.5rem] md:text-[3.5rem] lg:text-[4.5rem] xl:text-[5.5rem] leading-none tracking-tight whitespace-nowrap text-[#111]">
               What We Do
             </h1>
             <div className="mt-1 sm:mt-2 md:mt-3">
-              <p className="text-[0.65rem] xs:text-xs sm:text-sm md:text-base text-[#555] font-final max-w-xs sm:max-w-md md:max-w-lg leading-relaxed">
+              <p className="text-[1rem] xs:text-s sm:text-md md:text-base text-[#555] font-final max-w-xs sm:max-w-md md:max-w-lg leading-relaxed">
                 Discover our passion for aviation through innovative projects and exciting events
               </p>
             </div>
@@ -295,8 +295,8 @@ export default function BestGlasses() {
         /* Extra Small Devices */
         @media (max-width: 479px) {
           .card {
-            width: 220px;
-            height: 300px;
+            width: 280px;
+            height: 350px;
             filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.15));
           }
           .card:hover {
