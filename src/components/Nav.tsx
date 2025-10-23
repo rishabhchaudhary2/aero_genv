@@ -4,9 +4,11 @@ import React, { useState, useEffect, useRef } from "react";
 import { LiaLongArrowAltRightSolid } from "react-icons/lia";
 import { FiLogOut, FiUser } from "react-icons/fi";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import "./Navbar.css";
+
 
 
 const Nav: React.FC = () => {
@@ -207,15 +209,20 @@ const Nav: React.FC = () => {
                     .menu {
                         display: flex;
                         flex-direction: column;
-                        padding: 20px;
+                        padding: 20px 40px 20px 10px;
                         overflow-x: hidden;
                         width: 100vw;
+                        justify-content: flex-start;
+                        align-items: flex-start;
                     }
 
                     .col {
                         width: 100% !important;
-                        padding: 20px 0 !important;
+                        padding: 20px 0 20px 0 !important;
                         max-width: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-start;
                     }
 
                     .col-2:first-child {
@@ -227,23 +234,37 @@ const Nav: React.FC = () => {
                     }
 
                     .menu-logo {
-                        margin-bottom: 30px;
+                        margin-bottom: 50px;
+                        display: flex;
+                        justify-content: flex-start;
+                        position: relative;
+                        z-index: 1;
                     }
 
                     .menu-logo img {
-                        height: 80px !important;
-                        width: 80px !important;
+                        height: 60px !important;
+                        width: 60px !important;
                     }
 
                     .links {
                         flex-direction: column !important;
                         gap: 20px !important;
                         margin-bottom: 30px;
+                        margin-top: 20px;
+                        justify-content: flex-start !important;
                     }
 
                     .link {
                         font-size: 24px;
                         margin-bottom: 15px;
+                        text-align: left !important;
+                        position: relative;
+                        z-index: 2;
+                    }
+                    
+                    .link a {
+                        display: inline-block;
+                        text-align: left !important;
                     }
 
                     .video-wrapper {
@@ -490,8 +511,16 @@ const Nav: React.FC = () => {
                 }
             `}</style>
 
-            <div className="logo">
-                <Link href="/"><img src="/aerologo.png" alt="AeroModelling Logo" height={120} width={120} /></Link>
+            <div className="logo fixed top-4 left-4 md:top-6 md:left-6 z-999 transition-all duration-300">
+                <Link href="/" className="block">
+                    <Image 
+                                src="/aerologo.png" 
+                                alt="AeroModelling Logo" 
+                                width={120} 
+                                height={120}
+                                className="w-18 h-19 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-[120px] lg:h-[120px] object-contain transition-transform duration-300 hover:scale-110"
+                            />
+                </Link>
             </div>
 
             <div 
@@ -513,7 +542,15 @@ const Nav: React.FC = () => {
             <div className={`menu ${isOpen ? 'open' : ''}`} ref={menuRef}>
                 <div className="col col-2">
                     <div className="menu-logo">
-                        <Link href="/"><img src="/aerologo.png" alt="AeroModelling Logo" height={120} width={120} /></Link>
+                        <Link href="/" className="block">
+                            <Image 
+                                src="/aerologo.png" 
+                                alt="AeroModelling Logo" 
+                                width={120} 
+                                height={120}
+                                className="w-18 h-19 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-[120px] lg:h-[120px] object-contain transition-transform duration-300 hover:scale-110"
+                            />
+                        </Link>
                     </div>
                     <div className="links flex gap-10">
                         <div className="">
@@ -534,9 +571,7 @@ const Nav: React.FC = () => {
                             </div>
                         </div>
                         <div>
-                            <div className="link">
-                                <Link href="/techspardha">External Events</Link>
-                            </div>
+                            
                             <div className="link">
                                 <Link href="/members">Our Members</Link>
                             </div>
@@ -632,17 +667,7 @@ const Nav: React.FC = () => {
                                     <span className="underline"></span>
                                 </a>
                             </p>
-                            <p>
-                                {/* <a
-                                    href="https://github.com/aeroclub-nitkkr"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="social-link"
-                                >
-                                    GitHub <span className="arrow"><LiaLongArrowAltRightSolid /></span>
-                                    <span className="underline"></span>
-                                </a> */}
-                            </p>
+                            
                             <p>
                                 <a
                                     href="https://www.facebook.com/aeroclub.nitkkr"

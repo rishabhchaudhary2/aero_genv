@@ -1,11 +1,19 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 const Teams = () => {
     return (
         <div className="min-h-screen w-full bg-[#ffffff] py-20">
-            <div className="text-center mb-16">
+            <motion.div 
+                className="text-center mb-16"
+                initial={{ opacity: 0, y: -30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+            >
                 <div className="w-full flex justify-center">
                     <div className="border-t-2 border-black w-40 mb-4"></div>
                 </div>
@@ -13,22 +21,30 @@ const Teams = () => {
                 <div className="w-full flex justify-center">
                     <div className="border-t-2 border-black w-40 mt-4"></div>
                 </div>
-            </div>
+            </motion.div>
 
             {/* RC Plane Team Section */}
-            <div className="max-w-7xl mx-auto px-4 mb-20">
+            <motion.div 
+                className="max-w-7xl mx-auto px-4 mb-20"
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.7, ease: "easeOut" }}
+            >
                 <div className="flex flex-col md:flex-row items-center gap-10">
                     <div className="md:w-1/2">
-                        <Image 
-                            src="/planeimages/rc_bg.jpg" 
-                            alt="RC Plane Team" 
-                            width={800}
-                            height={400}
-                            className="rounded-3xl w-full h-[400px] object-cover"
-                        />
+                            <Link href="/rcplanes" className="block overflow-hidden rounded-3xl transition-transform duration-300 ease-in-out hover:scale-[1.03] hover:shadow-lg">
+                                <Image 
+                                    src="/planeimages/rc_bg.jpg" 
+                                    alt="RC Plane Team" 
+                                    width={800}
+                                    height={400}
+                                    className="w-full h-[400px] object-cover"
+                                />
+                            </Link>
                     </div>
                     <div className="md:w-1/2">
-                        <div className="inline-block border-2 border-black rounded-full px-6 py-2 mb-6">
+                            <div className="inline-block border-2 border-black rounded-full px-6 py-2 mb-6 transition-transform duration-200 ease-out hover:-translate-y-1">
                             <h3 className="text-2xl font-bold">RC PLANE</h3>
                         </div>
                         <p className="text-lg mb-6">
@@ -47,22 +63,33 @@ const Teams = () => {
                         </p>
                     </div>
                 </div>
-            </div>
+            </motion.div>
 
-            {/* Nitrox Team Section */}
-            <div className="max-w-7xl mx-auto px-4">
+            {/* Drone Team Section */}
+            <motion.div 
+                className="max-w-7xl mx-auto px-4"
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.7, ease: "easeOut" }}
+            >
                 <div className="flex flex-col md:flex-row-reverse items-center gap-10">
                     <div className="md:w-1/2">
-                        <Image 
-                            src="/galleryimages/drone.jpg" 
-                            alt="Nitrox Team" 
-                            width={800}
-                            height={400}
-                            className="rounded-3xl w-full h-[400px] object-cover"
-                        />
+                            <div className="overflow-hidden rounded-3xl transition-transform duration-300 ease-in-out hover:scale-[1.03] hover:shadow-lg">
+                                <Link href="/drones" className="block overflow-hidden rounded-3xl transition-transform duration-300 ease-in-out hover:scale-[1.03] hover:shadow-lg">
+
+                                    <Image 
+                                        src="/galleryimages/drone.jpg" 
+                                        alt="Drone Team" 
+                                        width={800}
+                                        height={400}
+                                        className="w-full h-[400px] object-cover"
+                                    />
+                                </Link>
+                            </div>
                     </div>
                     <div className="md:w-1/2">
-                        <div className="inline-block border-2 border-black rounded-full px-6 py-2 mb-6">
+                            <div className="inline-block border-2 border-black rounded-full px-6 py-2 mb-6 transition-transform duration-200 ease-out hover:-translate-y-1">
                             <h3 className="text-2xl font-bold">Drones</h3>
                         </div>
                         <p className="text-lg mb-6">
@@ -75,12 +102,10 @@ const Teams = () => {
                             clearing obstacles, climbing grades, or outlasting endurance rounds, Team 
                             Drones thrives where the terrain gets tough and the challenge gets real.
                         </p>
-                        <p className="text-lg">
-                            {/* We participate in competitions such as eBAJA and ATVC. */}
-                        </p>
+                        
                     </div>
                 </div>
-            </div>
+            </motion.div>
         </div>
     );
 };
