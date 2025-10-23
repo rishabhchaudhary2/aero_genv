@@ -22,6 +22,8 @@ interface FormData {
   closing_time: string;
   questions: Question[];
   redirect_to?: string;
+  // Optional message shown to the user after successful submission
+  postFormDetails?: string;
 }
 
 interface FormResponses {
@@ -409,7 +411,7 @@ const DynamicForm = () => {
         timestamp: new Date().toISOString()
       });
 
-      alert('Form submitted successfully!');
+      // alert('Form submitted successfully!');
 
       // If there's a redirect_to, redirect user
       if (result.redirect_to) {
@@ -421,6 +423,10 @@ const DynamicForm = () => {
           id: result.submission_id,
           submitted_at: result.submitted_at
         });
+        // If API returned a postFormDetails message, update formData locally so it can be displayed
+        if (result.postFormDetails) {
+          setFormData(prev => prev ? { ...prev, postFormDetails: result.postFormDetails } : prev);
+        }
       }
 
     } catch (err) {
@@ -657,6 +663,14 @@ const DynamicForm = () => {
               <p className="text-gray-600 mb-6">
                 You have already submitted this form. Thank you for your response!
               </p>
+
+              {formData.postFormDetails && (
+                <div className="mb-4 text-left text-sm text-gray-800 bg-gray-50 border border-gray-200 rounded-md p-4">
+                  <h4 className="font-semibold mb-2">Next steps</h4>
+                  {/* <div></div> */}
+                  <div dangerouslySetInnerHTML={{__html: formData.postFormDetails}}></div>
+                </div>
+              )}
 
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                 <h3 className="font-semibold text-blue-900 mb-2">{formData.name}</h3>

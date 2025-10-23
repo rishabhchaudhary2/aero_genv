@@ -29,6 +29,7 @@ class FormResponse(BaseModel):
     questions: List[QuestionOption]
     redirect_to: Optional[str] = None
     leaderboard: Optional[bool] = False
+    postFormDetails: Optional[str] = None
 
 @router.get("/forms/{form_id}", response_model=FormResponse)
 async def get_form(form_id: str):
@@ -48,7 +49,8 @@ async def get_form(form_id: str):
         opening_time=form_doc["opening_time"],
         closing_time=form_doc["closing_time"],
         questions=form_doc["questions"],
-        redirect_to=form_doc.get("redirect_to")
+        redirect_to=form_doc.get("redirect_to"),
+        postFormDetails=form_doc.get("postFormDetails"),
     )
 
 @router.get("/forms/{form_id}/check-submission")
