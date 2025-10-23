@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import Nav from '@/components/Nav';
 
 const workshopsData = [
   {
@@ -8,9 +10,9 @@ const workshopsData = [
     description:
       'In 2023, the Aeromodelling Club of NIT Kurukshetra organized its first-ever aircraft-building workshop named Aerovics. The workshop focused on teaching the fundamentals of aerodynamics, aircraft components, and the basic principles behind fixed-wing flight. Participants got hands-on experience in designing and fabricating their own RC planes, followed by an exciting flying session where they tested their creations. Aerovics provided students with a complete introduction to the world of RC planes, combining theory with practical application to deepen their understanding of aircraft design and flight mechanics.',
     images: [
-      'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23d4d4cc" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="monospace" font-size="20" fill="%23111"%3EAero Vicks 1%3C/text%3E%3C/svg%3E',
-      'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23c9c9c1" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="monospace" font-size="20" fill="%23111"%3EAero Vicks 2%3C/text%3E%3C/svg%3E',
-      'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23bebeb6" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="monospace" font-size="20" fill="%23111"%3EAero Vicks 3%3C/text%3E%3C/svg%3E'
+      '/planeimages/av.jpg',
+      '/planeimages/rc_bg.jpg',
+      '/planeimages/rc_bg2.jpg',
     ],
   },
   {
@@ -18,9 +20,9 @@ const workshopsData = [
     description:
       'In 2024, Aeromodelling Club successfully organized a three-day drone workshop named SkyForge, designed to introduce participants to the world of drones from scratch. The workshop covered essential theoretical concepts. Alongside theory, participants engaged in hands-on sessions that included drone fabrication, assembly, calibration and a live flying session, giving them a complete end-to-end experience of building and flying a drone. SkyForge was a perfect blend of learning and practical exposure, aimed at nurturing interest and skill in drone technology among students.',
     images: [
-      'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23d4d4cc" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="monospace" font-size="20" fill="%23111"%3ESkyforge 1.0 A%3C/text%3E%3C/svg%3E',
-      'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23c9c9c1" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="monospace" font-size="20" fill="%23111"%3ESkyforge 1.0 B%3C/text%3E%3C/svg%3E',
-      'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23bebeb6" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="monospace" font-size="20" fill="%23111"%3ESkyforge 1.0 C%3C/text%3E%3C/svg%3E'
+      '/skyforge1/sk1.jpg',
+      '/skyforge1/sk5.JPG',
+      '/skyforge1/sk3.jpg',
     ],
   },
   {
@@ -28,9 +30,9 @@ const workshopsData = [
     description:
       'In 2024, Aeromodelling Club successfully organized a three-day drone workshop named SkyForge, designed to introduce participants to the world of drones from scratch. The workshop covered essential theoretical concepts. Alongside theory, participants engaged in hands-on sessions that included drone fabrication, assembly, calibration and a live flying session, giving them a complete end-to-end experience of building and flying a drone. SkyForge was a perfect blend of learning and practical exposure, aimed at nurturing interest and skill in drone technology among students.',
     images: [
-      'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23d4d4cc" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="monospace" font-size="20" fill="%23111"%3ESkyforge 2.0 A%3C/text%3E%3C/svg%3E',
-      'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23c9c9c1" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="monospace" font-size="20" fill="%23111"%3ESkyforge 2.0 B%3C/text%3E%3C/svg%3E',
-      'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23bebeb6" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="monospace" font-size="20" fill="%23111"%3ESkyforge 2.0 C%3C/text%3E%3C/svg%3E'
+      '/skyforge2/sk.JPG',
+      '/skyforge2/skk.JPG',
+      '/skyforge2/skkk.JPG',
     ],
   }
 ];
@@ -152,6 +154,7 @@ const Workshops = () => {
     return (
       <div className="bg-[#e5e5dd] text-[#111] h-screen overflow-y-scroll snap-y snap-mandatory">
         {/* Animated background elements */}
+        <Nav/>
         <div className="fixed inset-0 pointer-events-none opacity-10">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#111] rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#111] rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
@@ -214,23 +217,29 @@ const Workshops = () => {
               {/* Image gallery */}
               <div className="grid grid-cols-2 grid-rows-2 gap-3 h-64 sm:h-80">
                 <div className="relative col-span-1 row-span-2 group overflow-hidden rounded-lg">
-                  <img
+                  <Image
                     src={workshop.images[0]}
                     alt={`${workshop.title} image 1`}
+                    width={400}
+                    height={300}
                     className="w-full h-full object-cover shadow-2xl"
                   />
                 </div>
                 <div className="relative col-span-1 row-span-1 group overflow-hidden rounded-lg">
-                  <img
+                  <Image
                     src={workshop.images[1]}
                     alt={`${workshop.title} image 2`}
+                    width={400}
+                    height={300}
                     className="w-full h-full object-cover shadow-2xl"
                   />
                 </div>
                 <div className="relative col-span-1 row-span-1 group overflow-hidden rounded-lg">
-                  <img
+                  <Image
                     src={workshop.images[2]}
                     alt={`${workshop.title} image 3`}
+                    width={400}
+                    height={300}
                     className="w-full h-full object-cover shadow-2xl"
                   />
                 </div>
@@ -246,6 +255,8 @@ const Workshops = () => {
   return (
     <div className="bg-[#e5e5dd] text-[#111] relative overflow-hidden h-screen w-screen">
       {/* Animated background elements */}
+      <Nav/>
+      
       <div className="fixed inset-0 pointer-events-none opacity-10">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#111] rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#111] rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
@@ -319,25 +330,31 @@ const Workshops = () => {
               {/* Image gallery */}
               <div className={`relative grid grid-cols-2 grid-rows-2 gap-4 h-96 xl:h-[450px] ${index % 2 === 1 ? 'lg:order-1' : ''}`}>
                 <div className="relative col-span-1 row-span-2 group overflow-hidden rounded-lg">
-                  <img
+                  <Image
                     src={workshop.images[0]}
                     alt={`${workshop.title} image 1`}
+                    width={600}
+                    height={450}
                     className="w-full h-full object-cover shadow-2xl transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-[#111] opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
                 </div>
                 <div className="relative col-span-1 row-span-1 group overflow-hidden rounded-lg">
-                  <img
+                  <Image
                     src={workshop.images[1]}
                     alt={`${workshop.title} image 2`}
+                    width={600}
+                    height={450}
                     className="w-full h-full object-cover shadow-2xl transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-[#111] opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
                 </div>
                 <div className="relative col-span-1 row-span-1 group overflow-hidden rounded-lg">
-                  <img
+                  <Image
                     src={workshop.images[2]}
                     alt={`${workshop.title} image 3`}
+                    width={600}
+                    height={450}
                     className="w-full h-full object-cover shadow-2xl transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-[#111] opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
