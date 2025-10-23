@@ -44,7 +44,7 @@ export default function BestGlasses() {
   ];
 
   useEffect(() => {
-    const stickyHeight = window.innerHeight * 7;
+    const stickyHeight = window.innerHeight * 4;
     const totalCards = cards.current.length;
 
     function getRadius() {
@@ -159,7 +159,7 @@ export default function BestGlasses() {
   }, []);
 
   return (
-    <div className="relative bg-gradient-to-b from-[#ffffff] via-[#f8f9fa] to-[#e5e5dd] text-[#111] w-screen min-h-[900vh]">
+    <div className="relative bg-gradient-to-b from-[#ffffff] via-[#f8f9fa] to-[#e5e5dd] text-[#111] w-screen min-h-[500vh]">
       <section
         ref={stickySection}
         className="relative h-screen w-screen overflow-hidden"
