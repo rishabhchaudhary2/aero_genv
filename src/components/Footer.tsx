@@ -36,7 +36,7 @@ const Footer: React.FC = () => {
 
   const additionalLinks: NavLink[] = [
     { href: '/gallery', icon: RiGalleryLine, label: 'Gallery' },
-    { href: '/devteam', icon: FaDev, label: 'DevTeam' },
+    // { href: '/devteam', icon: FaDev, label: 'DevTeam' },
     { href: '/members', icon: HiMiniUserGroup, label: 'Members' },
     { href: '/privacy-policy', icon: MdPrivacyTip, label: 'Privacy Policy' },
     { href: '/aboutUs', icon: FaGraduationCap, label: 'About Us' }

@@ -603,7 +603,7 @@ const Nav: React.FC = () => {
                         </div>
                     </div>
                     <div className="video-wrapper">
-                        <video loop muted autoPlay playsInline src="/videos/intro.mp4"></video>
+                        <video loop muted autoPlay playsInline src="/video/intro.mp4"></video>
                     </div>
                 </div>
 
