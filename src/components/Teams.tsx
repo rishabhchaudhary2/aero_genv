@@ -32,7 +32,7 @@ const Teams = () => {
                             <h3 className="text-2xl font-bold">RC PLANE</h3>
                         </div>
                         <p className="text-lg mb-6">
-                            Meet Team RC Plane, SAE NIT KKR&apos;s dedicated radio-controlled aircraft team. 
+                            Meet Team RC Plane, Aeromodelling NIT KKR&apos;s dedicated radio-controlled aircraft team. 
                             We design, build, and fly custom RC planes that push the boundaries of 
                             aeronautical engineering at the student level.
                         </p>
