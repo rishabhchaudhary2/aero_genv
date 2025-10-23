@@ -28,7 +28,7 @@ async def send_otp_email(email: str, otp: str, name: Optional[str] = None) -> bo
             print(f"Sending OTP email to {email}...")
             
             message = MIMEMultipart("alternative")
-            message["Subject"] = "Your Aero GenV Verification Code"
+            message["Subject"] = "Your Aeromodelling club Verification Code"
             message["From"] = settings.SMTP_FROM_EMAIL or settings.SMTP_USER
             message["To"] = email
             
@@ -37,7 +37,7 @@ async def send_otp_email(email: str, otp: str, name: Optional[str] = None) -> bo
             <html>
               <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
                 <div style="max-width: 600px; margin: 0 auto; background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-                  <h2 style="color: #000; text-align: center;">Aero GenV</h2>
+                  <h2 style="color: #000; text-align: center;">Aeromodelling club</h2>
                   <h3 style="color: #333;">Email Verification</h3>
                   <p style="color: #666;">Hello{' ' + name if name else ''},</p>
                   <p style="color: #666;">Thank you for signing up! Please use the following verification code to complete your registration:</p>
@@ -47,14 +47,14 @@ async def send_otp_email(email: str, otp: str, name: Optional[str] = None) -> bo
                   <p style="color: #666;">This code will expire in 10 minutes.</p>
                   <p style="color: #666;">If you didn't request this code, please ignore this email.</p>
                   <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
-                  <p style="color: #999; font-size: 12px; text-align: center;">Aero GenV - RC Aircraft Club</p>
+                  <p style="color: #999; font-size: 12px; text-align: center;">Aeromodelling club - RC Aircraft Club</p>
                 </div>
               </body>
             </html>
             '''
             
             text = f'''
-Aero GenV - Email Verification
+Aeromodelling club - Email Verification
 
 Hello{' ' + name if name else ''},
 
@@ -67,7 +67,7 @@ This code will expire in 10 minutes.
 If you didn't request this code, please ignore this email.
 
 ---
-Aero GenV - RC Aircraft Club
+Aeromodelling club - RC Aircraft Club
             '''
             
             part1 = MIMEText(text, "plain")
