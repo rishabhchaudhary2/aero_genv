@@ -166,6 +166,8 @@ class GoogleSheetsService:
                 # Add question texts as headers
                 for question in questions:
                     headers.append(question.get('question_text', question.get('question_key', '')))
+
+                
                 
                 # Write headers to the new sheet
                 self.service.spreadsheets().values().update(

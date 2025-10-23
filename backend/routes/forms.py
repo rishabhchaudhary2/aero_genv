@@ -95,7 +95,6 @@ async def submit_form(
         )
     
     # Validate time window
-    print(form_data["opening_time"], type(form_data["opening_time"]))
     now = datetime.now(tz = pytz.timezone('Asia/Kolkata'))
     opening: datetime = form_data["opening_time"].replace(tzinfo=pytz.timezone('Asia/Kolkata'))
     closing: datetime = form_data["closing_time"].replace(tzinfo=pytz.timezone('Asia/Kolkata'))
@@ -148,15 +147,61 @@ async def submit_form(
     }
     
     result = await db.form_entries.insert_one(entry_data)
+
+    # Clean and renumber team member data if form is team type
+    cleaned_responses = dict(submission.responses)
+    if form_data["type"] == "team":
+        # Find which team members have data
+        members_with_data = []
+        for i in range(2, 5):  # Check team members 2, 3, 4
+            fields = ['name', 'roll', 'phone']
+            has_data = any(
+                cleaned_responses.get(f"team_member_{i}_{field}")
+                for field in fields
+            )
+            if has_data:
+                members_with_data.append(i)
+        
+        # Renumber team members sequentially
+        if members_with_data:
+            # Create a new responses dict with renumbered team members
+            temp_responses = {}
+            
+            # Copy non-team-member responses
+            for key, value in cleaned_responses.items():
+                if not key.startswith('team_member_'):
+                    temp_responses[key] = value
+            
+            # Renumber team members
+            for index, old_num in enumerate(members_with_data):
+                new_num = index + 2  # Start from 2
+                fields = ['name', 'roll', 'phone']
+                for field in fields:
+                    old_key = f"team_member_{old_num}_{field}"
+                    new_key = f"team_member_{new_num}_{field}"
+                    if old_key in cleaned_responses:
+                        temp_responses[new_key] = cleaned_responses[old_key]
+            
+            cleaned_responses = temp_responses
+        
+        # Add questions for team members that have data
+        new_questions = lambda i: [
+            {"question_key": f"team_member_{i}_name", "question_text": f"Team member {i} name", "question_type": "short"},
+            {"question_key": f"team_member_{i}_roll", "question_text": f"Team member {i} roll number", "question_type": "short"},
+            {"question_key": f"team_member_{i}_phone", "question_text": f"Team member {i} phone", "question_type": "short"},
+        ]
+
+        for i in range(2, 5):  # team members 2 to 4
+            form_data["questions"].extend(new_questions(i))
     
-    # Push to Google Sheets
+    # Push to Google Sheets with cleaned responses
     try:
         await google_sheets_service.append_form_submission(
             form_name=form_data["name"],
             user_name=current_user.full_name,
             user_email=current_user.email,
             questions=form_data["questions"],
-            responses=submission.responses,
+            responses=cleaned_responses,
             timestamp=now
         )
     except Exception as e:

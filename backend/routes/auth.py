@@ -312,8 +312,6 @@ async def google_auth(request: GoogleAuthRequest):
             
             google_data = response.json()
             user_info_data = user_info.json()
-
-            print(user_info_data)
             
             # Verify audience (client ID)
             if google_data.get("aud") != settings.GOOGLE_CLIENT_ID:
