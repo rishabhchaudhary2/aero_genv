@@ -26,7 +26,7 @@ const dummyMembers: TeamMember[] = [
     rollNo: "123104001",
     batch: "2025",
     branch: "Mechanical",
-    image: "/galleryimages/1.jpg"
+    image: "/galleryimages/drone.jpg"
   },
   {
     name: "Priya Sharma",
@@ -35,7 +35,7 @@ const dummyMembers: TeamMember[] = [
     rollNo: "123104002",
     batch: "2025",
     branch: "Electrical",
-    image: "/galleryimages/2.jpg"
+    image: "/galleryimages/drone.jpg"
   },
   {
     name: "Amit Patel",

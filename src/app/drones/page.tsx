@@ -246,7 +246,7 @@ const DronePage = () => {
           </motion.div>
 
           {/* Background Video with Reduced Opacity */}
-          <div className="absolute right-0 bottom-0 w-1/2 h-1/2 opacity-20 overflow-hidden">
+          {/* <div className="absolute right-0 bottom-0 w-1/2 h-1/2 opacity-20 overflow-hidden">
             <video
               autoPlay
               loop
@@ -258,7 +258,16 @@ const DronePage = () => {
               src="/droneimages/drone-video.mp4"
               preload="none"
             />
-          </div>
+          </div> */}
+ <div className="absolute inset-0 w-full h-full opacity-30 z-10 overflow-hidden">
+    <Image
+      src="/galleryimages/drone.jpg"
+      alt="drone in flight"
+      fill
+      style={{ objectFit: 'cover' }}
+    />
+  </div>
+
         </section>
 
         {/* Introduction Section - 02 */}
@@ -318,14 +327,14 @@ const DronePage = () => {
           </div>
 
           {/* Background Image Overlay - Placed behind everything, above bg color */}
-          {/* <div className="absolute inset-0 w-full h-full opacity-30 z-10 overflow-hidden">
+          <div className="absolute inset-0 w-full h-full opacity-30 z-10 overflow-hidden">
     <Image
-      src="/planeimages/rc_bg.jpg"
-      alt="RC Plane in flight"
+      src="/galleryimages/drone.jpg"
+      alt="drone in flight"
       fill
       style={{ objectFit: 'cover' }}
     />
-  </div> */}
+  </div>
         </section>
         {/* Projects Section - 03 */}
         <section className="min-w-full h-screen flex flex-col snap-start relative px-4 sm:px-8 md:px-12 lg:px-20">

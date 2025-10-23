@@ -126,21 +126,19 @@ const RCPlanesPage = () => {
     }
   };
 
-  const toggleFaq = (index: number) => {
-    setOpenFaq(openFaq === index ? null : index);
-  };
+
 
   const planeProjects = [
     {
       title: "Ornithopter",
       description: "A bio-inspired RC plane that mimics the flight of birds using flapping wings.",
-      image: "/planeimages/ornithopter.jpg",
+      image: "/planeimages/orni.jpg",
       rotation: "-rotate-3"
     },
     {
       title: "Pixhawk-Based Automatic Plane",
       description: "An advanced RC plane equipped with a Pixhawk flight controller for autonomous flight capabilities.",
-      image: "/planeimages/pixhawk.jpg",
+      image: "/planeimages/pixi.png",
       rotation: "rotate-2"
     },
     {
@@ -336,18 +334,18 @@ const RCPlanesPage = () => {
           </div>
 
           {/* Background Image Overlay - Placed behind everything, above bg color */}
-          {/* <div className="absolute inset-0 w-full h-full opacity-30 z-10 overflow-hidden">
+          <div className="absolute inset-0 w-full h-full opacity-30 z-10 overflow-hidden">
     <Image
-      src="/planeimages/rc_bg.jpg"
+      src="/planeimages/rc_bg2.jpg"
       alt="RC Plane in flight"
       fill
       style={{ objectFit: 'cover' }}
     />
-  </div> */}
+  </div>
         </section>
         {/* Projects Section - 03 */}
         <section className="min-w-full h-screen flex flex-col snap-start relative px-4 sm:px-8 md:px-12 lg:px-20">
-          <div className="absolute top-12 left-12 text-[8rem] font-bold opacity-10">03</div>
+          <div className="absolute top-12 left-12 text-[8rem] font-bold opacity-20">03</div>
           <div className="w-full max-w-6xl mx-auto pt-20 md:pt-24">
             <motion.h2
               className="text-3xl md:text-5xl font-bold uppercase mb-8 tracking-wider"
@@ -392,6 +390,14 @@ const RCPlanesPage = () => {
               </div>
             </div>
           </div>
+          <div className="absolute inset-0 w-full h-full opacity-10 z-10 overflow-hidden">
+    <Image
+      src="/planeimages/rc_bg.jpg"
+      alt="RC Plane in flight"
+      fill
+      style={{ objectFit: 'cover' }}
+    />
+  </div>
         </section>
 
 
