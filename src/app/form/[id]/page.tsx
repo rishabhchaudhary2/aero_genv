@@ -54,6 +54,10 @@ const DynamicForm = () => {
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [isSavingDraft, setIsSavingDraft] = useState(false);
   
+  // Team members state
+  const [teamMembers, setTeamMembers] = useState<number[]>([]);
+  const MAX_TEAM_MEMBERS = 3; // 3 additional members + leader = 4 total
+  
   // Decorative airplane animation
   const [planes, setPlanes] = useState<{id: number, x: number, y: number, delay: number, scale: number, rotate: number}[]>([]);
   
@@ -149,8 +153,50 @@ const DynamicForm = () => {
           if (draftResponse.ok) {
             const draftData = await draftResponse.json();
             if (draftData.has_draft) {
-              // Load draft responses
-              setResponses(draftData.draft.responses);
+              // Load team members from draft if form is team type
+              if (data.type === 'team') {
+                const membersWithData: number[] = [];
+                // Check for team members in responses (2, 3, 4)
+                for (let i = 2; i <= 4; i++) {
+                  // Check if this team member has any data
+                  const hasData = ['name', 'roll', 'phone'].some(
+                    field => draftData.draft.responses[`team_member_${i}_${field}`]?.trim()
+                  );
+                  if (hasData) {
+                    membersWithData.push(i);
+                  }
+                }
+                
+                // Renumber team members sequentially (2, 3, 4...)
+                const renumberedResponses: FormResponses = { ...draftData.draft.responses };
+                const newTeamMembers: number[] = [];
+                
+                membersWithData.forEach((oldNum, index) => {
+                  const newNum = index + 2; // Start from 2
+                  newTeamMembers.push(newNum);
+                  
+                  // If the number changed, copy data to new keys
+                  if (oldNum !== newNum) {
+                    const fields = ['name', 'roll', 'phone'];
+                    fields.forEach(field => {
+                      const oldKey = `team_member_${oldNum}_${field}`;
+                      const newKey = `team_member_${newNum}_${field}`;
+                      if (renumberedResponses[oldKey]) {
+                        renumberedResponses[newKey] = renumberedResponses[oldKey];
+                        delete renumberedResponses[oldKey];
+                      }
+                    });
+                  }
+                });
+                
+                setTeamMembers(newTeamMembers);
+                setResponses(renumberedResponses);
+                console.log('Loaded and renumbered team members from draft:', newTeamMembers);
+              } else {
+                // Not a team form, just load responses
+                setResponses(draftData.draft.responses);
+              }
+              
               setLastSaved(new Date(draftData.draft.last_saved));
               console.log('Draft loaded:', draftData.draft);
             } else {
@@ -198,6 +244,25 @@ const DynamicForm = () => {
         const token = localStorage.getItem('access_token');
         if (!token) return;
 
+        // Filter out team members with no data
+        const filteredResponses = { ...responses };
+        if (formData?.type === 'team') {
+          // Check each potential team member (2, 3, 4)
+          for (let i = 2; i <= 4; i++) {
+            const fields = ['name', 'roll', 'phone'];
+            const hasAnyData = fields.some(
+              field => responses[`team_member_${i}_${field}`]?.trim()
+            );
+            
+            // If no data for this team member, remove all their fields
+            if (!hasAnyData) {
+              fields.forEach(field => {
+                delete filteredResponses[`team_member_${i}_${field}`];
+              });
+            }
+          }
+        }
+
         await fetch(`http://localhost:8000/api/forms/${formId}/draft`, {
           method: 'POST',
           headers: {
@@ -206,7 +271,7 @@ const DynamicForm = () => {
           },
           body: JSON.stringify({
             form_id: formId,
-            responses
+            responses: filteredResponses
           })
         });
 
@@ -242,6 +307,30 @@ const DynamicForm = () => {
     }
   };
 
+  const addTeamMember = () => {
+    if (teamMembers.length < MAX_TEAM_MEMBERS) {
+      setTeamMembers(prev => [...prev, prev.length + 2]); // Start from 2 (leader is 1)
+    }
+  };
+
+  const removeTeamMember = (memberNumber: number) => {
+    setTeamMembers(prev => prev.filter(num => num !== memberNumber));
+    // Clear responses for removed team member
+    const memberKeys = [`team_member_${memberNumber}_name`, `team_member_${memberNumber}_roll`, 
+                        `team_member_${memberNumber}_phone`];
+    setResponses(prev => {
+      const newResponses = { ...prev };
+      memberKeys.forEach(key => delete newResponses[key]);
+      return newResponses;
+    });
+    // Clear validation errors for removed team member
+    setValidationErrors(prev => {
+      const newErrors = { ...prev };
+      memberKeys.forEach(key => delete newErrors[key]);
+      return newErrors;
+    });
+  };
+
   const validateForm = (): boolean => {
     const errors: { [key: string]: string } = {};
     
@@ -251,6 +340,20 @@ const DynamicForm = () => {
         errors[question.question_key] = 'This field is required';
       }
     });
+    
+    // Validate team member fields if form is team type
+    if (formData?.type === 'team') {
+      teamMembers.forEach(memberNum => {
+        const fields = ['name', 'roll', 'phone'];
+        fields.forEach(field => {
+          const key = `team_member_${memberNum}_${field}`;
+          const value = responses[key]?.trim();
+          if (!value) {
+            errors[key] = 'This field is required';
+          }
+        });
+      });
+    }
     
     setValidationErrors(errors);
     return Object.keys(errors).length === 0;
@@ -684,6 +787,24 @@ const DynamicForm = () => {
             </div>
           </motion.div>
 
+          {formData.type === 'team' && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.15 }}
+              className="mb-3 p-4 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800"
+            >
+              <p className="font-semibold mb-2">Team Registration Instructions:</p>
+              <ul className="list-disc list-inside space-y-1">
+                <li>The team leader (first member) must fill out their own details first.</li>
+                <li>You can add up to {MAX_TEAM_MEMBERS} additional team members.</li>
+                <li>If your team is incomplete or if you do not have enough members, we will create a team for you.</li>
+                <li>Ensure all team members&apos; details are accurate before submission.</li>
+                <li>You can remove a team member by clicking the &quot;Remove&quot; button next to their section.</li>
+              </ul>
+            </motion.div>
+          )}
+
           {/* Draft Status Indicator */}
           {!hasSubmitted && (
             <motion.div
@@ -727,6 +848,143 @@ const DynamicForm = () => {
             >
               <form onSubmit={handleSubmit}>
                 {formData.questions.map(question => renderQuestion(question))}
+                
+                {/* Team Members Section - Only for team forms */}
+                {formData.type === 'team' && (
+                  <div className="mt-8 mb-6">
+                    {/* Render existing team members */}
+                    {teamMembers.map((memberNum) => (
+                      <motion.div
+                        key={memberNum}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        className="mb-6 p-6 border-2 border-gray-200 rounded-lg bg-gray-50"
+                      >
+                        <div className="flex justify-between items-center mb-4">
+                          <h3 className="text-lg font-semibold text-gray-800">
+                            Team Member {memberNum}
+                          </h3>
+                          <button
+                            type="button"
+                            onClick={() => removeTeamMember(memberNum)}
+                            disabled={!isFormOpen}
+                            className="text-red-500 cursor-pointer hover:text-red-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                        
+                        <div className="space-y-4">
+                          {/* Name */}
+                          <div>
+                            <label 
+                              htmlFor={`team_member_${memberNum}_name`}
+                              className="block text-sm font-medium text-gray-700 mb-2"
+                            >
+                              Name <span className="text-red-500">*</span>
+                            </label>
+                            <input
+                              type="text"
+                              id={`team_member_${memberNum}_name`}
+                              value={responses[`team_member_${memberNum}_name`] || ''}
+                              onChange={(e) => handleInputChange(`team_member_${memberNum}_name`, e.target.value)}
+                              disabled={!isFormOpen}
+                              className={`w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed ${
+                                validationErrors[`team_member_${memberNum}_name`] 
+                                  ? 'ring-2 ring-red-500' 
+                                  : 'focus-within:ring-2 focus-within:ring-black'
+                              }`}
+                              placeholder="Enter team member name"
+                            />
+                            {validationErrors[`team_member_${memberNum}_name`] && (
+                              <p className="mt-1 text-sm text-red-600">{validationErrors[`team_member_${memberNum}_name`]}</p>
+                            )}
+                          </div>
+
+                          {/* Roll Number */}
+                          <div>
+                            <label 
+                              htmlFor={`team_member_${memberNum}_roll`}
+                              className="block text-sm font-medium text-gray-700 mb-2"
+                            >
+                              Roll Number <span className="text-red-500">*</span>
+                            </label>
+                            <input
+                              type="text"
+                              id={`team_member_${memberNum}_roll`}
+                              value={responses[`team_member_${memberNum}_roll`] || ''}
+                              onChange={(e) => handleInputChange(`team_member_${memberNum}_roll`, e.target.value)}
+                              disabled={!isFormOpen}
+                              className={`w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed ${
+                                validationErrors[`team_member_${memberNum}_roll`] 
+                                  ? 'ring-2 ring-red-500' 
+                                  : 'focus-within:ring-2 focus-within:ring-black'
+                              }`}
+                              placeholder="Enter roll number"
+                            />
+                            {validationErrors[`team_member_${memberNum}_roll`] && (
+                              <p className="mt-1 text-sm text-red-600">{validationErrors[`team_member_${memberNum}_roll`]}</p>
+                            )}
+                          </div>
+
+                          {/* Phone Number */}
+                          <div>
+                            <label 
+                              htmlFor={`team_member_${memberNum}_phone`}
+                              className="block text-sm font-medium text-gray-700 mb-2"
+                            >
+                              Phone Number <span className="text-red-500">*</span>
+                            </label>
+                            <input
+                              type="tel"
+                              id={`team_member_${memberNum}_phone`}
+                              value={responses[`team_member_${memberNum}_phone`] || ''}
+                              onChange={(e) => handleInputChange(`team_member_${memberNum}_phone`, e.target.value)}
+                              disabled={!isFormOpen}
+                              className={`w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed ${
+                                validationErrors[`team_member_${memberNum}_phone`] 
+                                  ? 'ring-2 ring-red-500' 
+                                  : 'focus-within:ring-2 focus-within:ring-black'
+                              }`}
+                              placeholder="Enter phone number"
+                            />
+                            {validationErrors[`team_member_${memberNum}_phone`] && (
+                              <p className="mt-1 text-sm text-red-600">{validationErrors[`team_member_${memberNum}_phone`]}</p>
+                            )}
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+
+                    {/* Add Team Member Button */}
+                    {teamMembers.length < MAX_TEAM_MEMBERS && (
+                      <motion.button
+                        type="button"
+                        onClick={addTeamMember}
+                        disabled={!isFormOpen}
+                        whileHover={isFormOpen ? { scale: 1.02 } : {}}
+                        whileTap={isFormOpen ? { scale: 0.98 } : {}}
+                        className={`w-full cursor-pointer py-3 px-4 rounded-md font-semibold border-2 border-dashed transition-colors ${
+                          isFormOpen
+                            ? 'border-gray-400 text-gray-700 hover:border-black hover:bg-gray-50'
+                            : 'border-gray-300 text-gray-400 cursor-not-allowed'
+                        }`}
+                      >
+                        <span className="flex items-center justify-center gap-2">
+                          <span className="text-xl">+</span>
+                          Add Team Member ({teamMembers.length}/{MAX_TEAM_MEMBERS})
+                        </span>
+                      </motion.button>
+                    )}
+
+                    {teamMembers.length >= MAX_TEAM_MEMBERS && (
+                      <div className="text-center text-sm text-gray-600 bg-blue-50 border border-blue-200 rounded-md p-3">
+                        Maximum team size reached (4 members including you)
+                      </div>
+                    )}
+                  </div>
+                )}
                 
                 <motion.button
                   type="submit"
