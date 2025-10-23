@@ -224,6 +224,7 @@ const EventGallery: React.FC<EventGalleryProps> = ({ event, onBack }) => {
 const TitleScreen: React.FC = () => {
   return (
     <section className="h-screen relative bg-[#e5e5dd] flex items-center justify-center overflow-hidden">
+      <Nav/>
       <div className="absolute inset-0">
         {/* Rotating circles */}
         {[...Array(4)].map((_, i) => (

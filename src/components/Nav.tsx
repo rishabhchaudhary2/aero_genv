@@ -513,11 +513,11 @@ const Nav: React.FC = () => {
                             <div className="link">
                                 <Link href="/techspardha">Techspardha</Link>
                             </div>
-                        </div>
-                        <div>
                             <div className="link">
                                 <Link href="/workshop">WorkShops</Link>
                             </div>
+                        </div>
+                        <div>
                             <div className="link">
                                 <Link href="/techspardha">External Events</Link>
                             </div>

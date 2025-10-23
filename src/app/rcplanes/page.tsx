@@ -145,7 +145,7 @@ const RCPlanesPage = () => {
     },
     {
       title: "VTOL Aircraft",
-      description: "A versatile RC plane capable of vertical take-off and landing, combining the best of both helicopters and airplanes.",
+      description: "Aircraft capable of taking off and landing vertically, combining agility and versatility for diverse missions.",
       image: "/planeimages/vtol.jpg",
       rotation: "-rotate-1"
     }
@@ -263,7 +263,7 @@ const RCPlanesPage = () => {
               RC Planes in Action
             </h1>
             <p className="text-xl md:text-2xl max-w-2xl font-light tracking-wide">
-              The art and science of model aviation
+              RC planes are redefining the thrill of flight, putting precision and control directly in your hands. With advanced aerodynamics, responsive controls, and durable designs, they’re more than just hobbyist tools; they are expressions of skill, innovation, and the joy of mastering the skies.
             </p>
           </motion.div>
           
@@ -297,12 +297,11 @@ const RCPlanesPage = () => {
     >
       <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold uppercase mb-8 tracking-wider">Radio Controlled Aircrafts</h3>
       <p className="text-base sm:text-lg mb-6">
-        RC planes are popular nowadays in the field of aviation. These model aircrafts, piloted from the ground by exceptionally 
-        trained operators, offer a fine amalgam of engineering science, aerodynamics principles, and precision controls.
-      </p>
-      <p className="text-base sm:text-lg mb-6">
-        The Aeromodelling club at NIT Kurukshetra gives us a chance to design, construct, and fly aeromodels, discussing detailed 
-        information and methods of designing, analysis, and manufacturing of RC planes.
+       RC planes are taking model aviation to new heights, blending aerodynamic design, responsive controls, and agile performance. From recreational flying to competitive events, they offer an immersive experience that brings the skies within reach.
+At the Aeromodelling Club, we create high-performance RC aircraft engineered for accuracy, reliability, and excitement. By combining innovative design with precise handling, we give enthusiasts the tools to explore, compete, and master the art of flight.
+“Airplanes are beautiful dreams. Engineers turn dreams into reality”
+						~The wind rises 
+
       </p>
     </motion.div>
     
