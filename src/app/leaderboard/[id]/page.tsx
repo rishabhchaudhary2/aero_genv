@@ -106,7 +106,7 @@ export default function LeaderboardPage() {
 									</div>
 									<div className="bg-white rounded-lg p-3 shadow-sm w-full border border-gray-200 mt-3">
 										<h3 className="font-medium text-sm text-center truncate text-gray-800">
-											{topThree[1].user_name || topThree[1].user_email}
+											{topThree[1].user_name}
 										</h3>
 									</div>
 								</div>
@@ -125,7 +125,7 @@ export default function LeaderboardPage() {
 									</div>
 									<div className="bg-white rounded-lg p-4 shadow-md w-full border-2 border-gray-300 mt-3">
 										<h3 className="font-semibold text-base text-center truncate text-gray-800">
-											{topThree[0].user_name || topThree[0].user_email}
+											{topThree[0].user_name}
 										</h3>
 									</div>
 								</div>
@@ -143,7 +143,7 @@ export default function LeaderboardPage() {
 									</div>
 									<div className="bg-white rounded-lg p-3 shadow-sm w-full border border-gray-200 mt-3">
 										<h3 className="font-medium text-sm text-center truncate text-gray-800">
-											{topThree[2].user_name || topThree[2].user_email}
+											{topThree[2].user_name}
 										</h3>
 									</div>
 								</div>
@@ -173,7 +173,6 @@ export default function LeaderboardPage() {
 								<tr>
 									<th className="px-6 py-3 text-left font-santoshi font-semibold text-gray-700 text-sm">Rank</th>
 									<th className="px-6 py-3 text-left font-santoshi font-semibold text-gray-700 text-sm">Name</th>
-									<th className="px-6 py-3 text-left font-santoshi font-semibold text-gray-700 text-sm">Email</th>
 									<th className="px-6 py-3 text-right font-santoshi font-semibold text-gray-700 text-sm">Score</th>
 								</tr>
 							</thead>
@@ -196,9 +195,6 @@ export default function LeaderboardPage() {
 											</td>
 											<td className="px-6 py-4 font-medium text-gray-800">
 												{entry.user_name || 'N/A'}
-											</td>
-											<td className="px-6 py-4 text-gray-600 text-sm">
-												{entry.user_email}
 											</td>
 											<td className="px-6 py-4 text-right font-bold text-lg text-gray-800">
 												{entry.score?.toFixed(1)}

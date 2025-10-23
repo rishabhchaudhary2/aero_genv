@@ -250,6 +250,10 @@ const Nav: React.FC = () => {
                         display: none;
                     }
 
+                    .login-info {
+                        display: none;
+                    }
+
                     .socials {
                         display: none;
                     }
@@ -310,6 +314,10 @@ const Nav: React.FC = () => {
                         display: none;
                     }
 
+                    .login-info {
+                        display: none;
+                    }
+
                     .socials {
                         display: none;
                     }
@@ -355,6 +363,10 @@ const Nav: React.FC = () => {
                         display: none;
                     }
 
+                    .login-info {
+                        display: none;
+                    }
+
                     .socials {
                         display: none;
                     }
@@ -397,6 +409,10 @@ const Nav: React.FC = () => {
                     }
 
                     .video-wrapper {
+                        display: none;
+                    }
+
+                    .login-info {
                         display: none;
                     }
 
@@ -558,17 +574,20 @@ const Nav: React.FC = () => {
 
                 <div className="col col-2">
                     {user && (
-                        <div className="sub-col mb-8">
+                        <div className="sub-col w-[50%] login-info">
                             <div 
                                 className="flex items-center gap-3 mb-2 cursor-pointer profile-card"
                                 onMouseEnter={() => setIsHoveringProfile(true)}
                                 onMouseLeave={() => setIsHoveringProfile(false)}
                             >
+                                <div className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center border-2 border-current profile-avatar">
+                                    <FiUser className="w-6 h-6" />
+                                </div>
                                 <div className="text-white flex-1">
-                                    <p className="text-right !opacity-70 !transform-none !text-transform-none">
+                                    <p className="text-left opacity-70! transform-none! text-transform-none!">
                                         Logged in as
                                     </p>
-                                    <div className="text-right text-sm !transform-none !text-transform-none profile-text">
+                                    <div className="text-left text-sm transform-none! text-transform-none! profile-text">
                                         <div className="profile-text-content">
                                             {user.full_name || 'User'}
                                         </div>
@@ -576,9 +595,6 @@ const Nav: React.FC = () => {
                                             {user.email}
                                         </div>
                                     </div>
-                                </div>
-                                <div className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center border-2 border-current profile-avatar">
-                                    <FiUser className="w-6 h-6" />
                                 </div>
                             </div>
                         </div>
