@@ -5,6 +5,7 @@ import Nav from '../components/Nav';
 import Header from '../components/Header';
 // import Showcase from '../components/Showcase';
 import BestGlasses from '../components/BestGlasses';
+import Teams from '../components/Teams';
 
 // import Transition from '../components/Transition';
 import Collections from '../components/Collections';
@@ -35,9 +36,11 @@ const Home = () => {
                     /> */}
                 </div>
             </div>
-            {/* <div className="font-final">
+            {/*             <div className="font-final">
                 <Showcase />
-            </div> */}
+            </div>
+            <BestGlasses /> */}
+            <Teams />
             <BestGlasses />
             {/* <Text /> */}
             <Collections />
