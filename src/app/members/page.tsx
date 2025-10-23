@@ -19,42 +19,42 @@ interface TeamMember {
 
 // Dummy data as fallback (outside component to avoid re-creating on each render)
 const dummyMembers: TeamMember[] = [
-    {
-      name: "Rajesh Kumar",
-      role: "Team Lead",
-      email: "rajesh.kumar@example.com",
-      rollNo: "123104001",
-      batch: "2025",
-      branch: "Mechanical",
-      image: "/galleryimages/1.jpg"
-    },
-    {
-      name: "Priya Sharma",
-      role: "Technical Head",
-      email: "priya.sharma@example.com",
-      rollNo: "123104002",
-      batch: "2025",
-      branch: "Electrical",
-      image: "/galleryimages/2.jpg"
-    },
-    {
-      name: "Amit Patel",
-      role: "Design Lead",
-      email: "amit.patel@example.com",
-      rollNo: "123104003",
-      batch: "2026",
-      branch: "Mechanical",
-      image: "/galleryimages/3.jpg"
-    },
-    {
-      name: "Sneha Reddy",
-      role: "Electronics Head",
-      email: "sneha.reddy@example.com",
-      rollNo: "123104004",
-      batch: "2027",
-      branch: "Electronics",
-      image: "/galleryimages/4.jpg"
-    },
+  {
+    name: "Rajesh Kumar",
+    role: "Team Lead",
+    email: "rajesh.kumar@example.com",
+    rollNo: "123104001",
+    batch: "2025",
+    branch: "Mechanical",
+    image: "/galleryimages/1.jpg"
+  },
+  {
+    name: "Priya Sharma",
+    role: "Technical Head",
+    email: "priya.sharma@example.com",
+    rollNo: "123104002",
+    batch: "2025",
+    branch: "Electrical",
+    image: "/galleryimages/2.jpg"
+  },
+  {
+    name: "Amit Patel",
+    role: "Design Lead",
+    email: "amit.patel@example.com",
+    rollNo: "123104003",
+    batch: "2026",
+    branch: "Mechanical",
+    image: "/galleryimages/3.jpg"
+  },
+  {
+    name: "Sneha Reddy",
+    role: "Electronics Head",
+    email: "sneha.reddy@example.com",
+    rollNo: "123104004",
+    batch: "2027",
+    branch: "Electronics",
+    image: "/galleryimages/4.jpg"
+  },
 ];
 
 const MembersPage = () => {
@@ -63,18 +63,20 @@ const MembersPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
   // Fetch team members from API
   useEffect(() => {
     const fetchMembers = async () => {
       try {
         setLoading(true);
         // Update this URL to your backend URL
-        const response = await fetch('http://localhost:8000/api/members');
-        
+        const response = await fetch(API_URL + '/api/members');
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const data = await response.json();
         setTeamMembers(data);
         setError(null);
@@ -142,7 +144,7 @@ const MembersPage = () => {
               <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold uppercase tracking-wider">
                 Our Team
               </h2>
-              
+
               {/* Optional: Show member count */}
               {!loading && (
                 <span className="text-sm md:text-base text-gray-600">
@@ -167,7 +169,7 @@ const MembersPage = () => {
                 </div>
               </div>
             ) : (
-              <div 
+              <div
                 ref={scrollContainerRef}
                 className="h-[calc(100vh-200px)] overflow-y-auto pr-2 md:pr-4 custom-scrollbar"
               >
@@ -187,7 +189,7 @@ const MembersPage = () => {
                     {/* Members Grid for this year */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
                       {groupedMembers[year].map((member: TeamMember, index: number) => (
-                        <motion.div 
+                        <motion.div
                           key={`${year}-${index}`}
                           className="relative group mx-auto w-full max-w-sm"
                           initial={{ opacity: 0, y: 20 }}
@@ -208,7 +210,7 @@ const MembersPage = () => {
                               <div className="flex justify-end space-x-3 sm:space-x-4">
                                 <a href={`mailto:${member.email}`} className="text-white hover:text-gray-200">
                                   <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                                    <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
                                   </svg>
                                 </a>
                               </div>

@@ -53,14 +53,16 @@ const DynamicForm = () => {
   const [submissionData, setSubmissionData] = useState<SubmissionCheck['submission']>(undefined);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [isSavingDraft, setIsSavingDraft] = useState(false);
-  
+
   // Team members state
   const [teamMembers, setTeamMembers] = useState<number[]>([]);
   const MAX_TEAM_MEMBERS = 3; // 3 additional members + leader = 4 total
-  
+
   // Decorative airplane animation
-  const [planes, setPlanes] = useState<{id: number, x: number, y: number, delay: number, scale: number, rotate: number}[]>([]);
-  
+  const [planes, setPlanes] = useState<{ id: number, x: number, y: number, delay: number, scale: number, rotate: number }[]>([]);
+
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
   useEffect(() => {
     // Create decorative airplane elements
     const newPlanes = [];
@@ -89,7 +91,7 @@ const DynamicForm = () => {
       // Store the current form URL for redirect after login
       const currentPath = `/form/${formId}`;
       localStorage.setItem('redirect_after_login', currentPath);
-      
+
       // Redirect to login page
       router.push('/login');
     }
@@ -101,37 +103,37 @@ const DynamicForm = () => {
       try {
         setIsLoading(true);
         setError('');
-        
-        const response = await fetch(`http://localhost:8000/api/forms/${formId}`);
-        
+
+        const response = await fetch(API_URL + `/api/forms/${formId}`);
+
         if (!response.ok) {
           if (response.status === 404) {
             throw new Error('Form not found');
           }
           throw new Error('Failed to fetch form data');
         }
-        
+
         const data: FormData = await response.json();
         setFormData(data);
-        
+
         // Check if user has already submitted this form
         const token = localStorage.getItem('access_token');
         if (token) {
           const checkResponse = await fetch(
-            `http://localhost:8000/api/forms/${formId}/check-submission`,
+            API_URL + `/api/forms/${formId}/check-submission`,
             {
               headers: {
                 'Authorization': `Bearer ${token}`
               }
             }
           );
-          
+
           if (checkResponse.ok) {
             const checkData: SubmissionCheck = await checkResponse.json();
             if (checkData.has_submitted) {
               setHasSubmitted(true);
               setSubmissionData(checkData.submission);
-              
+
               // If form has redirect_to and user has submitted, redirect them
               if (data.redirect_to) {
                 router.push(data.redirect_to);
@@ -142,7 +144,7 @@ const DynamicForm = () => {
 
           // Try to load saved draft
           const draftResponse = await fetch(
-            `http://localhost:8000/api/forms/${formId}/draft`,
+            API_URL + `/api/forms/${formId}/draft`,
             {
               headers: {
                 'Authorization': `Bearer ${token}`
@@ -166,15 +168,15 @@ const DynamicForm = () => {
                     membersWithData.push(i);
                   }
                 }
-                
+
                 // Renumber team members sequentially (2, 3, 4...)
                 const renumberedResponses: FormResponses = { ...draftData.draft.responses };
                 const newTeamMembers: number[] = [];
-                
+
                 membersWithData.forEach((oldNum, index) => {
                   const newNum = index + 2; // Start from 2
                   newTeamMembers.push(newNum);
-                  
+
                   // If the number changed, copy data to new keys
                   if (oldNum !== newNum) {
                     const fields = ['name', 'roll', 'phone'];
@@ -188,7 +190,7 @@ const DynamicForm = () => {
                     });
                   }
                 });
-                
+
                 setTeamMembers(newTeamMembers);
                 setResponses(renumberedResponses);
                 console.log('Loaded and renumbered team members from draft:', newTeamMembers);
@@ -196,7 +198,7 @@ const DynamicForm = () => {
                 // Not a team form, just load responses
                 setResponses(draftData.draft.responses);
               }
-              
+
               setLastSaved(new Date(draftData.draft.last_saved));
               console.log('Draft loaded:', draftData.draft);
             } else {
@@ -209,13 +211,13 @@ const DynamicForm = () => {
             }
           }
         }
-        
+
         // Check if form is open
         const now = new Date();
         const openingTime = new Date(data.opening_time);
         const closingTime = new Date(data.closing_time);
         setIsFormOpen(now >= openingTime && now <= closingTime);
-        
+
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
         console.error('Error fetching form:', err);
@@ -253,7 +255,7 @@ const DynamicForm = () => {
             const hasAnyData = fields.some(
               field => responses[`team_member_${i}_${field}`]?.trim()
             );
-            
+
             // If no data for this team member, remove all their fields
             if (!hasAnyData) {
               fields.forEach(field => {
@@ -263,7 +265,7 @@ const DynamicForm = () => {
           }
         }
 
-        await fetch(`http://localhost:8000/api/forms/${formId}/draft`, {
+        await fetch(API_URL + `/api/forms/${formId}/draft`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -296,7 +298,7 @@ const DynamicForm = () => {
       ...prev,
       [questionKey]: value
     }));
-    
+
     // Clear validation error when user starts typing
     if (validationErrors[questionKey]) {
       setValidationErrors(prev => {
@@ -316,8 +318,8 @@ const DynamicForm = () => {
   const removeTeamMember = (memberNumber: number) => {
     setTeamMembers(prev => prev.filter(num => num !== memberNumber));
     // Clear responses for removed team member
-    const memberKeys = [`team_member_${memberNumber}_name`, `team_member_${memberNumber}_roll`, 
-                        `team_member_${memberNumber}_phone`];
+    const memberKeys = [`team_member_${memberNumber}_name`, `team_member_${memberNumber}_roll`,
+    `team_member_${memberNumber}_phone`];
     setResponses(prev => {
       const newResponses = { ...prev };
       memberKeys.forEach(key => delete newResponses[key]);
@@ -333,14 +335,14 @@ const DynamicForm = () => {
 
   const validateForm = (): boolean => {
     const errors: { [key: string]: string } = {};
-    
+
     formData?.questions.forEach(question => {
       const value = responses[question.question_key]?.trim();
       if (!value) {
         errors[question.question_key] = 'This field is required';
       }
     });
-    
+
     // Validate team member fields if form is team type
     if (formData?.type === 'team') {
       teamMembers.forEach(memberNum => {
@@ -354,27 +356,27 @@ const DynamicForm = () => {
         });
       });
     }
-    
+
     setValidationErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
-    
+
     setIsSubmitting(true);
-    
+
     try {
       const token = localStorage.getItem('access_token');
       if (!token) {
         throw new Error('Not authenticated');
       }
 
-      const response = await fetch(`http://localhost:8000/api/forms/${formId}/submit`, {
+      const response = await fetch(API_URL + `/api/forms/${formId}/submit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -393,7 +395,7 @@ const DynamicForm = () => {
       }
 
       const result = await response.json();
-      
+
       console.log('Form Submission:', {
         formId,
         formName: formData?.name,
@@ -406,9 +408,9 @@ const DynamicForm = () => {
         responses,
         timestamp: new Date().toISOString()
       });
-      
+
       alert('Form submitted successfully!');
-      
+
       // If there's a redirect_to, redirect user
       if (result.redirect_to) {
         router.push(result.redirect_to);
@@ -420,7 +422,7 @@ const DynamicForm = () => {
           submitted_at: result.submitted_at
         });
       }
-      
+
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to submit form. Please try again.';
       alert(errorMessage);
@@ -433,13 +435,13 @@ const DynamicForm = () => {
   const renderQuestion = (question: Question) => {
     const hasError = validationErrors[question.question_key];
     const errorClass = hasError ? 'ring-2 ring-red-500' : 'focus-within:ring-2 focus-within:ring-black';
-    
+
     switch (question.question_type) {
       case 'short':
         return (
           <div key={question.question_key} className="mb-6">
-            <label 
-              htmlFor={question.question_key} 
+            <label
+              htmlFor={question.question_key}
               className="block text-sm font-medium text-gray-700 mb-2"
             >
               {question.question_text}
@@ -459,12 +461,12 @@ const DynamicForm = () => {
             )}
           </div>
         );
-      
+
       case 'long':
         return (
           <div key={question.question_key} className="mb-6">
-            <label 
-              htmlFor={question.question_key} 
+            <label
+              htmlFor={question.question_key}
               className="block text-sm font-medium text-gray-700 mb-2"
             >
               {question.question_text}
@@ -484,7 +486,7 @@ const DynamicForm = () => {
             )}
           </div>
         );
-      
+
       case 'radio':
         return (
           <div key={question.question_key} className="mb-6">
@@ -494,13 +496,12 @@ const DynamicForm = () => {
             </label>
             <div className="space-y-3">
               {question.options?.map((option) => (
-                <label 
+                <label
                   key={option}
-                  className={`flex items-center space-x-3 p-3 border rounded-md cursor-pointer transition-all ${
-                    responses[question.question_key] === option 
-                      ? 'border-black bg-gray-50' 
-                      : 'border-gray-300 hover:border-gray-400'
-                  } ${!isFormOpen ? 'opacity-50 cursor-not-allowed' : ''} ${hasError ? 'border-red-500' : ''}`}
+                  className={`flex items-center space-x-3 p-3 border rounded-md cursor-pointer transition-all ${responses[question.question_key] === option
+                    ? 'border-black bg-gray-50'
+                    : 'border-gray-300 hover:border-gray-400'
+                    } ${!isFormOpen ? 'opacity-50 cursor-not-allowed' : ''} ${hasError ? 'border-red-500' : ''}`}
                 >
                   <input
                     type="radio"
@@ -522,7 +523,7 @@ const DynamicForm = () => {
             )}
           </div>
         );
-      
+
       default:
         return null;
     }
@@ -547,9 +548,9 @@ const DynamicForm = () => {
           className="flex flex-col items-center"
         >
           <motion.div
-            animate={{ 
+            animate={{
               rotate: [0, 360],
-              borderRadius: ["20%", "50%", "20%"] 
+              borderRadius: ["20%", "50%", "20%"]
             }}
             transition={{ repeat: Infinity, duration: 2 }}
             className="w-16 h-16 border-t-4 border-b-4 border-black"
@@ -599,7 +600,7 @@ const DynamicForm = () => {
     return (
       <div className="min-h-screen bg-[#e5e5dd] text-black overflow-hidden relative">
         <Nav />
-        
+
         {/* Decorative airplane elements */}
         {planes.map((plane) => (
           <motion.div
@@ -633,17 +634,17 @@ const DynamicForm = () => {
         <div className="absolute inset-0 opacity-5 z-0">
           <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
             <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="black" strokeWidth="0.5"/>
+              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="black" strokeWidth="0.5" />
             </pattern>
             <rect width="100%" height="100%" fill="url(#grid)" />
-            
+
             <pattern id="circles" width="50" height="50" patternUnits="userSpaceOnUse">
-              <circle cx="25" cy="25" r="1" fill="black" opacity="0.5"/>
+              <circle cx="25" cy="25" r="1" fill="black" opacity="0.5" />
             </pattern>
             <rect width="100%" height="100%" fill="url(#circles)" />
           </svg>
         </div>
-        
+
         <div className="container mx-auto py-12 px-4 mt-16 relative z-10">
           <div className="max-w-2xl mx-auto">
             <motion.div
@@ -656,7 +657,7 @@ const DynamicForm = () => {
               <p className="text-gray-600 mb-6">
                 You have already submitted this form. Thank you for your response!
               </p>
-              
+
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                 <h3 className="font-semibold text-blue-900 mb-2">{formData.name}</h3>
                 <div className="text-sm text-blue-700 space-y-1">
@@ -688,7 +689,7 @@ const DynamicForm = () => {
   return (
     <div className="min-h-screen bg-[#e5e5dd] text-black overflow-hidden relative">
       <Nav />
-      
+
       {/* Decorative airplane elements */}
       {planes.map((plane) => (
         <motion.div
@@ -722,21 +723,21 @@ const DynamicForm = () => {
       <div className="absolute inset-0 opacity-5 z-0">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
           <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="black" strokeWidth="0.5"/>
+            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="black" strokeWidth="0.5" />
           </pattern>
           <rect width="100%" height="100%" fill="url(#grid)" />
-          
+
           <pattern id="circles" width="50" height="50" patternUnits="userSpaceOnUse">
-            <circle cx="25" cy="25" r="1" fill="black" opacity="0.5"/>
+            <circle cx="25" cy="25" r="1" fill="black" opacity="0.5" />
           </pattern>
           <rect width="100%" height="100%" fill="url(#circles)" />
         </svg>
       </div>
-      
+
       <div className="container mx-auto py-12 px-4 mt-16 relative z-10">
         <div className="max-w-2xl mx-auto">
           {/* Form Header */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -765,11 +766,10 @@ const DynamicForm = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className={`mb-6 p-4 rounded-lg ${
-              isFormOpen 
-                ? 'bg-green-50 border border-green-200' 
-                : 'bg-red-50 border border-red-200'
-            }`}
+            className={`mb-6 p-4 rounded-lg ${isFormOpen
+              ? 'bg-green-50 border border-green-200'
+              : 'bg-red-50 border border-red-200'
+              }`}
           >
             <div className="flex items-start gap-3">
               <div className="text-2xl">
@@ -827,15 +827,15 @@ const DynamicForm = () => {
                   <svg className="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
-                  <span>Draft saved at {new Date(lastSaved).toLocaleTimeString('en-US', { 
-                    hour: '2-digit', 
-                    minute: '2-digit' 
+                  <span>Draft saved at {new Date(lastSaved).toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit'
                   })}</span>
                 </>
               ) : null}
             </motion.div>
           )}
-          
+
           {/* Form */}
           <AnimatePresence mode="wait">
             <motion.div
@@ -848,7 +848,7 @@ const DynamicForm = () => {
             >
               <form onSubmit={handleSubmit}>
                 {formData.questions.map(question => renderQuestion(question))}
-                
+
                 {/* Team Members Section - Only for team forms */}
                 {formData.type === 'team' && (
                   <div className="mt-8 mb-6">
@@ -874,11 +874,11 @@ const DynamicForm = () => {
                             Remove
                           </button>
                         </div>
-                        
+
                         <div className="space-y-4">
                           {/* Name */}
                           <div>
-                            <label 
+                            <label
                               htmlFor={`team_member_${memberNum}_name`}
                               className="block text-sm font-medium text-gray-700 mb-2"
                             >
@@ -890,11 +890,10 @@ const DynamicForm = () => {
                               value={responses[`team_member_${memberNum}_name`] || ''}
                               onChange={(e) => handleInputChange(`team_member_${memberNum}_name`, e.target.value)}
                               disabled={!isFormOpen}
-                              className={`w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed ${
-                                validationErrors[`team_member_${memberNum}_name`] 
-                                  ? 'ring-2 ring-red-500' 
-                                  : 'focus-within:ring-2 focus-within:ring-black'
-                              }`}
+                              className={`w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed ${validationErrors[`team_member_${memberNum}_name`]
+                                ? 'ring-2 ring-red-500'
+                                : 'focus-within:ring-2 focus-within:ring-black'
+                                }`}
                               placeholder="Enter team member name"
                             />
                             {validationErrors[`team_member_${memberNum}_name`] && (
@@ -904,7 +903,7 @@ const DynamicForm = () => {
 
                           {/* Roll Number */}
                           <div>
-                            <label 
+                            <label
                               htmlFor={`team_member_${memberNum}_roll`}
                               className="block text-sm font-medium text-gray-700 mb-2"
                             >
@@ -916,11 +915,10 @@ const DynamicForm = () => {
                               value={responses[`team_member_${memberNum}_roll`] || ''}
                               onChange={(e) => handleInputChange(`team_member_${memberNum}_roll`, e.target.value)}
                               disabled={!isFormOpen}
-                              className={`w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed ${
-                                validationErrors[`team_member_${memberNum}_roll`] 
-                                  ? 'ring-2 ring-red-500' 
-                                  : 'focus-within:ring-2 focus-within:ring-black'
-                              }`}
+                              className={`w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed ${validationErrors[`team_member_${memberNum}_roll`]
+                                ? 'ring-2 ring-red-500'
+                                : 'focus-within:ring-2 focus-within:ring-black'
+                                }`}
                               placeholder="Enter roll number"
                             />
                             {validationErrors[`team_member_${memberNum}_roll`] && (
@@ -930,7 +928,7 @@ const DynamicForm = () => {
 
                           {/* Phone Number */}
                           <div>
-                            <label 
+                            <label
                               htmlFor={`team_member_${memberNum}_phone`}
                               className="block text-sm font-medium text-gray-700 mb-2"
                             >
@@ -942,11 +940,10 @@ const DynamicForm = () => {
                               value={responses[`team_member_${memberNum}_phone`] || ''}
                               onChange={(e) => handleInputChange(`team_member_${memberNum}_phone`, e.target.value)}
                               disabled={!isFormOpen}
-                              className={`w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed ${
-                                validationErrors[`team_member_${memberNum}_phone`] 
-                                  ? 'ring-2 ring-red-500' 
-                                  : 'focus-within:ring-2 focus-within:ring-black'
-                              }`}
+                              className={`w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed ${validationErrors[`team_member_${memberNum}_phone`]
+                                ? 'ring-2 ring-red-500'
+                                : 'focus-within:ring-2 focus-within:ring-black'
+                                }`}
                               placeholder="Enter phone number"
                             />
                             {validationErrors[`team_member_${memberNum}_phone`] && (
@@ -965,11 +962,10 @@ const DynamicForm = () => {
                         disabled={!isFormOpen}
                         whileHover={isFormOpen ? { scale: 1.02 } : {}}
                         whileTap={isFormOpen ? { scale: 0.98 } : {}}
-                        className={`w-full cursor-pointer py-3 px-4 rounded-md font-semibold border-2 border-dashed transition-colors ${
-                          isFormOpen
-                            ? 'border-gray-400 text-gray-700 hover:border-black hover:bg-gray-50'
-                            : 'border-gray-300 text-gray-400 cursor-not-allowed'
-                        }`}
+                        className={`w-full cursor-pointer py-3 px-4 rounded-md font-semibold border-2 border-dashed transition-colors ${isFormOpen
+                          ? 'border-gray-400 text-gray-700 hover:border-black hover:bg-gray-50'
+                          : 'border-gray-300 text-gray-400 cursor-not-allowed'
+                          }`}
                       >
                         <span className="flex items-center justify-center gap-2">
                           <span className="text-xl">+</span>
@@ -985,17 +981,16 @@ const DynamicForm = () => {
                     )}
                   </div>
                 )}
-                
+
                 <motion.button
                   type="submit"
                   disabled={!isFormOpen || isSubmitting}
                   whileHover={isFormOpen && !isSubmitting ? { scale: 1.02 } : {}}
                   whileTap={isFormOpen && !isSubmitting ? { scale: 0.98 } : {}}
-                  className={`w-full cursor-pointer py-3 px-4 rounded-md font-semibold transition-colors ${
-                    isFormOpen && !isSubmitting
-                      ? 'bg-black text-white hover:bg-gray-800'
-                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  }`}
+                  className={`w-full cursor-pointer py-3 px-4 rounded-md font-semibold transition-colors ${isFormOpen && !isSubmitting
+                    ? 'bg-black text-white hover:bg-gray-800'
+                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    }`}
                 >
                   {isSubmitting ? (
                     <span className="flex items-center justify-center gap-2">
@@ -1015,7 +1010,7 @@ const DynamicForm = () => {
               </form>
             </motion.div>
           </AnimatePresence>
-          
+
           {/* Footer Info */}
           <motion.div
             initial={{ opacity: 0 }}

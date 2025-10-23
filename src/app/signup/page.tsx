@@ -46,9 +46,11 @@ const Signup = () => {
 	const [planes, setPlanes] = useState<
 		{ id: number; x: number; y: number; delay: number; scale: number; rotate: number }[]
 	>([]);
-	
+
 	// Redirect URL
 	const [redirectUrl, setRedirectUrl] = useState<string>("");
+
+	const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 	useEffect(() => {
 		// Create decorative airplane elements
@@ -138,7 +140,7 @@ const Signup = () => {
 
 		try {
 			// Send signup request to initiate OTP
-			const response = await fetch("http://localhost:8000/api/auth/signup/initiate", {
+			const response = await fetch(API_URL + "/api/auth/signup/initiate", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -205,7 +207,7 @@ const Signup = () => {
 		setOtpError("");
 
 		try {
-			const response = await fetch("http://localhost:8000/api/auth/signup/verify", {
+			const response = await fetch(API_URL + "/api/auth/signup/verify", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -229,8 +231,8 @@ const Signup = () => {
 			// Redirect to home
 			// router.push("/login");
 
-            const redirect = localStorage.getItem("redirect_after_login") || "/";
-            window.location.href = redirect;
+			const redirect = localStorage.getItem("redirect_after_login") || "/";
+			window.location.href = redirect;
 		} catch (error) {
 			console.error("OTP verification error:", error);
 			setOtpError(error instanceof Error ? error.message : "Invalid OTP. Please try again.");
@@ -247,7 +249,7 @@ const Signup = () => {
 		setOtpError("");
 
 		try {
-			const response = await fetch("http://localhost:8000/api/auth/signup/resend-otp", {
+			const response = await fetch(API_URL + "/api/auth/signup/resend-otp", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -304,8 +306,8 @@ const Signup = () => {
 					if (response.access_token) {
 						try {
 							await loginWithGoogle(response.access_token);
-                            const redirect = localStorage.getItem("redirect_after_login") || "/";
-                            window.location.href = redirect;
+							const redirect = localStorage.getItem("redirect_after_login") || "/";
+							window.location.href = redirect;
 						} catch (error) {
 							console.error("Google signup error:", error);
 							setSignupError(
@@ -460,11 +462,10 @@ const Signup = () => {
 												Full Name
 											</label>
 											<div
-												className={`relative rounded-md ${
-													nameError
+												className={`relative rounded-md ${nameError
 														? "ring-2 ring-red-500"
 														: "focus-within:ring-2 focus-within:ring-black"
-												}`}
+													}`}
 											>
 												<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
 													<HiOutlineUser className="text-gray-400" />
@@ -500,11 +501,10 @@ const Signup = () => {
 												Email Address
 											</label>
 											<div
-												className={`relative rounded-md ${
-													emailError
+												className={`relative rounded-md ${emailError
 														? "ring-2 ring-red-500"
 														: "focus-within:ring-2 focus-within:ring-black"
-												}`}
+													}`}
 											>
 												<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
 													<HiOutlineMail className="text-gray-400" />
@@ -540,11 +540,10 @@ const Signup = () => {
 												Password
 											</label>
 											<div
-												className={`relative rounded-md ${
-													passwordError
+												className={`relative rounded-md ${passwordError
 														? "ring-2 ring-red-500"
 														: "focus-within:ring-2 focus-within:ring-black"
-												}`}
+													}`}
 											>
 												<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
 													<RiLockPasswordLine className="text-gray-400" />
@@ -591,11 +590,10 @@ const Signup = () => {
 												Confirm Password
 											</label>
 											<div
-												className={`relative rounded-md ${
-													retypePasswordError
+												className={`relative rounded-md ${retypePasswordError
 														? "ring-2 ring-red-500"
 														: "focus-within:ring-2 focus-within:ring-black"
-												}`}
+													}`}
 											>
 												<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
 													<RiLockPasswordLine className="text-gray-400" />

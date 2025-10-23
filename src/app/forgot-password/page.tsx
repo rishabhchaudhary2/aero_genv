@@ -43,6 +43,8 @@ const ForgotPassword = () => {
 		{ id: number; x: number; y: number; delay: number; scale: number; rotate: number }[]
 	>([]);
 
+	const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
 	useEffect(() => {
 		// Create decorative airplane elements
 		const newPlanes = [];
@@ -105,7 +107,7 @@ const ForgotPassword = () => {
 		setIsLoading(true);
 
 		try {
-			const response = await fetch("http://localhost:8000/api/auth/forgot-password/initiate", {
+			const response = await fetch(API_URL + "/api/auth/forgot-password/initiate", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ email }),
@@ -185,7 +187,7 @@ const ForgotPassword = () => {
 
 		try {
 			const otpValue = otp.join("");
-			const response = await fetch("http://localhost:8000/api/auth/forgot-password/verify", {
+			const response = await fetch(API_URL + "/api/auth/forgot-password/verify", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
@@ -221,7 +223,7 @@ const ForgotPassword = () => {
 		setIsLoading(true);
 
 		try {
-			const response = await fetch("http://localhost:8000/api/auth/forgot-password/resend-otp", {
+			const response = await fetch(API_URL + "/api/auth/forgot-password/resend-otp", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ email }),
@@ -355,11 +357,10 @@ const ForgotPassword = () => {
 											Email Address
 										</label>
 										<div
-											className={`relative rounded-md ${
-												emailError
+											className={`relative rounded-md ${emailError
 													? "ring-2 ring-red-500"
 													: "focus-within:ring-2 focus-within:ring-black"
-											}`}
+												}`}
 										>
 											<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
 												<HiOutlineMail className="text-gray-400" />
@@ -563,11 +564,10 @@ const ForgotPassword = () => {
 											New Password
 										</label>
 										<div
-											className={`relative rounded-md ${
-												passwordError
+											className={`relative rounded-md ${passwordError
 													? "ring-2 ring-red-500"
 													: "focus-within:ring-2 focus-within:ring-black"
-											}`}
+												}`}
 										>
 											<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
 												<RiLockPasswordLine className="text-gray-400" />
@@ -604,11 +604,10 @@ const ForgotPassword = () => {
 											Confirm Password
 										</label>
 										<div
-											className={`relative rounded-md ${
-												retypePasswordError
+											className={`relative rounded-md ${retypePasswordError
 													? "ring-2 ring-red-500"
 													: "focus-within:ring-2 focus-within:ring-black"
-											}`}
+												}`}
 										>
 											<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
 												<RiLockPasswordLine className="text-gray-400" />
