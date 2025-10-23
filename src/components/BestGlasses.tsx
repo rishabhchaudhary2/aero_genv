@@ -44,7 +44,7 @@ export default function BestGlasses() {
   ];
 
   useEffect(() => {
-    const stickyHeight = window.innerHeight * 4;
+    const stickyHeight = window.innerHeight * 2.5;
     const totalCards = cards.current.length;
 
     function getRadius() {
@@ -66,8 +66,8 @@ export default function BestGlasses() {
       const radius = getRadius();
       const arcAngle = getArcAngle();
       const startAngle = Math.PI / 2 - arcAngle / 2;
-      const totalTravel = 1 + totalCards / 6.1;
-      const adjustedProgress = (progress * totalTravel - 1) * 0.7;
+      const totalTravel = 1 + totalCards / 5;
+      const adjustedProgress = (progress * totalTravel - 0.7) * 0.85;
 
       cards.current.forEach((card, i) => {
         if (!card) return;
@@ -159,7 +159,7 @@ export default function BestGlasses() {
   }, []);
 
   return (
-    <div className="relative bg-gradient-to-b from-[#ffffff] via-[#f8f9fa] to-[#e5e5dd] text-[#111] w-screen min-h-[500vh]">
+    <div className="relative bg-gradient-to-b from-[#ffffff] via-[#f8f9fa] to-[#e5e5dd] text-[#111] w-screen">
       <section
         ref={stickySection}
         className="relative h-screen w-screen overflow-hidden"
