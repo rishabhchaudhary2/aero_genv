@@ -232,6 +232,7 @@ const Signup = () => {
 			// router.push("/login");
 
 			const redirect = localStorage.getItem("redirect_after_login") || "/";
+		    localStorage.removeItem("redirect_after_login");
 			window.location.href = redirect;
 		} catch (error) {
 			console.error("OTP verification error:", error);
@@ -307,6 +308,7 @@ const Signup = () => {
 						try {
 							await loginWithGoogle(response.access_token);
 							const redirect = localStorage.getItem("redirect_after_login") || "/";
+							localStorage.removeItem("redirect_after_login");
 							window.location.href = redirect;
 						} catch (error) {
 							console.error("Google signup error:", error);
