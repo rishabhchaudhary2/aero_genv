@@ -47,7 +47,7 @@ async def send_otp_email(email: str, otp: str, name: Optional[str] = None) -> bo
                   <p style="color: #666;">This code will expire in 10 minutes.</p>
                   <p style="color: #666;">If you didn't request this code, please ignore this email.</p>
                   <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
-                  <p style="color: #999; font-size: 12px; text-align: center;">Aeromodelling club - RC Aircraft Club</p>
+                  <p style="color: #999; font-size: 12px; text-align: center;">Aeromodelling club</p>
                 </div>
               </body>
             </html>
@@ -67,7 +67,7 @@ This code will expire in 10 minutes.
 If you didn't request this code, please ignore this email.
 
 ---
-Aeromodelling club - RC Aircraft Club
+Aeromodelling club
             '''
             
             part1 = MIMEText(text, "plain")
