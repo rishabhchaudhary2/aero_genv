@@ -88,6 +88,7 @@ const Login = () => {
       // router.push('/');
       
       const redirect = localStorage.getItem("redirect_after_login") || "/";
+      localStorage.removeItem("redirect_after_login");
       window.location.href = redirect;
       
     } catch (error) {
@@ -117,6 +118,7 @@ const Login = () => {
               
               // Redirect on success
               const redirect = localStorage.getItem("redirect_after_login") || "/";
+              localStorage.removeItem("redirect_after_login");
               window.location.href = redirect;
             }
           } catch (error) {
