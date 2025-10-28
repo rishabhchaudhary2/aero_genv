@@ -433,7 +433,12 @@ const DynamicForm = () => {
         setHasSubmitted(true);
         setSubmissionData({
           id: result.submission_id,
-          submitted_at: result.submitted_at
+          submitted_at: result.submitted_at,
+          form_name: formData?.name,
+          form_type: formData?.type,
+          user_email: user?.email,
+          user_name: user?.full_name,
+          responses: responses
         });
         // If API returned a postFormDetails message, update formData locally so it can be displayed
         if (result.postFormDetails) {
@@ -452,17 +457,21 @@ const DynamicForm = () => {
 
   const formatQRCodeData = (data: SubmissionCheck['submission']): string => {
     // return key-value pairs as (key: value) instead of a jsonified string
-    try {let responses = "";
+    try {
+      let responses = "";
 
-    Object.entries(data!.responses!).forEach(([key, value]) => {
-      responses += `${key}: ${value}\n`;
-    })
+      Object.entries(data!.responses!).forEach(([key, value]) => {
+        if (key.length > 0) {
+          responses += `${key}: ${value}\n`;
+        }
+      })
 
-    return `
+      return `
 Name: ${data?.user_name || ''}
 Email: ${data?.user_email || ''}
 ${responses}
-    `} catch (e) {
+`;
+    } catch (e) {
       return JSON.stringify({
         Name: data?.user_name || '',
         Email: data?.user_email || '',
