@@ -8,6 +8,9 @@ const nextConfig = {
 			{
 				hostname: "drive.usercontent.google.com",
 			},
+			{
+				hostname: "encrypted-tbn0.gstatic.com",
+			},
 		],
 	},
 };

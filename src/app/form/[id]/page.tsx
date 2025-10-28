@@ -1,8 +1,9 @@
-'use client';
+"use client";
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useParams, useRouter } from 'next/navigation';
+import Image from 'next/image';
 import Nav from '@/components/Nav';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -10,8 +11,10 @@ import { useAuth } from '@/contexts/AuthContext';
 interface Question {
   question_key: string;
   question_text: string;
-  question_type: 'short' | 'long' | 'radio';
+  question_type: 'short' | 'long' | 'radio' | 'image';
   options?: string[];
+  // For display-only image blocks (provided by backend)
+  image_link?: string;
 }
 
 interface FormData {
@@ -339,10 +342,13 @@ const DynamicForm = () => {
     const errors: { [key: string]: string } = {};
 
     formData?.questions.forEach(question => {
-      const value = responses[question.question_key]?.trim();
-      if (!value) {
-        errors[question.question_key] = 'This field is required';
-      }
+        // Skip validation for display-only image blocks
+        if (question.question_type === 'image') return;
+
+        const value = responses[question.question_key]?.trim();
+        if (!value) {
+          errors[question.question_key] = 'This field is required';
+        }
     });
 
     // Validate team member fields if form is team type
@@ -529,6 +535,30 @@ const DynamicForm = () => {
             )}
           </div>
         );
+
+        case 'image':
+          return (
+            <div key={question.question_key} className="mb-6">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {question.question_text}
+              </label>
+              {question.image_link ? (
+                <div className="rounded-md overflow-hidden ">
+                  <div className="relative w-full" style={{ height: 320 }}>
+                    <Image
+                      src={question.image_link!}
+                      alt={question.question_text}
+                      width={320}
+                      height={320}
+                      className="object-contain bg-white border border-gray-200 mx-auto rounded-2xl"
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div className="text-sm text-gray-500">Image not available</div>
+              )}
+            </div>
+          );
 
       default:
         return null;

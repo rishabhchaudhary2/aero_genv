@@ -17,8 +17,9 @@ router = APIRouter()
 class QuestionOption(BaseModel):
     question_key: str
     question_text: str
-    question_type: Literal["short", "long", "radio"]
+    question_type: Literal["short", "long", "radio", "image"]
     options: Optional[List[str]] = None
+    image_link: Optional[str] = None
 
 class FormResponse(BaseModel):
     id: str
