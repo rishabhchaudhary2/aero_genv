@@ -165,9 +165,8 @@ class GoogleSheetsService:
                 headers = ['Timestamp', 'Email']
                 # Add question texts as headers
                 for question in questions:
-                    headers.append(question.get('question_text', question.get('question_key', '')))
-
-                
+                    if question.get("question_type") != "image":
+                        headers.append(question.get('question_text', question.get('question_key', '')))
                 
                 # Write headers to the new sheet
                 self.service.spreadsheets().values().update(
@@ -218,9 +217,10 @@ class GoogleSheetsService:
             
             # Add responses in the same order as questions
             for question in questions:
-                question_key = question.get('question_key', '')
-                answer = responses.get(question_key, '')
-                row_data.append(answer)
+                if question.get("question_type") != "image":
+                    question_key = question.get('question_key', '')
+                    answer = responses.get(question_key, '')
+                    row_data.append(answer)
             
             # Append the row
             self.service.spreadsheets().values().append(
