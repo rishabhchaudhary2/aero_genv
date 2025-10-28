@@ -76,7 +76,12 @@ async def check_submission(form_id: str, current_user: UserInDB = Depends(get_cu
         "has_submitted": existing_entry is not None,
         "submission": {
             "id": str(existing_entry["_id"]),
-            "submitted_at": existing_entry["submitted_at"].isoformat()
+            "submitted_at": existing_entry["submitted_at"].isoformat(),
+            "form_name": form_doc.get("name"),
+            "form_type": form_doc.get("type"),
+            "user_email": existing_entry.get("user_email"),
+            "user_name": existing_entry.get("user_name"),
+            "responses": existing_entry.get("responses", {})
         } if existing_entry else None
     }
 

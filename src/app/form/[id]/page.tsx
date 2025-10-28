@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { QRCodeSVG } from 'qrcode.react';
 import Nav from '@/components/Nav';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -38,6 +39,11 @@ interface SubmissionCheck {
   submission?: {
     id: string;
     submitted_at: string;
+    form_name?: string;
+    form_type?: string;
+    user_email?: string;
+    user_name?: string;
+    responses?: FormResponses;
   };
 }
 
@@ -444,6 +450,27 @@ const DynamicForm = () => {
     }
   };
 
+  const formatQRCodeData = (data: SubmissionCheck['submission']): string => {
+    // return key-value pairs as (key: value) instead of a jsonified string
+    try {let responses = "";
+
+    Object.entries(data!.responses!).forEach(([key, value]) => {
+      responses += `${key}: ${value}\n`;
+    })
+
+    return `
+Name: ${data?.user_name || ''}
+Email: ${data?.user_email || ''}
+${responses}
+    `} catch (e) {
+      return JSON.stringify({
+        Name: data?.user_name || '',
+        Email: data?.user_email || '',
+        Responses: data?.responses || {}
+      })
+    }
+  }
+
   const renderQuestion = (question: Question) => {
     const hasError = validationErrors[question.question_key];
     const errorClass = hasError ? 'ring-2 ring-red-500' : 'focus-within:ring-2 focus-within:ring-black';
@@ -715,6 +742,25 @@ const DynamicForm = () => {
                 </div>
               </div>
 
+              {/* QR Code Section */}
+              {submissionData && formData.type === 'solo' && (
+                <div className="mb-6 p-6 bg-white border border-gray-300 rounded-lg">
+                  <h3 className="font-semibold text-gray-900 mb-3 text-center">Registration QR Code</h3>
+                  <p className="text-sm text-gray-600 mb-4 text-center">
+                    Scan this QR code to view your registration details
+                  </p>
+                  <div className="flex justify-center">
+                    <div className="p-4 bg-white rounded-lg border-2 border-gray-200">
+                      <QRCodeSVG
+                        value={formatQRCodeData(submissionData)}
+                        size={320}
+                        level="L"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="space-y-3">
                 <button
                   onClick={() => router.push('/')}
@@ -806,7 +852,7 @@ const DynamicForm = () => {
           </motion.div>
 
           {/* Time Information */}
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
@@ -829,7 +875,7 @@ const DynamicForm = () => {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </motion.div> */}
 
           {formData.type === 'team' && (
             <motion.div
