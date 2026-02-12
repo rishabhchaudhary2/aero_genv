@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { IconType } from 'react-icons';
 import {
   FaFacebook, FaInstagram, FaLinkedin, FaPlane, FaGraduationCap, FaBlog,
-  FaEnvelope, FaMapMarkerAlt, FaDev
+  FaEnvelope, FaMapMarkerAlt, FaDev, FaTrophy
 } from 'react-icons/fa';
 import { HiMiniUserGroup } from 'react-icons/hi2';
 import { TbDrone } from 'react-icons/tb';
@@ -26,13 +26,15 @@ type SocialLink = {
 
 const Footer: React.FC = () => {
   const exploreLinks: NavLink[] = [
-    { href: '/', icon: FaGraduationCap, label: 'Home' },
-    { href: '/drones', icon: TbDrone, label: 'Drones' },
-    { href: '/workshops', icon: FaPlane, label: 'Workshops' },
-    { href: '/rcplanes', icon: FaPlane, label: 'RC Planes' },
-    { href: '/techspardha', icon: FaBlog, label: 'Techspardha' },
-    { href: '/external_events', icon: FaBlog, label: 'Events' },
-  ];
+  { href: '/', icon: FaGraduationCap, label: 'Home' },
+  { href: '/drones', icon: TbDrone, label: 'Drones' },
+  { href: '/workshops', icon: FaPlane, label: 'Workshops' },
+  { href: '/rcplanes', icon: FaPlane, label: 'RC Planes' },
+  { href: '/techspardha', icon: FaBlog, label: 'Techspardha' },
+  { href: '/external_events', icon: FaBlog, label: 'Events' },
+  { href: '/competition', icon: FaTrophy, label: 'Competition' },// I have added the competition link here, you can change it to any other section if you want
+];
+
 
   const additionalLinks: NavLink[] = [
     { href: '/gallery', icon: RiGalleryLine, label: 'Gallery' },
