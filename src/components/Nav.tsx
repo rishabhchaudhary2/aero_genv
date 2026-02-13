@@ -578,6 +578,9 @@ const Nav: React.FC = () => {
                             <div className="link">
                                 <Link href="/gallery">Gallery</Link>
                             </div>
+                            <div className="link">
+                                <Link href="/competition">Competition</Link>
+                            </div>
                             {!isLoadingUser && (
                                 user ? (
                                     <div className="link">
