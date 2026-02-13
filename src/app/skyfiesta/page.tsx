@@ -120,14 +120,14 @@ export default function CompetitionPage() {
           </h2>
 
           <div className="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto">
-            {["av.jpg", "orni.jpg", "ornithopter.jpg"].map((img, index) => (
+            {["3.jpg", "1.jpg", "2.jpg"].map((img, index) => (
               <div
                 key={index}
                 className="relative h-64 w-full overflow-hidden 
                 rounded-2xl shadow-md hover:shadow-lg transition duration-300"
               >
                 <Image
-                  src={`/planeimages/${img}`}
+                  src={`/skyfiesta1/${img}`}
                   alt="RC Plane"
                   fill
                   className="object-cover"
