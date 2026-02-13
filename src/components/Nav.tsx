@@ -579,7 +579,7 @@ const Nav: React.FC = () => {
                                 <Link href="/gallery">Gallery</Link>
                             </div>
                             <div className="link">
-                                <Link href="/competition">Competition</Link>
+                                <Link href="/skyfiesta">Skyfiesta 2026</Link>
                             </div>
                             {!isLoadingUser && (
                                 user ? (

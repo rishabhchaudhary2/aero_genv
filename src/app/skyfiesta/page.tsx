@@ -18,8 +18,8 @@ export default function CompetitionPage() {
 
         {/*  HERO  */}
         <section className="bg-[#f6f2ea] pt-40 pb-20 px-6 text-center">
-          <h1 className="text-5xl md:text-6xl font-three tracking-wide mb-8">
-            AERO RC PLANE COMPETITION 2026
+          <h1 className="text-5xl md:text-8xl font-three tracking-wide mb-8">
+            SkyFiesta 2026
           </h1>
 
           <p className="text-sm md:text-base font-final leading-relaxed text-black/75 max-w-2xl mx-auto">
@@ -31,16 +31,16 @@ export default function CompetitionPage() {
           </p>
 
           <div className="mt-8 text-sm md:text-base font-final text-black/80">
-            📅 24 February 2026 <br />
-            ⏰ 10:00 AM – 4:00 PM
+            27-28 February 2026 <br />
+            10:00 AM - 4:00 PM
           </div>
 
           {/* Poster */}
           <div className="mt-14 flex justify-center">
             <div className="relative w-full max-w-3xl h-[500px] rounded-3xl overflow-hidden shadow-xl">
               <Image
-                src="/poster.jpg"
-                alt="AERO RC Plane Competition Poster"
+                src="/skyfiesta1/poster.jpg"
+                alt="SkyFiesta Poster"
                 fill
                 className="object-cover"
                 priority
@@ -53,7 +53,7 @@ export default function CompetitionPage() {
         <section className="bg-[#efe9dd] py-28 px-6">
           <div className="max-w-4xl mx-auto text-center">
 
-            <h2 className="text-2xl md:text-3xl font-three tracking-wide mb-6">
+            <h2 className="text-3xl md:text-5xl font-three tracking-wide mb-6">
               Register Now
             </h2>
 
@@ -75,12 +75,12 @@ export default function CompetitionPage() {
                 </p>
 
                 <a
-                  href="YOUR_INTERNAL_GOOGLE_FORM_LINK"
+                  href="https://forms.gle/RxgF5jj35TBZ16se9"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-block px-8 py-3 rounded-full 
                   bg-black text-white text-xs tracking-widest uppercase
-                  hover:bg-black/80 transition duration-300"
+                  hover:bg-white hover:text-black border-2 border-black transition duration-300"
                 >
                   Register
                 </a>
@@ -99,11 +99,11 @@ export default function CompetitionPage() {
                 </p>
 
                 <a
-                  href="YOUR_EXTERNAL_GOOGLE_FORM_LINK"
+                  href="https://forms.gle/QFV4J2rhzm2Mt7pJ9"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-block px-8 py-3 rounded-full 
-                  border border-black text-xs tracking-widest uppercase
+                  border-2 border-black text-xs tracking-widest uppercase
                   hover:bg-black hover:text-white transition duration-300"
                 >
                   Register
@@ -114,10 +114,9 @@ export default function CompetitionPage() {
           </div>
         </section>
 
-        {/* ================= GALLERY ================= */}
         <section className="bg-[#e8e2d6] py-28 px-6">
-          <h2 className="text-2xl md:text-3xl font-three tracking-wide text-center mb-16">
-            RC Aircraft Showcase
+          <h2 className="text-3xl md:text-5xl font-three tracking-wide text-center mb-16">
+            Event gallary
           </h2>
 
           <div className="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto">
@@ -140,8 +139,8 @@ export default function CompetitionPage() {
 
         {/* ================= MAP ================= */}
         <section className="bg-[#f1ece3] py-28 text-center px-6">
-          <h2 className="text-2xl md:text-3xl font-three tracking-wide mb-16">
-            Location – NIT Kurukshetra
+          <h2 className="text-3xl md:text-5xl font-three tracking-wide mb-16">
+            Location - NIT Kurukshetra
           </h2>
 
           <div className="flex justify-center">

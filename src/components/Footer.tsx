@@ -32,7 +32,7 @@ const Footer: React.FC = () => {
   { href: '/rcplanes', icon: FaPlane, label: 'RC Planes' },
   { href: '/techspardha', icon: FaBlog, label: 'Techspardha' },
   { href: '/external_events', icon: FaBlog, label: 'Events' },
-  { href: '/competition', icon: FaTrophy, label: 'Competition' },// I have added the competition link here, you can change it to any other section if you want
+  { href: '/skyfiesta', icon: FaTrophy, label: 'Skyfiesta 2026' },// I have added the competition link here, you can change it to any other section if you want
 ];
 
 
