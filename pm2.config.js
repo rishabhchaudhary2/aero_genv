@@ -1,15 +1,15 @@
 module.exports = {
 	apps: [
 		{
-			name: 'Frontend',
-			script: 'npm',
-			args: 'start',
+			name: "Aero Frontend",
+			script: "npm",
+			args: "start",
 		},
 		{
-			name: 'Backend',
-			interpreter: 'python3',
-			script: 'main.py',
-			cwd: '/home/ubuntu/aero_genv/backend',
-		}
+			name: "Aero Backend",
+			interpreter: "python3",
+			script: "main.py",
+			cwd: "backend",
+		},
 	],
 };
