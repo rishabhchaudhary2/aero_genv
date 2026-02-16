@@ -31,15 +31,15 @@ export default function CompetitionPage() {
           </p>
 
           <div className="mt-8 text-sm md:text-base font-final text-black/80">
-            27-28 February 2026 <br />
-            10:00 AM - 4:00 PM
+            24-28 February 2026 <br />
+            5:00 PM - 8:00 PM
           </div>
 
           {/* Poster */}
           <div className="mt-14 flex justify-center">
-            <div className="relative w-full max-w-3xl h-[500px] rounded-3xl overflow-hidden shadow-xl">
+            <div className="relative w-full max-w-2xl h-[500px] rounded-3xl overflow-hidden shadow-xl">
               <Image
-                src="/skyfiesta1/poster.jpg"
+                src="/skyfiesta1/poster2.jpg"
                 alt="SkyFiesta Poster"
                 fill
                 className="object-cover"
@@ -79,8 +79,8 @@ export default function CompetitionPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-block px-8 py-3 rounded-full 
-                  bg-black text-white text-xs tracking-widest uppercase
-                  hover:bg-white hover:text-black border-2 border-black transition duration-300"
+                  border-2 border-black text-xs tracking-widest uppercase
+                  hover:bg-black hover:text-white transition duration-300"
                 >
                   Register
                 </a>
